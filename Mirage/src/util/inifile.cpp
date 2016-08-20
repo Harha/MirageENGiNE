@@ -10,7 +10,14 @@ namespace mirage
 		m_path(path)
 	{
 		// Read the file into memory
-		std::ifstream file(path);
+		std::ifstream file(m_path);
+
+		if (file.is_open() == false)
+		{
+			MERR("IniFile: Error loading ini file (" << m_path << ") into memory.");
+			return;
+		}
+
 		std::string line;
 		while (std::getline(file, line))
 		{

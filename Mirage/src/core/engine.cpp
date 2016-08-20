@@ -27,10 +27,10 @@ namespace mirage
 	{
 		// Initialize window
 		m_window = new Window(
-			m_config.getString("[gfx]", "windowT"),
-			m_config.getInt("[gfx]", "windowW"),
-			m_config.getInt("[gfx]", "windowH"),
-			m_config.getBool("[gfx]", "fullscreen")
+			m_config.getString("[gfx]", "windowT", "Mirage Game Engine"),
+			m_config.getInt("[gfx]", "windowW", 1280),
+			m_config.getInt("[gfx]", "windowH", 720),
+			m_config.getBool("[gfx]", "fullscreen", false)
 		);
 
 		// Set window key callback function
