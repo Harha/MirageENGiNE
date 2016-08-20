@@ -1,0 +1,32 @@
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Tags
+tags
+TAGS
+
+# Visual Studio project related files & folders
+*.VC.opendb
+*.VC.db
+/Release*
+/Debug*
+/.vs
+
+# Windows make building related files
+*.bat
+
+# Application specific runtime files
+imgui.ini
