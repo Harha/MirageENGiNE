@@ -3,8 +3,8 @@
 namespace mirage
 {
 
-	extern const std::regex INI_SECTION("\\[(.*?)\\]");
-	extern const std::regex INI_KEYVALUE("(\\w+)=([^\\+]+(?!\\+{3}))");
+	const std::regex INI_SECTION("\\[(.*?)\\]");
+	const std::regex INI_KEYVALUE("(\\w+)=([^\\+]+(?!\\+{3}))");
 
 	IniFile::IniFile(const std::string & path) :
 		m_path(path)

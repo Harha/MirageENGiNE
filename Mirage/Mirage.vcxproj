@@ -228,9 +228,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\core\engine.cpp" />
+    <ClCompile Include="src\core\mesh.cpp" />
     <ClCompile Include="src\core\transform.cpp" />
     <ClCompile Include="src\glad\glad.c" />
     <ClCompile Include="src\graphics\camera.cpp" />
+    <ClCompile Include="src\graphics\gfxengine.cpp" />
     <ClCompile Include="src\graphics\vertex.cpp" />
     <ClCompile Include="src\graphics\window.cpp" />
     <ClCompile Include="src\imgui\imgui.cpp" />
@@ -243,11 +245,14 @@
   <ItemGroup>
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\core\engine.h" />
+    <ClInclude Include="src\core\mesh.h" />
+    <ClInclude Include="src\core\runstate.h" />
     <ClInclude Include="src\core\transform.h" />
     <ClInclude Include="src\glad\glad.h" />
     <ClInclude Include="src\glad\khrplatform.h" />
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\gfxengine.h" />
+    <ClInclude Include="src\graphics\glsl\shader.h" />
     <ClInclude Include="src\graphics\vertex.h" />
     <ClInclude Include="src\graphics\window.h" />
     <ClInclude Include="src\imgui\imconfig.h" />
