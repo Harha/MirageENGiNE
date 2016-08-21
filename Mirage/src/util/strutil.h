@@ -19,7 +19,7 @@ namespace mirage
 	// Comparator for finding extra whitespace in a string.
 	// ---------------------------------------------------------------------------
 	inline bool istwospace(const char lhs, const char rhs) {
-		return (lhs == rhs) && (isspace(lhs));
+		return isspace(lhs) && isspace(rhs);
 	}
 
 	// ---------------------------------------------------------------------------
@@ -29,6 +29,15 @@ namespace mirage
 	inline bool strcompcasei(const std::string & a, const std::string & b)
 	{
 		return strncasecmp(a.c_str(), b.c_str(), std::min(a.length(), b.length())) == 0;
+	}
+
+	// ---------------------------------------------------------------------------
+	// cstr2int
+	// Converts a C type string to integer.
+	// ---------------------------------------------------------------------------
+	constexpr unsigned int cstr2int(const char* str, int h = 0)
+	{
+		return !str[h] ? 5381 : (cstr2int(str, h + 1) * 33) ^ str[h];
 	}
 
 }

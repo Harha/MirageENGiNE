@@ -35,7 +35,39 @@ namespace mirage
 	{
 		glClearColor(0.33f, 0.33f, 0.33f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		glErrorCheck();
 		glfwSwapBuffers(m_coreEngine->getWindow()->getHandle());
+	}
+
+	void GraphicsEngine::glErrorCheck()
+	{
+		GLenum glError = glGetError();
+
+		if (glError != GL_NO_ERROR)
+		{
+			std::string glErrorStr;
+			switch (glError)
+			{
+			case GL_INVALID_OPERATION:
+				glErrorStr = "GL_INVALID_OPERATION";
+				break;
+			case GL_INVALID_VALUE:
+				glErrorStr = "GL_INVALID_VALUE";
+				break;
+			case GL_INVALID_FRAMEBUFFER_OPERATION:
+				glErrorStr = "GL_INVALID_VALUE";
+				break;
+			case GL_OUT_OF_MEMORY:
+				glErrorStr = "GL_INVALID_VALUE";
+				break;
+			default:
+				glErrorStr = "GL_UNKNOWN_ERROR (";
+				break;
+			}
+
+			MERR("glGetError(): " << glErrorStr);
+		}
 	}
 
 }

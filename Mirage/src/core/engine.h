@@ -11,13 +11,13 @@
 
 // forward declarations
 typedef struct GLFWwindow GLFWwindow;
-class Window;
 
 namespace mirage
 {
 
 	// forward declarations
 	enum EngineRunState;
+	class Window;
 	class GraphicsEngine;
 
 	class CoreEngine

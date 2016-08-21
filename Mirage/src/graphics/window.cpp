@@ -7,63 +7,68 @@
 #include "../config.h"
 #include "../macros.h"
 
-Window::Window(const std::string t, int w, int h, bool fs) :
-	m_window(NULL)
+namespace mirage
 {
 
-	// Setup GLFW window hints
-	glfwDefaultWindowHints();
-	glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
-	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GL_CONTEXT_MAJOR);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GL_CONTEXT_MINOR);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
-
-	// Create the window, inform errors
-	m_window = glfwCreateWindow(w, h, t.c_str(), (fs == true) ? glfwGetPrimaryMonitor() : NULL, NULL);
-
-	if (m_window != NULL)
+	Window::Window(const std::string t, int w, int h, bool fs) :
+		m_window(NULL)
 	{
-		MLOG("Initialized a new display, t = " << t << ", w = " << w << ", h = " << h);
+
+		// Setup GLFW window hints
+		glfwDefaultWindowHints();
+		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
+		glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, GL_CONTEXT_MAJOR);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, GL_CONTEXT_MINOR);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_COMPAT_PROFILE);
+		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
+
+		// Create the window, inform errors
+		m_window = glfwCreateWindow(w, h, t.c_str(), (fs == true) ? glfwGetPrimaryMonitor() : NULL, NULL);
+
+		if (m_window != NULL)
+		{
+			MLOG("Initialized a new display, t = " << t << ", w = " << w << ", h = " << h);
+		}
+		else
+		{
+			MERR("Failed to initialize a new display, t = " << t);
+		}
+
+		// Create GL context, bind it to the window, etc...
+		glfwMakeContextCurrent(m_window);
+		glfwSwapInterval(GL_SWAP_INTERVAL);
+		glfwShowWindow(m_window);
+
 	}
-	else
+
+	Window::~Window()
 	{
-		MERR("Failed to initialize a new display, t = " << t);
+		glfwDestroyWindow(m_window);
 	}
 
-	// Create GL context, bind it to the window, etc...
-	glfwMakeContextCurrent(m_window);
-	glfwSwapInterval(GL_SWAP_INTERVAL);
-	glfwShowWindow(m_window);
+	void Window::setTitle(const std::string t)
+	{
+		glfwSetWindowTitle(m_window, t.c_str());
+	}
 
-}
+	int Window::getWidth() const
+	{
+		int w = 0, h = 0;
+		glfwGetWindowSize(m_window, &w, &h);
+		return w;
+	}
 
-Window::~Window()
-{
-	glfwDestroyWindow(m_window);
-}
+	int Window::getHeight() const
+	{
+		int w = 0, h = 0;
+		glfwGetWindowSize(m_window, &w, &h);
+		return h;
+	}
 
-void Window::setTitle(const std::string t)
-{
-	glfwSetWindowTitle(m_window, t.c_str());
-}
+	GLFWwindow * const Window::getHandle() const
+	{
+		return m_window;
+	}
 
-int Window::getWidth() const
-{
-	int w = 0, h = 0;
-	glfwGetWindowSize(m_window, &w, &h);
-	return w;
-}
-
-int Window::getHeight() const
-{
-	int w = 0, h = 0;
-	glfwGetWindowSize(m_window, &w, &h);
-	return h;
-}
-
-GLFWwindow * const Window::getHandle() const
-{
-	return m_window;
 }

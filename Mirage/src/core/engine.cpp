@@ -15,6 +15,8 @@
 #include "../graphics/window.h"
 #include "../graphics/gfxengine.h"
 #include "mesh.h"
+#include "../graphics/renderable_mesh.h"
+#include "model_formats/wavefront_file.h"
 
 namespace mirage
 {
@@ -39,7 +41,7 @@ namespace mirage
 		// Initialize graphics engine
 		m_graphicsEngine = new GraphicsEngine(this);
 
-		MLOG("CoreEngine: Initialized successfully. Config file: " << m_config.getPath());
+		MLOG("CoreEngine::CoreEngine - Initialized successfully. Config file: " << m_config.getPath());
 		m_runState = ERS_INITIALIZED;
 	}
 
@@ -70,6 +72,10 @@ namespace mirage
 		Mesh mesh3("sponza.obj");
 		Mesh mesh4("sponza.obj");
 		Mesh mesh5("sibenik.obj");
+
+		RenderableMesh rmesh1(&mesh1);
+
+		WavefrontFile wfFile1("./res/models/cornellbox_original.obj");
 
 		while (glfwWindowShouldClose(m_window->getHandle()) == GL_FALSE || m_runState == ERS_RUNNING)
 		{

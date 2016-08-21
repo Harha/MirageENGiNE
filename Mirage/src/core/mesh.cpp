@@ -10,10 +10,11 @@ namespace mirage
 	// MeshData
 	// ---------------------------------------------------------------------------
 
-	MeshData::MeshData() :
+	MeshData::MeshData(GLsizei size) :
 		m_vao(0),
 		m_vbo(0),
 		m_ibo(0),
+		m_size(size),
 		m_refAmount(0)
 	{
 		glGenVertexArrays(1, &m_vao);
@@ -28,6 +29,11 @@ namespace mirage
 		glDeleteVertexArrays(1, &m_vao);
 		glDeleteBuffers(1, &m_vbo);
 		glDeleteBuffers(1, &m_ibo);
+	}
+
+	void MeshData::setSize(GLsizei size)
+	{
+		m_size = size;
 	}
 
 	void MeshData::addReference()
@@ -55,6 +61,11 @@ namespace mirage
 		return m_ibo;
 	}
 
+	const GLsizei MeshData::getSize() const
+	{
+		return m_size;
+	}
+
 	const int32_t MeshData::getRefAmount() const
 	{
 		return m_refAmount;
@@ -66,9 +77,10 @@ namespace mirage
 
 	std::map<std::string, MeshData *> LOADED_MESHES;
 
-	Mesh::Mesh(const std::string & filePath) :
+	Mesh::Mesh(const std::string & filePath, Transform transform) :
 		m_filePath(filePath),
-		m_data(nullptr)
+		m_data(nullptr),
+		m_transform(transform)
 	{
 		MeshData * data = LOADED_MESHES[m_filePath];
 
@@ -79,7 +91,8 @@ namespace mirage
 			m_data->addReference();
 			LOADED_MESHES[m_filePath] = m_data;
 
-			MLOG("Mesh::Mesh - Loaded a new mesh object into memory. FilePath: " << m_filePath);
+			MLOG("Mesh::Mesh - Loaded a new mesh object into memory."
+				<< " MeshData pointer: " << (void *)m_data << ", filePath: " << m_filePath);
 		}
 		// This is an existing mesh
 		else
@@ -87,8 +100,8 @@ namespace mirage
 			m_data = data;
 			m_data->addReference();
 
-			MLOG("Mesh::Mesh - Loaded an existing mesh object into memory."
-				<< "FilePath: " << m_filePath << ", RefAmount: " << m_data->getRefAmount());
+			MLOG("Mesh::Mesh - Loaded an existing mesh."
+				<< " MeshData pointer:" << (void *)m_data << ", filePath: " << m_filePath << ", refAmount: " << m_data->getRefAmount());
 		}
 	}
 
@@ -105,11 +118,6 @@ namespace mirage
 		}
 	}
 
-	void Mesh::render()
-	{
-
-	}
-
 	const std::string Mesh::getFilePath() const
 	{
 		return m_filePath;
@@ -118,6 +126,11 @@ namespace mirage
 	MeshData * const Mesh::getData()
 	{
 		return m_data;
+	}
+
+	Transform & Mesh::getTransform()
+	{
+		return m_transform;
 	}
 
 

@@ -21,6 +21,7 @@ namespace mirage
 		GraphicsEngine(CoreEngine * const coreEngine = nullptr);
 		~GraphicsEngine();
 		void render();
+		void glErrorCheck();
 	private:
 		EngineRunState m_runState;
 		CoreEngine * m_coreEngine;
