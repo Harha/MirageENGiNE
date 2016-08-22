@@ -30,7 +30,7 @@ namespace mirage
 		{
 			loadObj(m_objFilePath);
 		}
-		catch (const std::exception & e)
+		catch (const std::exception)
 		{
 			MERR("WavefrontFile::WavefrontFile - Error loading WavefrontFile!"
 				<< " .obj FilePath: " << m_objFilePath << ", .mtl FilePath: " << m_mtlFilePath);
@@ -43,16 +43,17 @@ namespace mirage
 		// Read the file into memory
 		std::ifstream file(filePath);
 
+		// Throw if the file didn't open
 		if (file.is_open() == false)
-		{
 			throw std::exception();
-		}
 
 		// State variables
 		std::string currentMesh = "root";
 		std::string currentMaterial = "root";
 		glm::vec3 current_v3;
 		glm::vec2 current_v2;
+
+		// Intialize currentMesh & currentMaterial
 		m_meshes[currentMesh] = WavefrontMesh();
 		m_materials[currentMaterial] = WavefrontMaterial();
 
@@ -66,7 +67,7 @@ namespace mirage
 			// Line sstream
 			std::istringstream l_stream(l);
 
-			// Get the first split section in line
+			// Get the type of the current line
 			std::string type;
 			l_stream >> type;
 
@@ -94,21 +95,81 @@ namespace mirage
 				m_meshes[currentMesh] = WavefrontMesh();
 				break;
 			case cstr2int("usemtl"):
-
-				// Get the current material in temp var
-				std::string currentMaterialTemp;
-				l_stream >> currentMaterialTemp;
+			{
+				// Switch to the new material
+				l_stream >> currentMaterial;
 
 				// Get the current mesh that is being processed
+				// and split the mesh into two if it had faces, this handles multiple materials + non-consistent mesh objects
 				WavefrontMesh & mesh = m_meshes[currentMesh];
 				if (mesh.faces.empty() == false)
 				{
-					currentMesh = currentMesh + currentMaterialTemp;
+					currentMesh = currentMesh + currentMaterial;
 					m_meshes[currentMesh] = WavefrontMesh();
 				}
+			}
+			break;
+			case cstr2int("f"):
+			{
+				// Initially create the face with current material
+				WavefrontFace face(currentMaterial);
 
-				currentMaterial = currentMaterialTemp;
-				break;
+				// Determine face format, this is v1/t1/n1
+				if (l.find("//") == std::string::npos)
+				{
+					// Count the number of values on this line
+					int n = std::count_if(l.begin(), l.end(), [](unsigned char c) { return c == '/'; });
+
+					// Replace slashes with whitespace & create sstream
+					std::replace(l.begin(), l.end(), '/', ' ');
+					std::istringstream lf(l.substr(2));
+
+					// v1/t1/n1
+					if (n == 6)
+					{
+						lf >> face.points[0];
+						lf >> face.texcoords[0];
+						lf >> face.normals[0];
+
+						lf >> face.points[1];
+						lf >> face.texcoords[1];
+						lf >> face.normals[1];
+
+						lf >> face.points[2];
+						lf >> face.texcoords[2];
+						lf >> face.normals[2];
+					}
+					// v1/t1
+					else if (n == 3)
+					{
+						lf >> face.points[0];
+						lf >> face.texcoords[0];
+
+						lf >> face.points[1];
+						lf >> face.texcoords[1];
+
+						lf >> face.points[2];
+						lf >> face.texcoords[2];
+					}
+				}
+				// This is v1//n1
+				else
+				{
+
+				}
+
+				// Get the pointer to current mesh in map
+				WavefrontMesh * mesh = &m_meshes[currentMesh];
+
+				// Create the mesh if it doesn't exist
+				if (mesh == nullptr)
+					m_meshes[currentMesh] = WavefrontMesh();
+
+				// Insert the face
+				m_meshes[currentMesh].faces.push_back(face);
+			}
+			break;
+
 			}
 
 		}

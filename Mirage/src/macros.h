@@ -13,7 +13,7 @@
 #define MDELETES(a) if( (a) != NULL ) delete (a); (a) = NULL;
 #define MDELETEA(a) if ( (a) != NULL ) delete[] (a); (a) = NULL;
 
-// opengl
+// OpenGL
 #define BUFFER_OFFSET(i) ((void*)(i))
 
 #endif // MACROS_H

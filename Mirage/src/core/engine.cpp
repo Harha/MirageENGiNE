@@ -75,7 +75,7 @@ namespace mirage
 
 		RenderableMesh rmesh1(&mesh1);
 
-		WavefrontFile wfFile1("./res/models/cornellbox_original.obj");
+		WavefrontFile wfFile1("./res/models/crytek_sponza/crytek_sponza.obj");
 
 		while (glfwWindowShouldClose(m_window->getHandle()) == GL_FALSE || m_runState == ERS_RUNNING)
 		{
