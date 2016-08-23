@@ -40,6 +40,15 @@ namespace mirage
 		return !str[h] ? 5381 : (cstr2int(str, h + 1) * 33) ^ str[h];
 	}
 
+	// ---------------------------------------------------------------------------
+	// filetofilepath
+	// Converts a filepath ending to a file into a path to the folder of the file.
+	// ---------------------------------------------------------------------------
+	inline std::string filetofilepath(const std::string & file)
+	{
+		return file.substr(0, file.find_last_of("/\\")) + "/";
+	}
+
 }
 
 #endif // STRUTIL_H

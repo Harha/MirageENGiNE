@@ -58,10 +58,10 @@ namespace mirage
 	class WavefrontMaterial
 	{
 	public:
-		RGBA Ka;
-		RGBA Kd;
-		RGBA Ks;
-		RGBA Ke;
+		RGBA Ka; // Ambient color
+		RGBA Kd; // Diffuse color
+		RGBA Ks; // Specular color
+		RGBA Ke; // Emissive color
 
 		WavefrontMaterial(const RGBA & Ka = RGBA(), const RGBA & Kd = RGBA(), const RGBA & Ks = RGBA(), const RGBA & Ke = RGBA()) :
 			Ka(Ka),
