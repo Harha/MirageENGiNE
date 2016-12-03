@@ -26,13 +26,9 @@ namespace mirage
 		// Create the window, inform errors
 		m_window = glfwCreateWindow(w, h, t.c_str(), (fs == true) ? glfwGetPrimaryMonitor() : NULL, NULL);
 
-		if (m_window != NULL)
+		if (m_window == NULL)
 		{
-			MLOG("Initialized a new display, t = " << t << ", w = " << w << ", h = " << h);
-		}
-		else
-		{
-			MERR("Failed to initialize a new display, t = " << t);
+			throw std::exception("Window::Window glfwCreateWindow failed.");
 		}
 
 		// Create GL context, bind it to the window, etc...
@@ -40,6 +36,7 @@ namespace mirage
 		glfwSwapInterval(GL_SWAP_INTERVAL);
 		glfwShowWindow(m_window);
 
+		MLOG_INFO("Window::Window initialized successfully. Title: %s, width: %d, height: %d, fullscreen: %s", t.c_str(), w, h, (fs == true) ? "true" : "false");
 	}
 
 	Window::~Window()

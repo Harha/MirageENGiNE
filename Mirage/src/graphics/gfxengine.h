@@ -4,10 +4,6 @@
 // std includes
 #include <string>
 
-// mirage includes
-#include "../config.h"
-#include "../macros.h"
-
 namespace mirage
 {
 

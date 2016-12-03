@@ -4,7 +4,6 @@
 namespace mirage
 {
 
-	// forward declarations
 	class Mesh;
 
 	class RenderableMesh

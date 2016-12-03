@@ -12,7 +12,12 @@ namespace mirage
 	public:
 		static const int SIZE;
 
-		Vertex(glm::vec3 p = glm::vec3(0.0f), glm::vec3 n = glm::vec3(0.0f), glm::vec3 t = glm::vec3(0.0f), glm::vec2 uv = glm::vec2(0.0f));
+		Vertex(
+			glm::vec3 p = glm::vec3(0.0f),
+			glm::vec3 n = glm::vec3(0.0f),
+			glm::vec3 t = glm::vec3(0.0f),
+			glm::vec2 uv = glm::vec2(0.0f)
+		);
 		const glm::vec3 & getPosition() const;
 		const glm::vec3 & getNormal() const;
 		const glm::vec3 & getTangent() const;

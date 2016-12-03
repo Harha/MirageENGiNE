@@ -11,6 +11,8 @@
 #include <GLFW/glfw3.h>
 
 // mirage includes
+#include "../config.h"
+#include "../macros.h"
 #include "runstate.h"
 #include "../graphics/window.h"
 #include "../graphics/gfxengine.h"
@@ -21,8 +23,8 @@
 namespace mirage
 {
 
-	CoreEngine::CoreEngine(const std::string & configPath) :
-		m_config(configPath),
+	CoreEngine::CoreEngine(const std::string & cfgFilePath) :
+		m_config(cfgFilePath),
 		m_runState(ERS_UNINTIALIZED),
 		m_window(nullptr),
 		m_graphicsEngine(nullptr)
@@ -35,14 +37,16 @@ namespace mirage
 			m_config.getBool("[gfx]", "fullscreen", false)
 		);
 
-		// Set window key callback function
+		// Set glfw window key callback function
 		glfwSetKeyCallback(m_window->getHandle(), glfwKeyCallback);
 
 		// Initialize graphics engine
 		m_graphicsEngine = new GraphicsEngine(this);
 
-		MLOG("CoreEngine::CoreEngine - Initialized successfully. Config file: " << m_config.getPath());
+		// Set engine run state to initialized
 		m_runState = ERS_INITIALIZED;
+
+		MLOG_INFO("CoreEngine::CoreEngine, initialized successfully. Config file path: %s", m_config.getFilePath().c_str());
 	}
 
 	CoreEngine::~CoreEngine()
@@ -53,33 +57,24 @@ namespace mirage
 
 	void CoreEngine::glfwKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods)
 	{
-		MLOG("Key pressed (key: " << key << ", scancode: " << scancode << ", action: " << action << ")");
+
 	}
 
 	void CoreEngine::run()
 	{
 		if (m_runState != ERS_INITIALIZED)
 		{
-			MWRN("CoreEngine Was not initialized properly before CoreEngine::run() was called. Initialization state: " << m_runState);
+			MLOG_WARNING("CoreEngine::run, engine was not initialized properly before this was called. Engine run state: %d", m_runState);
 			return;
 		}
 
-		MLOG("CoreEngine::run() called, entering main loop.");
 		m_runState = ERS_RUNNING;
 
-		Mesh mesh1("sponza.obj");
-		Mesh mesh2("sponza.obj");
-		Mesh mesh3("sponza.obj");
-		Mesh mesh4("sponza.obj");
-		Mesh mesh5("sibenik.obj");
+		MLOG_INFO("CoreEngine::run() called, entering main loop.");
 
-		RenderableMesh rmesh1(&mesh1);
-
-		WavefrontFile wfFile1("./res/models/crytek_sponza/crytek_sponza.obj");
-
-		while (glfwWindowShouldClose(m_window->getHandle()) == GL_FALSE || m_runState == ERS_RUNNING)
+		while (glfwWindowShouldClose(m_window->getHandle()) == GL_FALSE && m_runState == ERS_RUNNING)
 		{
-			// Call glfw event callback functions
+			// Poll for any glfw-related events
 			glfwPollEvents();
 
 			m_graphicsEngine->render();
@@ -87,11 +82,18 @@ namespace mirage
 			// Sleep for a bit, because why not?
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
+
+		MLOG_INFO("CoreEngine::run, exiting main loop. Engine run state: %d", m_runState);
 	}
 
 	const IniFile & CoreEngine::getConfig() const
 	{
 		return m_config;
+	}
+
+	const EngineRunState & CoreEngine::getRunState() const
+	{
+		return m_runState;
 	}
 
 	Window * const CoreEngine::getWindow() const

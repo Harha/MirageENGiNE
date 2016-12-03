@@ -11,6 +11,8 @@
 #include <GLFW/glfw3.h>
 
 // mirage includes
+#include "../config.h"
+#include "../macros.h"
 #include "../core/runstate.h"
 #include "../core/engine.h"
 #include "window.h"
@@ -22,19 +24,20 @@ namespace mirage
 		m_runState(ERS_UNINTIALIZED),
 		m_coreEngine(coreEngine)
 	{
-
-		MLOG("GraphicsEngine: Initialized successfully.");
 		m_runState = ERS_INITIALIZED;
+
+		MLOG_INFO("GraphicsEngine::GraphicsEngine initialized successfully.");
 	}
 
 	GraphicsEngine::~GraphicsEngine()
 	{
+
 	}
 
 	void GraphicsEngine::render()
 	{
 		glClearColor(0.33f, 0.33f, 0.33f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		glErrorCheck();
 		glfwSwapBuffers(m_coreEngine->getWindow()->getHandle());
@@ -55,18 +58,18 @@ namespace mirage
 			case GL_INVALID_VALUE:
 				glErrorStr = "GL_INVALID_VALUE";
 				break;
-			case GL_INVALID_FRAMEBUFFER_OPERATION:
-				glErrorStr = "GL_INVALID_VALUE";
-				break;
 			case GL_OUT_OF_MEMORY:
-				glErrorStr = "GL_INVALID_VALUE";
+				glErrorStr = "GL_OUT_OF_MEMORY";
+				break;
+			case GL_INVALID_FRAMEBUFFER_OPERATION:
+				glErrorStr = "GL_INVALID_FRAMEBUFFER_OPERATION";
 				break;
 			default:
-				glErrorStr = "GL_UNKNOWN_ERROR (";
+				glErrorStr = "GL_UNKNOWN_ERROR (" + std::to_string(glError) + ")";
 				break;
 			}
 
-			MERR("glGetError(): " << glErrorStr);
+			MLOG_ERROR("glErrorCheck::glErrorCheck, glGetError(): %s", glErrorStr.c_str());
 		}
 	}
 

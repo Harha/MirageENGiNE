@@ -3,6 +3,10 @@
 // lib includes
 #include "../glad/glad.h"
 
+// mirage includes
+#include "../config.h"
+#include "../macros.h"
+
 namespace mirage
 {
 
@@ -21,7 +25,7 @@ namespace mirage
 		glGenBuffers(1, &m_vbo);
 		glGenBuffers(1, &m_ibo);
 
-		MLOG("MeshData::MeshData - VAO: " << m_vao << ", VBO: " << m_vbo << ", IBO: " << m_ibo);
+		MLOG_INFO("MeshData::MeshData initialized successfully, VAO: %d, VBO: %d, IBO: %d", m_vao, m_vbo, m_ibo);
 	}
 
 	MeshData::~MeshData()
@@ -90,19 +94,15 @@ namespace mirage
 			m_data = new MeshData;
 			m_data->addReference();
 			LOADED_MESHES[m_filePath] = m_data;
-
-			MLOG("Mesh::Mesh - Loaded a new mesh object into memory."
-				<< " MeshData pointer: " << (void *)m_data << ", filePath: " << m_filePath);
 		}
 		// This is an existing mesh
 		else
 		{
 			m_data = data;
 			m_data->addReference();
-
-			MLOG("Mesh::Mesh - Loaded an existing mesh."
-				<< " MeshData pointer:" << (void *)m_data << ", filePath: " << m_filePath << ", refAmount: " << m_data->getRefAmount());
 		}
+
+		MLOG_INFO("Mesh::Mesh initialized successfully. FilePath: %s, reference amount: %d", m_filePath.c_str(), m_data->getRefAmount());
 	}
 
 	Mesh::~Mesh()
@@ -111,10 +111,10 @@ namespace mirage
 
 		if (m_data->getRefAmount() <= 0)
 		{
-			MLOG("Mesh::~Mesh - Destroying mesh. FilePath: " << m_filePath);
-
 			LOADED_MESHES.erase(m_filePath);
 			MDELETES(m_data);
+
+			MLOG_INFO("Mesh::~Mesh, Destroying mesh. FilePath: %s", m_filePath.c_str());
 		}
 	}
 

@@ -13,10 +13,6 @@
 namespace mirage
 {
 
-	// ---------------------------------------------------------------------------
-	// WavefrontFile
-	// ---------------------------------------------------------------------------
-
 	WavefrontFile::WavefrontFile(const std::string & filePath) :
 		m_objFilePath(filePath),
 		m_mtlFilePath("NULL"),
@@ -26,21 +22,12 @@ namespace mirage
 		m_meshes(),
 		m_materials()
 	{
-		try
-		{
-			loadObj(m_objFilePath);
-		}
-		catch (const std::exception)
-		{
-			MERR("WavefrontFile::WavefrontFile - Error loading WavefrontFile!"
-				<< " .obj FilePath: " << m_objFilePath << ", .mtl FilePath: " << m_mtlFilePath);
-		}
+		loadObj(m_objFilePath);
 	}
-
 
 	void WavefrontFile::loadObj(const std::string & filePath)
 	{
-		MLOG("WavefrontFile::loadObj - Attempting to load (" << filePath << ") into memory...");
+		MLOG_INFO("WavefrontFile::loadObj, attempting to load (%s) into memory...", filePath);
 
 		// Read the file into memory
 		std::ifstream file(filePath);
@@ -194,13 +181,12 @@ namespace mirage
 			}
 		}
 
-		MLOG("WavefrontFile::loadObj - Loaded (" << filePath << ") successfully into memory.");
-
+		MLOG_INFO("WavefrontFile::loadObj, loaded successfully. Mesh count: %d", m_meshes.size());
 	}
 
 	void WavefrontFile::loadMtl(const std::string & filePath)
 	{
-		MLOG("WavefrontFile::loadMtl - Attempting to load (" << filePath << ") into memory...");
+		MLOG_INFO("WavefrontFile::loadMtl, attempting to load (%s) into memory...", filePath);
 
 		// Read the file into memory
 		std::ifstream file(filePath);
@@ -258,8 +244,7 @@ namespace mirage
 			}
 		}
 
-		MLOG("WavefrontFile::loadMtl - Loaded (" << filePath << ") successfully into memory.");
-
+		MLOG_INFO("WavefrontFile::loadMtl, loaded successfully. Material count: %d", m_materials.size());
 	}
 
 }

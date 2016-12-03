@@ -15,7 +15,6 @@ namespace mirage
 	public:
 		Window(const std::string t = "window", int w = 1280, int h = 720, bool fs = false);
 		~Window();
-
 		void setTitle(const std::string t);
 		int getWidth() const;
 		int getHeight() const;

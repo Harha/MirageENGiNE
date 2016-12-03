@@ -5,9 +5,10 @@
 #include <iostream>
 
 // Logging
-#define MLOG(msg) std::cout << "LOG: " << msg << std::endl;
-#define MWRN(msg) std::cout << "WRN: " << msg << std::endl;
-#define MERR(msg) std::cerr << "ERR: " << msg << std::endl;
+#define MLOG_DEBUG(msg_, ...)	printf("DBG: " msg_ "\n", __VA_ARGS__)
+#define MLOG_INFO(msg_, ...)	printf("INF: " msg_ "\n", __VA_ARGS__)
+#define MLOG_WARNING(msg_, ...)	printf("WRN: " msg_ "\n", __VA_ARGS__)
+#define MLOG_ERROR(msg_, ...)	printf("ERR: " msg_ "\n", __VA_ARGS__)
 
 // Delete
 #define MDELETES(a) if( (a) != NULL ) delete (a); (a) = NULL;

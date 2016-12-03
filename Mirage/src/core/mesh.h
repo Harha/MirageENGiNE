@@ -7,11 +7,8 @@
 #include <map>
 
 // mirage includes
-#include "../config.h"
-#include "../macros.h"
 #include "transform.h"
 
-// forward declarations
 typedef unsigned int GLuint;
 typedef int GLsizei;
 
@@ -46,7 +43,10 @@ namespace mirage
 	class Mesh
 	{
 	public:
-		Mesh(const std::string & filePath = "null", Transform transform = Transform());
+		Mesh(
+			const std::string & filePath = "null",
+			Transform transform = Transform()
+		);
 		~Mesh();
 		const std::string getFilePath() const;
 		MeshData * const getData();

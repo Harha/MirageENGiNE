@@ -1,4 +1,4 @@
-Mirage Game Engine - Main engine.
--------------------------------------------------------------------------------
+Mirage Game Engine
+==================
 
-The software is in a very early stage of development.
+This software is in a very early stage of development.

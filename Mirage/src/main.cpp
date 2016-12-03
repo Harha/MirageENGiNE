@@ -22,12 +22,12 @@
 
 static void glfwErrorCallback(int error, const char * description)
 {
-	MERR(description);
+	MLOG_ERROR("glfwErrorCallback, error: %d, description: %s", error, description);
 }
 
 int main(int argc, char * argv[])
 {
-	MLOG("Mirage Game Engine, version " << VERSION_STATE << "." << VERSION_MAJOR << "." << VERSION_MINOR);
+	MLOG_INFO("Mirage Game Engine, version %d.%d.%d", VERSION_STATE, VERSION_MAJOR, VERSION_MINOR);
 
 	// Set glfw error callback function
 	glfwSetErrorCallback(glfwErrorCallback);
@@ -39,7 +39,7 @@ int main(int argc, char * argv[])
 	}
 
 	// Create core engine instance
-	mirage::CoreEngine * engine = new mirage::CoreEngine("./res/config.ini");
+	mirage::CoreEngine * engine = new mirage::CoreEngine("./data/config.ini");
 
 	// Initialize glad, return error if failed
 	if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == GL_FALSE)
@@ -52,7 +52,7 @@ int main(int argc, char * argv[])
 	// Go into program main loop, exit on CoreEngine::~CoreEngine()
 	engine->run();
 
-	// Cleanup resources in correct order
+	// Cleanup resources
 	MDELETES(engine);
 	glfwTerminate();
 

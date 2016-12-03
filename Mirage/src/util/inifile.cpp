@@ -6,15 +6,15 @@ namespace mirage
 	const std::regex INI_SECTION("\\[(.*?)\\]");
 	const std::regex INI_KEYVALUE("(\\w+)=([^\\+]+(?!\\+{3}))");
 
-	IniFile::IniFile(const std::string & path) :
-		m_path(path)
+	IniFile::IniFile(const std::string & filePath) :
+		m_filePath(filePath)
 	{
 		// Read the file into memory
-		std::ifstream file(m_path);
+		std::ifstream file(m_filePath);
 
 		if (file.is_open() == false)
 		{
-			MERR("IniFile: Error loading ini file (" << m_path << ") into memory.");
+			MLOG_ERROR("IniFile::IniFile, error loading given file (%s) into memory.", m_filePath.c_str());
 			return;
 		}
 
@@ -67,7 +67,7 @@ namespace mirage
 			}
 		}
 
-		MLOG("IniFile: Loaded " << path << " into memory.  Lines: " << m_lines.size() << ", sections: " << m_entries.size());
+		MLOG_INFO("IniFile::IniFile, loaded given file (%s) into memory. Lines: %d, sections: %d", m_filePath.c_str(), m_lines.size(), m_entries.size());
 	}
 
 	const std::string & IniFile::getString(const std::string & section, const std::string & key, const std::string & defval)
@@ -79,7 +79,7 @@ namespace mirage
 		}
 		catch (const std::exception & e)
 		{
-			MERR("IniFile: Failed to fetch a string from given section's key. Section: " << section << ", key: " << key << ", exception: " << e.what());
+			MLOG_ERROR("IniFile::getString, failed to fetch a string. Section: %s, key: %s, exception: %s", section.c_str(), key.c_str(), e.what());
 			return defval;
 		}
 	}
@@ -93,7 +93,7 @@ namespace mirage
 		}
 		catch (const std::exception & e)
 		{
-			MERR("IniFile: Failed to fetch a bool from given section's key. Section: " << section << ", key: " << key << ", exception: " << e.what());
+			MLOG_ERROR("IniFile::getBool, failed to fetch a bool. Section: %s, key: %s, exception: %s", section.c_str(), key.c_str(), e.what());
 			return defval;
 		}
 	}
@@ -107,7 +107,7 @@ namespace mirage
 		}
 		catch (const std::exception & e)
 		{
-			MERR("IniFile: Failed to fetch an int from given section's key. Section: " << section << ", key: " << key << ", exception: " << e.what());
+			MLOG_ERROR("IniFile::getInt, failed to fetch an int. Section: %s, key: %s, exception: %s", section.c_str(), key.c_str(), e.what());
 			return defval;
 		}
 	}
@@ -121,7 +121,7 @@ namespace mirage
 		}
 		catch (const std::exception & e)
 		{
-			MERR("IniFile: Failed to fetch a float from given section's key. Section: " << section << ", key: " << key << ", exception: " << e.what());
+			MLOG_ERROR("IniFile::getFloat, failed to fetch a float. Section: %s, key: %s, exception: %s", section.c_str(), key.c_str(), e.what());
 			return defval;
 		}
 	}
@@ -135,14 +135,14 @@ namespace mirage
 		}
 		catch (const std::exception & e)
 		{
-			MERR("IniFile: Failed to fetch a double from given section's key. Section: " << section << ", key: " << key << ", exception: " << e.what());
+			MLOG_ERROR("IniFile::getDouble, failed to fetch a double. Section: %s, key: %s, exception: %s", section.c_str(), key.c_str(), e.what());
 			return defval;
 		}
 	}
 
-	const std::string & IniFile::getPath() const
+	const std::string & IniFile::getFilePath() const
 	{
-		return m_path;
+		return m_filePath;
 	}
 
 	std::vector<std::string> IniFile::getLines() const

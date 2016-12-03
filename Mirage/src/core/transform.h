@@ -11,7 +11,11 @@ namespace mirage
 	class Transform
 	{
 	public:
-		Transform(glm::vec3 p = glm::vec3(0.0f), glm::quat o = glm::quat(1.0f, 0.0f, 0.0f, 0.0f), glm::vec3 s = glm::vec3(1.0f, 1.0f, 1.0f));
+		Transform(
+			glm::vec3 p = glm::vec3(0.0f),
+			glm::quat o = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+			glm::vec3 s = glm::vec3(1.0f, 1.0f, 1.0f)
+		);
 		void translate(const glm::vec3 & dir, float l);
 		void rotate(const glm::vec3 & axis, float theta);
 		void rotate(const glm::quat & q);

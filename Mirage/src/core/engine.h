@@ -5,17 +5,13 @@
 #include <string>
 
 // mirage includes
-#include "../config.h"
-#include "../macros.h"
 #include "../util/inifile.h"
 
-// forward declarations
 typedef struct GLFWwindow GLFWwindow;
 
 namespace mirage
 {
 
-	// forward declarations
 	enum EngineRunState;
 	class Window;
 	class GraphicsEngine;
@@ -23,10 +19,14 @@ namespace mirage
 	class CoreEngine
 	{
 	public:
-		CoreEngine(const std::string & config = "./res/config.ini");
+		CoreEngine(
+			const std::string & cfgFilePath = "./data/config.ini"
+		);
 		~CoreEngine();
-		void run();
+
 		static void glfwKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods);
+
+		void run();
 		const IniFile & getConfig() const;
 		const EngineRunState & getRunState() const;
 		Window * const getWindow() const;

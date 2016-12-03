@@ -15,8 +15,7 @@ namespace mirage
 	RenderableMesh::RenderableMesh(Mesh * mesh) :
 		m_mesh(mesh)
 	{
-		MLOG("RenderableMesh::RenderableMesh - Created a new renderable mesh."
-			<< " MeshData pointer: " << (void *)m_mesh->getData() << ", filePath: " << m_mesh->getFilePath());
+		MLOG_INFO("RenderableMesh::RenderableMesh initialized successfully. FilePath: %s", mesh->getFilePath().c_str());
 	}
 
 	void RenderableMesh::render()

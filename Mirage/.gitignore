@@ -31,3 +31,6 @@ TAGS
 
 # Application specific runtime files
 imgui.ini
+
+# Application specific data
+/data/models
