@@ -1,5 +1,9 @@
 #include "inifile.h"
 
+// mirage includes
+#include "macros.h"
+#include "strutil.h"
+
 namespace mirage
 {
 
@@ -7,7 +11,8 @@ namespace mirage
 	const std::regex INI_KEYVALUE("(\\w+)=([^\\+]+(?!\\+{3}))");
 
 	IniFile::IniFile(const std::string & filePath) :
-		m_filePath(filePath)
+		m_filePath(filePath),
+		m_lines()
 	{
 		// Read the file into memory
 		std::ifstream file(m_filePath);

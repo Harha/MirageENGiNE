@@ -1,7 +1,7 @@
 #include "vertex.h"
 
 // mirage includes
-#include "../macros.h"
+#include "macros.h"
 
 namespace mirage
 {

@@ -11,14 +11,15 @@
 #include <GLFW/glfw3.h>
 
 // mirage includes
-#include "../config.h"
-#include "../macros.h"
+#include "config.h"
+#include "macros.h"
 #include "runstate.h"
-#include "../graphics/window.h"
-#include "../graphics/gfxengine.h"
+#include "graphics/window.h"
+#include "graphics/gfxengine.h"
 #include "mesh.h"
-#include "../graphics/renderable_mesh.h"
-#include "model_formats/wavefront_file.h"
+#include "graphics/renderable_mesh.h"
+#include "core/model_formats/wavefront_file.h"
+#include "graphics/glsl/shader.h"
 
 namespace mirage
 {
@@ -69,6 +70,15 @@ namespace mirage
 		}
 
 		m_runState = ERS_RUNNING;
+
+		try
+		{
+			ShaderProgram prog1("test", "", "basicmesh.vert.glsl", "basicmesh.frag.glsl");
+		}
+		catch (const std::exception & e)
+		{
+			MLOG_ERROR("Exception: %s", e.what());
+		}
 
 		MLOG_INFO("CoreEngine::run() called, entering main loop.");
 

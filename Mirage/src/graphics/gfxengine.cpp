@@ -7,14 +7,14 @@
 #include <iostream>
 
 // lib includes
-#include "../glad/glad.h"
+#include "glad/glad.h"
 #include <GLFW/glfw3.h>
 
 // mirage includes
-#include "../config.h"
-#include "../macros.h"
-#include "../core/runstate.h"
-#include "../core/engine.h"
+#include "config.h"
+#include "macros.h"
+#include "core/runstate.h"
+#include "core/engine.h"
 #include "window.h"
 
 namespace mirage

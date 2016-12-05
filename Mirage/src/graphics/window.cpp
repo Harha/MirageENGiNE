@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 
 // mirage includes
-#include "../config.h"
-#include "../macros.h"
+#include "config.h"
+#include "macros.h"
 
 namespace mirage
 {
@@ -27,9 +27,7 @@ namespace mirage
 		m_window = glfwCreateWindow(w, h, t.c_str(), (fs == true) ? glfwGetPrimaryMonitor() : NULL, NULL);
 
 		if (m_window == NULL)
-		{
 			throw std::exception("Window::Window glfwCreateWindow failed.");
-		}
 
 		// Create GL context, bind it to the window, etc...
 		glfwMakeContextCurrent(m_window);

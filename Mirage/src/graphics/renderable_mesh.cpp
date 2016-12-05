@@ -1,12 +1,12 @@
 #include "renderable_mesh.h"
 
 // lib includes
-#include "../glad/glad.h"
+#include "glad/glad.h"
 
 // mirage includes
-#include "../config.h"
-#include "../macros.h"
-#include "../core/mesh.h"
+#include "config.h"
+#include "macros.h"
+#include "core/mesh.h"
 #include "vertex.h"
 
 namespace mirage

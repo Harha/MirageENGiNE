@@ -5,7 +5,7 @@
 #include <string>
 
 // mirage includes
-#include "../util/inifile.h"
+#include "util/inifile.h"
 
 typedef struct GLFWwindow GLFWwindow;
 

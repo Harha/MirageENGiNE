@@ -4,7 +4,7 @@
 #include <glm/gtx/transform.hpp>
 
 // mirage includes
-#include "../macros.h"
+#include "macros.h"
 
 namespace mirage
 {

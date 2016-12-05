@@ -7,7 +7,6 @@
 namespace mirage
 {
 
-	// forward declarations
 	enum EngineRunState;
 	class CoreEngine;
 

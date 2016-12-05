@@ -4,7 +4,6 @@
 // std includes
 #include <string>
 
-// forward declarations
 typedef struct GLFWwindow GLFWwindow;
 
 namespace mirage

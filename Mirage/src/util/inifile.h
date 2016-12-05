@@ -8,10 +8,6 @@
 #include <fstream>
 #include <regex>
 
-// mirage includes
-#include "../macros.h"
-#include "strutil.h"
-
 namespace mirage
 {
 

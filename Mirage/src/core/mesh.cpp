@@ -1,11 +1,11 @@
 #include "mesh.h"
 
 // lib includes
-#include "../glad/glad.h"
+#include "glad/glad.h"
 
 // mirage includes
-#include "../config.h"
-#include "../macros.h"
+#include "config.h"
+#include "macros.h"
 
 namespace mirage
 {
@@ -114,7 +114,7 @@ namespace mirage
 			LOADED_MESHES.erase(m_filePath);
 			MDELETES(m_data);
 
-			MLOG_INFO("Mesh::~Mesh, Destroying mesh. FilePath: %s", m_filePath.c_str());
+			MLOG_INFO("Mesh::~Mesh, destroying mesh. FilePath: %s", m_filePath.c_str());
 		}
 	}
 

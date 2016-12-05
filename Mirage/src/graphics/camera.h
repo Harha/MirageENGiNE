@@ -6,7 +6,7 @@
 #include <glm/gtx/transform.hpp>
 
 // mirage includes
-#include "../core/transform.h"
+#include "core/transform.h"
 
 namespace mirage
 {

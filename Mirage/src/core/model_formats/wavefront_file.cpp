@@ -6,9 +6,9 @@
 #include <sstream>
 
 // mirage includes
-#include "../../config.h"
-#include "../../macros.h"
-#include "../../util/strutil.h"
+#include "config.h"
+#include "macros.h"
+#include "util/strutil.h"
 
 namespace mirage
 {
@@ -27,7 +27,7 @@ namespace mirage
 
 	void WavefrontFile::loadObj(const std::string & filePath)
 	{
-		MLOG_INFO("WavefrontFile::loadObj, attempting to load (%s) into memory...", filePath);
+		MLOG_INFO("WavefrontFile::loadObj, attempting to load (%s) into memory...", filePath.c_str());
 
 		// Read the file into memory
 		std::ifstream file(filePath);
@@ -186,7 +186,7 @@ namespace mirage
 
 	void WavefrontFile::loadMtl(const std::string & filePath)
 	{
-		MLOG_INFO("WavefrontFile::loadMtl, attempting to load (%s) into memory...", filePath);
+		MLOG_INFO("WavefrontFile::loadMtl, attempting to load (%s) into memory...", filePath.c_str());
 
 		// Read the file into memory
 		std::ifstream file(filePath);
