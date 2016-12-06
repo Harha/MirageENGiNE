@@ -25,6 +25,11 @@ namespace mirage
 		loadObj(m_objFilePath);
 	}
 
+	WavefrontFile::~WavefrontFile()
+	{
+		MLOG_INFO("WavefrontFile::~WavefrontFile, destroying loaded file. File path: %s", m_objFilePath.c_str());
+	}
+
 	void WavefrontFile::loadObj(const std::string & filePath)
 	{
 		MLOG_INFO("WavefrontFile::loadObj, attempting to load (%s) into memory...", filePath.c_str());
@@ -34,7 +39,7 @@ namespace mirage
 
 		// Throw if the file didn't open
 		if (file.is_open() == false)
-			throw std::exception();
+			throw std::exception("WavefrontFile::loadObj failed to open target .obj file, make sure it exists.");
 
 		// State variables
 		std::string currentMesh = "root";
@@ -62,27 +67,32 @@ namespace mirage
 			switch (cstr2int(type.c_str()))
 			{
 			case cstr2int("mtllib"):
+			{
 				l_stream >> m_mtlFilePath;
 				m_mtlFilePath = filetofilepath(m_objFilePath) + m_mtlFilePath;
 				loadMtl(m_mtlFilePath);
-				break;
+			} break;
 			case cstr2int("v"):
+			{
 				l_stream >> current_v3.x >> current_v3.y >> current_v3.z;
 				m_points.push_back(current_v3);
-				break;
+			} break;
 			case cstr2int("vn"):
+			{
 				l_stream >> current_v3.x >> current_v3.y >> current_v3.z;
 				m_normals.push_back(current_v3);
-				break;
+			} break;
 			case cstr2int("vt"):
+			{
 				l_stream >> current_v2.x >> current_v2.y;
 				m_texcoords.push_back(current_v2);
-				break;
+			} break;
 			case cstr2int("o"):
 			case cstr2int("g"):
+			{
 				l_stream >> currentMesh;
 				m_meshes[currentMesh] = WavefrontMesh();
-				break;
+			} break;
 			case cstr2int("usemtl"):
 			{
 				// Switch to the new material
@@ -96,8 +106,7 @@ namespace mirage
 					currentMesh = currentMesh + currentMaterial;
 					m_meshes[currentMesh] = WavefrontMesh();
 				}
-			}
-			break;
+			} break;
 			case cstr2int("f"):
 			{
 				// Initially create the face with current material
@@ -167,6 +176,17 @@ namespace mirage
 					lf >> face.normals[2];
 				}
 
+				// Correct the face indices
+				face.points[0]--;
+				face.points[1]--;
+				face.points[2]--;
+				face.normals[0]--;
+				face.normals[1]--;
+				face.normals[2]--;
+				face.texcoords[0]--;
+				face.texcoords[1]--;
+				face.texcoords[2]--;
+
 				// Get the pointer to current mesh in map
 				WavefrontMesh * mesh = &m_meshes[currentMesh];
 
@@ -176,8 +196,7 @@ namespace mirage
 
 				// Insert the face
 				m_meshes[currentMesh].faces.push_back(face);
-			}
-			break;
+			} break;
 			}
 		}
 
@@ -193,7 +212,7 @@ namespace mirage
 
 		// Throw if the file didn't open
 		if (file.is_open() == false)
-			throw std::exception();
+			throw std::exception("WavefrontFile::loadMtl failed to open target .mtl file, make sure it exists.");
 
 		// State variables
 		std::string currentMaterial = "root";
@@ -218,33 +237,97 @@ namespace mirage
 			switch (cstr2int(type.c_str()))
 			{
 			case cstr2int("newmtl"):
+			{
 				l_stream >> currentMaterial;
 				m_materials[currentMaterial] = WavefrontMaterial();
-				break;
+			} break;
+			case cstr2int("illum"):
+			{
+				l_stream >> m_materials[currentMaterial].illum;
+			} break;
+			case cstr2int("map_Kd"):
+			{
+				std::getline(l_stream, m_materials[currentMaterial].KdText);
+				trim(m_materials[currentMaterial].KdText);
+				m_materials[currentMaterial].KdText = filetofilepath(m_mtlFilePath) + m_materials[currentMaterial].KdText;
+			} break;
+			case cstr2int("map_Ks"):
+			{
+				std::getline(l_stream, m_materials[currentMaterial].KsText);
+				trim(m_materials[currentMaterial].KsText);
+				m_materials[currentMaterial].KsText = filetofilepath(m_mtlFilePath) + m_materials[currentMaterial].KsText;
+			} break;
+			case cstr2int("map_Ke"):
+			{
+				std::getline(l_stream, m_materials[currentMaterial].KeText);
+				trim(m_materials[currentMaterial].KeText);
+				m_materials[currentMaterial].KeText = filetofilepath(m_mtlFilePath) + m_materials[currentMaterial].KeText;
+			} break;
 			case cstr2int("Ka"):
+			{
 				l_stream >> m_materials[currentMaterial].Ka.r;
 				l_stream >> m_materials[currentMaterial].Ka.g;
 				l_stream >> m_materials[currentMaterial].Ka.b;
-				break;
+			} break;
 			case cstr2int("Kd"):
+			{
 				l_stream >> m_materials[currentMaterial].Kd.r;
 				l_stream >> m_materials[currentMaterial].Kd.g;
 				l_stream >> m_materials[currentMaterial].Kd.b;
-				break;
+			} break;
 			case cstr2int("Ks"):
+			{
 				l_stream >> m_materials[currentMaterial].Ks.r;
 				l_stream >> m_materials[currentMaterial].Ks.g;
 				l_stream >> m_materials[currentMaterial].Ks.b;
-				break;
+			} break;
 			case cstr2int("Ke"):
+			{
 				l_stream >> m_materials[currentMaterial].Ke.r;
 				l_stream >> m_materials[currentMaterial].Ke.g;
 				l_stream >> m_materials[currentMaterial].Ke.b;
-				break;
+			} break;
+			case cstr2int("Ns"):
+			{
+				l_stream >> m_materials[currentMaterial].Ns;
+			} break;
+			case cstr2int("Ni"):
+			{
+				l_stream >> m_materials[currentMaterial].Ni;
+			} break;
+			case cstr2int("Fr"):
+			{
+				l_stream >> m_materials[currentMaterial].Ni;
+			} break;
 			}
 		}
 
 		MLOG_INFO("WavefrontFile::loadMtl, loaded successfully. Material count: %d", m_materials.size());
+	}
+
+	const std::vector<glm::vec3> & WavefrontFile::getPoints() const
+	{
+		return m_points;
+	}
+
+	const std::vector<glm::vec3> & WavefrontFile::getNormals() const
+	{
+		return m_normals;
+	}
+
+	const std::vector<glm::vec2> WavefrontFile::getTexcoords() const
+	{
+		return m_texcoords;
+	}
+
+	const std::map<std::string, WavefrontMesh> & WavefrontFile::getMeshes() const
+	{
+		return m_meshes;
+	}
+
+	const std::map<std::string, WavefrontMaterial> & WavefrontFile::getMaterials() const
+	{
+		return m_materials;
 	}
 
 }

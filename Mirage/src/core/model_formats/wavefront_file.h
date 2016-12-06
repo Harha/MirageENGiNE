@@ -47,16 +47,42 @@ namespace mirage
 	class WavefrontMaterial
 	{
 	public:
-		RGBA Ka; // Ambient color
-		RGBA Kd; // Diffuse color
-		RGBA Ks; // Specular color
-		RGBA Ke; // Emissive color
+		uint16_t illum;		// Illumination mode
+		std::string KdText;	// Diffuse texture
+		std::string KsText;	// Specular texture
+		std::string KeText;	// Emissive texture
+		RGBA Ka;			// Ambient color
+		RGBA Kd;			// Diffuse color
+		RGBA Ks;			// Specular color
+		RGBA Ke;			// Emissive color
+		double Ns;			// Specular exponent
+		double Ni;			// Index of refraction
+		double Fr;			// Fresnel reflectance
 
-		WavefrontMaterial(const RGBA & Ka = RGBA(), const RGBA & Kd = RGBA(), const RGBA & Ks = RGBA(), const RGBA & Ke = RGBA()) :
+		WavefrontMaterial(
+			const uint16_t illum = 0,
+			const std::string & KdText = "",
+			const std::string & KsText = "",
+			const std::string & KeText = "",
+			const RGBA & Ka = RGBA(),
+			const RGBA & Kd = RGBA(),
+			const RGBA & Ks = RGBA(),
+			const RGBA & Ke = RGBA(),
+			const double Ns = 100.0f,
+			const double Ni = 1.0f,
+			const double Fr = 0.75f
+		) :
+			illum(illum),
+			KdText(KdText),
+			KsText(KsText),
+			KeText(KeText),
 			Ka(Ka),
 			Kd(Kd),
 			Ks(Ks),
-			Ke(Ke)
+			Ke(Ke),
+			Ns(Ns),
+			Ni(Ni),
+			Fr(Fr)
 		{
 
 		}
@@ -82,8 +108,14 @@ namespace mirage
 	{
 	public:
 		WavefrontFile(const std::string & filePath = "NULL");
+		~WavefrontFile();
 		void loadObj(const std::string & filePath);
 		void loadMtl(const std::string & filePath);
+		const std::vector<glm::vec3> & getPoints() const;
+		const std::vector<glm::vec3> & getNormals() const;
+		const std::vector<glm::vec2> getTexcoords() const;
+		const std::map<std::string, WavefrontMesh> & getMeshes() const;
+		const std::map<std::string, WavefrontMaterial> & getMaterials() const;
 	private:
 		std::string m_objFilePath;
 		std::string m_mtlFilePath;

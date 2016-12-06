@@ -74,6 +74,7 @@ namespace mirage
 		try
 		{
 			ShaderProgram prog1("test", "", "basicmesh.vert.glsl", "basicmesh.frag.glsl");
+			//WavefrontFile mesh("./data/models/crytek_sponza/crytek_sponza.obj");
 		}
 		catch (const std::exception & e)
 		{
