@@ -6,6 +6,9 @@
 #include <string>
 #include <map>
 
+// mirage includes
+#include "graphics/glsl/uniform.h"
+
 typedef unsigned int GLuint;
 typedef unsigned int GLenum;
 typedef int GLsizei;
@@ -22,10 +25,14 @@ namespace mirage
 		~ShaderData();
 		void addReference();
 		void delReference();
+		void addUniform(GLSLUniform u);
+		void delUniform(const std::string & name);
 		const GLuint getProgram() const;
+		std::map<std::string, GLSLUniform> getUniforms() const;
 		const int32_t getRefAmount() const;
 	private:
 		GLuint m_program;
+		std::map<std::string, GLSLUniform> m_uniforms;
 		int32_t m_refAmount;
 	};
 
@@ -45,6 +52,7 @@ namespace mirage
 		void attachShader(const std::string & src, GLenum type);
 		void linkProgram();
 		void validateProgram();
+		void gatherActiveUniforms();
 		std::string getShaderInfoLog(GLuint handle) const;
 		std::string getProgramInfoLog() const;
 	private:

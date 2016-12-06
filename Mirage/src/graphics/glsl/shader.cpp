@@ -22,6 +22,7 @@ namespace mirage
 
 	ShaderData::ShaderData() :
 		m_program(0),
+		m_uniforms(),
 		m_refAmount(0)
 	{
 		m_program = glCreateProgram();
@@ -44,9 +45,24 @@ namespace mirage
 		m_refAmount = (m_refAmount - 1 < 0) ? 0 : m_refAmount - 1;
 	}
 
+	void ShaderData::addUniform(GLSLUniform u)
+	{
+		m_uniforms[u.name] = u;
+	}
+
+	void ShaderData::delUniform(const std::string & name)
+	{
+		m_uniforms.erase(name);
+	}
+
 	const GLuint ShaderData::getProgram() const
 	{
 		return m_program;
+	}
+
+	std::map<std::string, GLSLUniform> ShaderData::getUniforms() const
+	{
+		return m_uniforms;
 	}
 
 	const int32_t ShaderData::getRefAmount() const
@@ -98,12 +114,10 @@ namespace mirage
 			if (!txtSrcVert.empty()) attachShader(txtSrcVert, GL_VERTEX_SHADER);
 			if (!txtSrcFrag.empty()) attachShader(txtSrcFrag, GL_FRAGMENT_SHADER);
 
-			// Link and validate the program
+			// Link, validate the program and gather active uniforms
 			linkProgram();
 			validateProgram();
-
-			// TODO: Collect all active uniforms
-
+			gatherActiveUniforms();
 		}
 		// This is an existing shader program
 		else
@@ -174,6 +188,8 @@ namespace mirage
 			throw std::exception(std::string("Shader::attachShader glCompileShader failed. Info log:\n\n" + getShaderInfoLog(handle)).c_str());
 
 		glAttachShader(m_data->getProgram(), handle);
+
+		MLOG_DEBUG("ShaderProgram::attachShader, shader(%zd) compiled and attached to program(%s) successfully.", type, m_name.c_str());
 	}
 
 	void ShaderProgram::linkProgram()
@@ -184,6 +200,8 @@ namespace mirage
 		glGetProgramiv(m_data->getProgram(), GL_LINK_STATUS, &status);
 		if (status == NULL)
 			throw std::exception(std::string("Shader::linkProgram glLinkProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
+
+		MLOG_DEBUG("ShaderProgram::linkProgram, program(%s) linked successfully.", m_name.c_str());
 	}
 
 	void ShaderProgram::validateProgram()
@@ -194,6 +212,30 @@ namespace mirage
 		glGetProgramiv(m_data->getProgram(), GL_VALIDATE_STATUS, &status);
 		if (status == NULL)
 			throw std::exception(std::string("Shader::validateProgram glValidateProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
+
+		MLOG_DEBUG("ShaderProgram::validateProgram, program(%s) validated successfully.", m_name.c_str());
+	}
+
+	void ShaderProgram::gatherActiveUniforms()
+	{
+		GLint uniforms_num;
+		glGetProgramiv(m_data->getProgram(), GL_ACTIVE_UNIFORMS, &uniforms_num);
+
+		for (GLint i = 0; i < uniforms_num; i++)
+		{
+			GLSLUniform uniform;
+			GLchar name[255];
+			glGetActiveUniform(m_data->getProgram(), i, sizeof(name) - 1, NULL, &uniform.size, &uniform.type, name);
+			uniform.location = glGetUniformLocation(m_data->getProgram(), name);
+
+			if (uniform.location == -1)
+				throw std::exception("Shader::gatherActiveUniforms glGetUniformLocation failed.");
+
+			uniform.name = std::string(name);
+			m_data->addUniform(uniform);
+		}
+
+		MLOG_DEBUG("ShaderProgram::gatherActiveUniforms, program(%s), active uniforms: %zd", m_name.c_str(), m_data->getUniforms().size());
 	}
 
 	std::string ShaderProgram::getShaderInfoLog(GLuint handle) const

@@ -149,5 +149,8 @@
     <ClInclude Include="src\util\txtfile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\graphics\glsl\uniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

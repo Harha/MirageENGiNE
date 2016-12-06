@@ -263,6 +263,7 @@
     <ClInclude Include="src\graphics\camera.h" />
     <ClInclude Include="src\graphics\gfxengine.h" />
     <ClInclude Include="src\graphics\glsl\shader.h" />
+    <ClInclude Include="src\graphics\glsl\uniform.h" />
     <ClInclude Include="src\graphics\renderable_mesh.h" />
     <ClInclude Include="src\graphics\vertex.h" />
     <ClInclude Include="src\graphics\window.h" />

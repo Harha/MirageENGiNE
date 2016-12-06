@@ -58,7 +58,7 @@ namespace mirage
 
 	void CoreEngine::glfwKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods)
 	{
-
+		MLOG_DEBUG("CoreEngine::glfwKeyCallback, key: %d, scancode: %d, action: %d, mods: %d", key, scancode, action, mods);
 	}
 
 	void CoreEngine::run()
