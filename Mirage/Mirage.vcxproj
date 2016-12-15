@@ -128,7 +128,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>./inc;./src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./inc;./src;./Bullet3/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>./lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -141,7 +141,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>./inc;./src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./inc;./src;./Bullet3/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>./lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -172,7 +172,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>./inc;./src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./inc;./src;./Bullet3/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -189,7 +189,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>./inc;./src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./inc;./src;./Bullet3/src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -232,15 +232,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\core\engine.cpp" />
-    <ClCompile Include="src\core\mesh.cpp" />
+    <ClCompile Include="src\core\mesh\mesh_base.cpp" />
     <ClCompile Include="src\core\model_formats\wavefront_file.cpp" />
     <ClCompile Include="src\core\transform.cpp" />
     <ClCompile Include="src\glad\glad.c" />
-    <ClCompile Include="src\graphics\camera.cpp" />
+    <ClCompile Include="src\graphics\camera\camera.cpp" />
     <ClCompile Include="src\graphics\gfxengine.cpp" />
     <ClCompile Include="src\graphics\glsl\shader.cpp" />
-    <ClCompile Include="src\graphics\renderable_mesh.cpp" />
-    <ClCompile Include="src\graphics\vertex.cpp" />
+    <ClCompile Include="src\graphics\mesh\mesh_renderer.cpp" />
+    <ClCompile Include="src\core\vertex.cpp" />
     <ClCompile Include="src\graphics\window.cpp" />
     <ClCompile Include="src\imgui\imgui.cpp" />
     <ClCompile Include="src\imgui\imgui_demo.cpp" />
@@ -254,18 +254,18 @@
   <ItemGroup>
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\core\engine.h" />
-    <ClInclude Include="src\core\mesh.h" />
+    <ClInclude Include="src\core\mesh\mesh_base.h" />
     <ClInclude Include="src\core\model_formats\wavefront_file.h" />
     <ClInclude Include="src\core\runstate.h" />
     <ClInclude Include="src\core\transform.h" />
     <ClInclude Include="src\glad\glad.h" />
     <ClInclude Include="src\glad\khrplatform.h" />
-    <ClInclude Include="src\graphics\camera.h" />
+    <ClInclude Include="src\graphics\camera\camera.h" />
     <ClInclude Include="src\graphics\gfxengine.h" />
     <ClInclude Include="src\graphics\glsl\shader.h" />
     <ClInclude Include="src\graphics\glsl\uniform.h" />
-    <ClInclude Include="src\graphics\renderable_mesh.h" />
-    <ClInclude Include="src\graphics\vertex.h" />
+    <ClInclude Include="src\graphics\mesh\mesh_renderer.h" />
+    <ClInclude Include="src\core\vertex.h" />
     <ClInclude Include="src\graphics\window.h" />
     <ClInclude Include="src\imgui\imconfig.h" />
     <ClInclude Include="src\imgui\imgui.h" />
@@ -278,6 +278,20 @@
     <ClInclude Include="src\util\inifile.h" />
     <ClInclude Include="src\util\strutil.h" />
     <ClInclude Include="src\util\txtfile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bullet3\src\Bullet3Collision\Bullet3Collision.vcxproj">
+      <Project>{02f63bd9-2613-347d-9a4f-c107f05abbc8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Bullet3\src\Bullet3Common\Bullet3Common.vcxproj">
+      <Project>{e3a1938c-7c10-3326-82c9-a6a9ef015f6c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Bullet3\src\Bullet3Dynamics\Bullet3Dynamics.vcxproj">
+      <Project>{9d0fde54-bd9f-3e41-bf05-df3c93a49e16}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Bullet3\src\LinearMath\LinearMath.vcxproj">
+      <Project>{823964ea-9a54-3450-96fa-1a7c9a026378}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

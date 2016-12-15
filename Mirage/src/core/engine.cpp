@@ -16,9 +16,9 @@
 #include "runstate.h"
 #include "graphics/window.h"
 #include "graphics/gfxengine.h"
-#include "mesh.h"
-#include "graphics/renderable_mesh.h"
 #include "core/model_formats/wavefront_file.h"
+#include "core/mesh/mesh_base.h"
+#include "graphics/mesh/mesh_renderer.h"
 #include "graphics/glsl/shader.h"
 
 namespace mirage
@@ -63,6 +63,8 @@ namespace mirage
 
 	void CoreEngine::run()
 	{
+		MLOG_INFO("CoreEngine::run() called, initializing and entering main loop...");
+
 		if (m_runState != ERS_INITIALIZED)
 		{
 			MLOG_WARNING("CoreEngine::run, engine was not initialized properly before this was called. Engine run state: %d", m_runState);
@@ -71,17 +73,7 @@ namespace mirage
 
 		m_runState = ERS_RUNNING;
 
-		try
-		{
-			ShaderProgram prog1("test", "", "basicmesh.vert.glsl", "basicmesh.frag.glsl");
-			//WavefrontFile mesh("./data/models/crytek_sponza/crytek_sponza.obj");
-		}
-		catch (const std::exception & e)
-		{
-			MLOG_ERROR("Exception: %s", e.what());
-		}
-
-		MLOG_INFO("CoreEngine::run() called, entering main loop.");
+		MeshBase test("./data/models/crytek_sponza/crytek_sponza.obj");
 
 		while (glfwWindowShouldClose(m_window->getHandle()) == GL_FALSE && m_runState == ERS_RUNNING)
 		{

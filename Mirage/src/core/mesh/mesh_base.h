@@ -2,58 +2,54 @@
 #define MESH_H
 
 // std includes
-#include <iostream>
 #include <string>
+#include <vector>
 #include <map>
 
 // mirage includes
-#include "transform.h"
+#include "core/vertex.h"
+#include "core/transform.h"
 
-typedef unsigned int GLuint;
 typedef int GLsizei;
 
 namespace mirage
 {
 
-	// TODO: Maybe add bool that determines whether to generate VAO/VBO/IBO for the MeshData or not
-
-	class MeshData
+	class MeshBaseData
 	{
 	public:
-		MeshData(GLsizei size = 0);
-		~MeshData();
+		MeshBaseData(
+			std::vector<Vertex> vertices = std::vector<Vertex>()
+		);
+		~MeshBaseData();
 		void setSize(GLsizei size);
 		void addReference();
 		void delReference();
-		const GLuint getVao() const;
-		const GLuint getVbo() const;
-		const GLuint getIbo() const;
+		std::vector<Vertex> & getVertices();
 		const GLsizei getSize() const;
 		const int32_t getRefAmount() const;
 	private:
-		GLuint m_vao;
-		GLuint m_vbo;
-		GLuint m_ibo;
+		std::vector<Vertex> m_vertices;
 		GLsizei m_size;
 		int32_t m_refAmount;
 	};
 
-	extern std::map<std::string, MeshData *> LOADED_MESHES;
+	extern std::map<std::string, MeshBaseData *> LOADED_BASE_MESHES;
 
-	class Mesh
+	class MeshBase
 	{
 	public:
-		Mesh(
+		MeshBase(
 			const std::string & filePath = "null",
 			Transform transform = Transform()
 		);
-		~Mesh();
+		~MeshBase();
 		const std::string getFilePath() const;
-		MeshData * const getData();
+		MeshBaseData * const getData();
 		Transform & getTransform();
 	private:
 		std::string m_filePath;
-		MeshData * m_data;
+		MeshBaseData * m_data;
 		Transform m_transform;
 	};
 

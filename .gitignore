@@ -30,3 +30,6 @@ TAGS
 
 # Application specific runtime files
 imgui.ini
+
+# Bullet3
+/Bullet3
