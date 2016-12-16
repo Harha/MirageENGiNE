@@ -19,6 +19,7 @@
 #include "core/model_formats/wavefront_file.h"
 #include "core/mesh/mesh_base.h"
 #include "graphics/mesh/mesh_renderer.h"
+#include "core/model_formats/mesh_converters.h"
 #include "graphics/glsl/shader.h"
 
 namespace mirage
@@ -73,7 +74,8 @@ namespace mirage
 
 		m_runState = ERS_RUNNING;
 
-		MeshBase test("./data/models/crytek_sponza/crytek_sponza.obj");
+		auto mesh = WavefrontFile("./data/models/crytek_sponza/crytek_sponza.obj");
+		auto meshes = convertWavefrontToMeshBase(&mesh);
 
 		while (glfwWindowShouldClose(m_window->getHandle()) == GL_FALSE && m_runState == ERS_RUNNING)
 		{
@@ -84,6 +86,11 @@ namespace mirage
 
 			// Sleep for a bit, because why not?
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
+		}
+
+		for (auto * m : meshes)
+		{
+			MDELETES(m);
 		}
 
 		MLOG_INFO("CoreEngine::run, exiting main loop. Engine run state: %d", m_runState);

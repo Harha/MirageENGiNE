@@ -111,6 +111,8 @@ namespace mirage
 		~WavefrontFile();
 		void loadObj(const std::string & filePath);
 		void loadMtl(const std::string & filePath);
+		std::string getObjFilePath() const;
+		std::string getMtlFilePath() const;
 		const std::vector<glm::vec3> & getPoints() const;
 		const std::vector<glm::vec3> & getNormals() const;
 		const std::vector<glm::vec2> getTexcoords() const;

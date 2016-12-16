@@ -72,6 +72,9 @@
     <ClCompile Include="src\core\mesh\mesh_base.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\model_formats\mesh_converters.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.h">
@@ -150,6 +153,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\mesh\mesh_base.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\model_formats\mesh_converters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

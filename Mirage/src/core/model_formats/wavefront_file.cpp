@@ -111,6 +111,8 @@ namespace mirage
 			{
 				// Initially create the face with current material
 				WavefrontFace face(currentMaterial);
+				bool hasNormals = false;
+				bool hasTexcoords = false;
 
 				// Determine face format, this is v1/t1/n1
 				if (l.find("//") == std::string::npos)
@@ -136,6 +138,9 @@ namespace mirage
 						lf >> face.points[2];
 						lf >> face.texcoords[2];
 						lf >> face.normals[2];
+
+						hasNormals = true;
+						hasTexcoords = true;
 					}
 					// v1/t1
 					else if (n == 3)
@@ -148,6 +153,8 @@ namespace mirage
 
 						lf >> face.points[2];
 						lf >> face.texcoords[2];
+
+						hasTexcoords = true;
 					}
 					// v1
 					// TODO: Make sure this is even a real existing format.
@@ -174,6 +181,8 @@ namespace mirage
 
 					lf >> face.points[2];
 					lf >> face.normals[2];
+
+					hasNormals = true;
 				}
 
 				// Correct the face indices
@@ -193,6 +202,10 @@ namespace mirage
 				// Create the mesh if it doesn't exist
 				if (mesh == nullptr)
 					m_meshes[currentMesh] = WavefrontMesh();
+
+				// Set few flags
+				m_meshes[currentMesh].hasNormals = hasNormals;
+				m_meshes[currentMesh].hasTexcoords = hasTexcoords;
 
 				// Insert the face
 				m_meshes[currentMesh].faces.push_back(face);
@@ -303,6 +316,16 @@ namespace mirage
 		}
 
 		MLOG_INFO("WavefrontFile::loadMtl, loaded successfully. Material count: %d", m_materials.size());
+	}
+
+	std::string WavefrontFile::getObjFilePath() const
+	{
+		return m_objFilePath;
+	}
+
+	std::string WavefrontFile::getMtlFilePath() const
+	{
+		return m_mtlFilePath;
 	}
 
 	const std::vector<glm::vec3> & WavefrontFile::getPoints() const

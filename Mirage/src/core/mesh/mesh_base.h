@@ -41,7 +41,8 @@ namespace mirage
 	public:
 		MeshBase(
 			const std::string & filePath = "null",
-			Transform transform = Transform()
+			Transform transform = Transform(),
+			std::vector<Vertex> vertices = std::vector<Vertex>()
 		);
 		~MeshBase();
 		const std::string getFilePath() const;

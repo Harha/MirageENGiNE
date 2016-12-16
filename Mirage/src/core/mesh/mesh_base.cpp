@@ -21,7 +21,7 @@ namespace mirage
 		m_size(vertices.size()),
 		m_refAmount(0)
 	{
-		MLOG_INFO("MeshData::MeshBaseData initialized. Size: %d", m_size);
+		MLOG_DEBUG("MeshData::MeshBaseData initialized. Size: %d", m_size);
 	}
 
 	MeshBaseData::~MeshBaseData()
@@ -64,7 +64,7 @@ namespace mirage
 
 	std::map<std::string, MeshBaseData *> LOADED_BASE_MESHES;
 
-	MeshBase::MeshBase(const std::string & filePath, Transform transform) :
+	MeshBase::MeshBase(const std::string & filePath, Transform transform, std::vector<Vertex> vertices) :
 		m_filePath(filePath),
 		m_data(nullptr),
 		m_transform(transform)
@@ -74,49 +74,6 @@ namespace mirage
 		// This is a new mesh base
 		if (data == nullptr)
 		{
-			// Vector of mesh vertices
-			std::vector<Vertex> vertices;
-
-			// Import wavefront mesh
-			if (filetoextension(m_filePath) == "obj")
-			{
-				// Load it into memory
-				WavefrontFile file = WavefrontFile(m_filePath);
-
-				// Get the file data into temp references
-				auto & points = file.getPoints();
-				auto & normals = file.getNormals();
-				auto & texcoords = file.getTexcoords();
-				auto & meshes = file.getMeshes();
-				auto & materials = file.getMaterials();
-
-				// Export vertices from each mesh
-				for (auto const & mesh : meshes)
-				{
-					for (auto const & face : mesh.second.faces)
-					{
-						for (size_t i = 0; i < 3; i++)
-						{
-							glm::vec3 point;
-							glm::vec3 normal;
-							glm::vec3 tangent;
-							glm::vec2 uv;
-
-							if (face.points.size() == 3)
-								point = points[face.points[i]];
-
-							if (face.normals.size() == 3)
-								normal = normals[face.normals[i]];
-
-							if (face.texcoords.size() == 3)
-								uv = texcoords[face.texcoords[i]];
-
-							vertices.push_back(Vertex(point, normal, tangent, uv));
-						}
-					}
-				}
-			}
-
 			m_data = new MeshBaseData(vertices);
 			m_data->addReference();
 			LOADED_BASE_MESHES[m_filePath] = m_data;
@@ -128,7 +85,7 @@ namespace mirage
 			m_data->addReference();
 		}
 
-		MLOG_INFO("MeshBase::MeshBase initialized. FilePath: %s, reference amount: %d", m_filePath.c_str(), m_data->getRefAmount());
+		MLOG_DEBUG("MeshBase::MeshBase initialized. FilePath: %s, reference amount: %d", m_filePath.c_str(), m_data->getRefAmount());
 	}
 
 	MeshBase::~MeshBase()
@@ -140,7 +97,7 @@ namespace mirage
 			LOADED_BASE_MESHES.erase(m_filePath);
 			MDELETES(m_data);
 
-			MLOG_INFO("MeshBase::~MeshBase destroyed. FilePath: %s", m_filePath.c_str());
+			MLOG_DEBUG("MeshBase::~MeshBase destroyed. FilePath: %s", m_filePath.c_str());
 		}
 	}
 
