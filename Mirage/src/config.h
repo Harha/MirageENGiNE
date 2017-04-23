@@ -5,7 +5,7 @@
 #define VERSION_MAJOR 0
 
 // Minor revision
-#define VERSION_MINOR 0
+#define VERSION_MINOR 1
 
 // Bugfix revision
 #define VERSION_BUGFIX 0

@@ -21,6 +21,7 @@ Upcoming features
 -----------------
 * Bullet physics integration
 * Proper rendering pipelines for 3D and 2D
+* Proper Lua bindings
 * Physically based rendering pipeline
 * CMake build files for generic building
 * Dno yet...

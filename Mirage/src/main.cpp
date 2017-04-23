@@ -18,6 +18,7 @@
 #include "config.h"
 #include "macros.h"
 #include "core/engine.h"
+#include "game/game.h"
 
 #include "test_game.h"
 
@@ -28,41 +29,53 @@ static void glfwErrorCallback(int error, const char * description)
 
 int main(int argc, char * argv[])
 {
-	MLOG_INFO("Mirage Game Engine, version %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUGFIX);
+	MLOG_INFO("MirageENGiNE, version %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUGFIX);
 
-	// Set glfw error callback function
+	// Program runtime variables and objects
+	int state = 0;
+	mirage::CoreEngine * engine = nullptr;
+	mirage::Game * game = nullptr;
+
+	// Setup glfw error callback function
 	glfwSetErrorCallback(glfwErrorCallback);
 
-	// Initialize GLFW3
-	if (glfwInit() == GL_FALSE)
+	try
 	{
-		return 1;
+		// Initialize GLFW3
+		if (glfwInit() == GL_FALSE)
+		{
+			throw std::exception("Failed to initialize GLFW3!");
+		}
+
+		// Create core engine instance
+		engine = new mirage::CoreEngine("./data/config.ini");
+
+		// Create test game instance & set it to current game
+		game = new mirage::TestGame();
+		engine->setGame(game);
+
+		// Initialize glad
+		if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == GL_FALSE)
+		{
+			glfwTerminate();
+			throw std::exception("Failed to initialize glad!");
+		}
+
+		// Run the game engine logic
+		engine->run();
+	}
+	catch (const std::exception & e)
+	{
+		// Set state to failure
+		state = -1;
+
+		// Log the exception type
+		MLOG_ERROR("MirageENGINE, exception: %s", e.what());
 	}
 
-	// Create core engine instance
-	mirage::CoreEngine * engine = new mirage::CoreEngine("./data/config.ini");
-
-	// Create test game instance
-	mirage::TestGame * game = new mirage::TestGame();
-
-	// Set engine game to our game instance
-	engine->setGame(game);
-
-	// Initialize glad, return error if failed
-	if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == GL_FALSE)
-	{
-		MDELETES(game);
-		MDELETES(engine);
-		glfwTerminate();
-		return 1;
-	}
-
-	// Go into program main loop, exit on CoreEngine::~CoreEngine()
-	engine->run();
-
-	// Cleanup resources
+	// After shutdown, cleanup resources
 	MDELETES(engine);
 	glfwTerminate();
 
-	return 0;
+	return state;
 }
