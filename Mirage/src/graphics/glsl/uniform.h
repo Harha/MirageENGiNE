@@ -4,6 +4,9 @@
 // std includes
 #include <string>
 
+// mirage includes
+#include "macros.h"
+
 typedef unsigned int GLuint;
 typedef unsigned int GLenum;
 typedef int GLint;
@@ -31,7 +34,10 @@ namespace mirage
 			size(size),
 			location(location)
 		{
-
+			MLOG_DEBUG(
+				"GLSLUniform::GLSLUniform, created. Name: %s, type: %u, size: %d, location: %d",
+				name.c_str(), type, size, location
+			);
 		}
 
 	};
