@@ -1,14 +1,14 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-// Release version
-#define VERSION_RELEASE 0
-
-// Major version, increments at each major commit
+// Major revision
 #define VERSION_MAJOR 0
 
-// Minor version, increments at each minor commit
+// Minor revision
 #define VERSION_MINOR 0
+
+// Bugfix revision
+#define VERSION_BUGFIX 0
 
 // GL Context, major & minor versions
 #define GL_CONTEXT_MAJOR 3

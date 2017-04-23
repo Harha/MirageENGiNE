@@ -10,7 +10,7 @@
 #define MLOG_WARNING(msg_, ...)	printf("WRN: " msg_ "\n", __VA_ARGS__)
 #define MLOG_ERROR(msg_, ...)	printf("ERR: " msg_ "\n", __VA_ARGS__)
 
-// Delete
+// Heap object deletion
 #define MDELETES(a) if( (a) != NULL ) delete (a); (a) = NULL;
 #define MDELETEA(a) if ( (a) != NULL ) delete[] (a); (a) = NULL;
 

@@ -28,7 +28,7 @@ static void glfwErrorCallback(int error, const char * description)
 
 int main(int argc, char * argv[])
 {
-	MLOG_INFO("Mirage Game Engine, version %d.%d.%d", VERSION_RELEASE, VERSION_MAJOR, VERSION_MINOR);
+	MLOG_INFO("Mirage Game Engine, version %d.%d.%d", VERSION_MAJOR, VERSION_MINOR, VERSION_BUGFIX);
 
 	// Set glfw error callback function
 	glfwSetErrorCallback(glfwErrorCallback);
