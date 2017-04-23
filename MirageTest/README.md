@@ -1,4 +1,3 @@
-Mirage Game Engine - Testing framework
--------------------------------------------------------------------------------
-
-THIS IS UNFINISHED AND CURRENTLY NOT IN DEVELOPMENT.
+MirageENGiNE - Software testing project
+=======================================
+This project is currently in halt.
