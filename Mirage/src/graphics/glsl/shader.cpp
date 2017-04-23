@@ -7,7 +7,7 @@
 #include <regex>
 
 // lib includes
-#include "glad/glad.h"
+#include "3rdparty/glad/glad.h"
 
 // mirage includes
 #include "config.h"

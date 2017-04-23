@@ -4,9 +4,9 @@
 #include <cassert>
 
 // lib includes
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw_gl3.h"
-#include "glad/glad.h"
+#include "3rdparty/imgui/imgui.h"
+#include "3rdparty/imgui/imgui_impl_glfw_gl3.h"
+#include "3rdparty/glad/glad.h"
 #include <GLFW/glfw3.h>
 
 // mirage includes

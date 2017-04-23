@@ -1,7 +1,7 @@
 #include "mesh_base.h"
 
 // lib includes
-#include "glad/glad.h"
+#include "3rdparty/glad/glad.h"
 
 // mirage includes
 #include "config.h"

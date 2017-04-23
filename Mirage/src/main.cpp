@@ -11,7 +11,7 @@
 #include <iostream>
 
 // lib includes
-#include "glad/glad.h"
+#include "3rdparty/glad/glad.h"
 #include <GLFW/glfw3.h>
 
 // mirage includes
