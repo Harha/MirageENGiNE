@@ -24,6 +24,7 @@ TAGS
 /Release*
 /Debug*
 /.vs
+/bin
 
 # Windows make building related files
 *.bat

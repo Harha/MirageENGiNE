@@ -25,6 +25,7 @@ TAGS
 /Debug*
 /x64
 /.vs
+/bin
 
 # Windows make building related files
 *.bat

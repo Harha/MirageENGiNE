@@ -16,8 +16,12 @@ namespace mirage
 	// MeshBaseData
 	// ---------------------------------------------------------------------------
 
-	MeshBaseData::MeshBaseData(std::vector<Vertex> vertices) :
+	MeshBaseData::MeshBaseData(
+		std::vector<Vertex> vertices,
+		MaterialBase material
+	) :
 		m_vertices(vertices),
+		m_material(material),
 		m_size(vertices.size()),
 		m_refAmount(0)
 	{
@@ -43,6 +47,11 @@ namespace mirage
 		m_refAmount = (m_refAmount - 1 < 0) ? 0 : m_refAmount - 1;
 	}
 
+	MaterialBase & MeshBaseData::getMaterial()
+	{
+		return m_material;
+	}
+
 	std::vector<Vertex> & MeshBaseData::getVertices()
 	{
 		return m_vertices;
@@ -64,17 +73,21 @@ namespace mirage
 
 	std::map<std::string, MeshBaseData *> LOADED_BASE_MESHES;
 
-	MeshBase::MeshBase(const std::string & filePath, Transform transform, std::vector<Vertex> vertices) :
+	MeshBase::MeshBase(
+		const std::string & filePath,
+		std::vector<Vertex> vertices,
+		MaterialBase material
+	) :
 		m_filePath(filePath),
 		m_data(nullptr),
-		m_transform(transform)
+		m_transform(nullptr)
 	{
 		MeshBaseData * data = LOADED_BASE_MESHES[m_filePath];
 
 		// This is a new mesh base
 		if (data == nullptr)
 		{
-			m_data = new MeshBaseData(vertices);
+			m_data = new MeshBaseData(vertices, material);
 			m_data->addReference();
 			LOADED_BASE_MESHES[m_filePath] = m_data;
 		}
@@ -111,10 +124,14 @@ namespace mirage
 		return m_data;
 	}
 
-	Transform & MeshBase::getTransform()
+	void MeshBase::setTransform(Transform * const transform)
+	{
+		m_transform = transform;
+	}
+
+	Transform * const MeshBase::getTransform() const
 	{
 		return m_transform;
 	}
-
 
 }

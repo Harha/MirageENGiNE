@@ -15,12 +15,14 @@ namespace mirage
 	enum EngineRunState;
 	class Window;
 	class GraphicsEngine;
+	class Game;
 
 	class CoreEngine
 	{
 	public:
 		CoreEngine(
-			const std::string & cfgFilePath = "./data/config.ini"
+			const std::string & cfgFilePath = "./data/config.ini",
+			Game * const game = nullptr
 		);
 		~CoreEngine();
 
@@ -30,11 +32,14 @@ namespace mirage
 		const IniFile & getConfig() const;
 		const EngineRunState & getRunState() const;
 		Window * const getWindow() const;
+		void setGame(Game * const game);
+		Game * const getGame() const;
 		GraphicsEngine * const getGraphicsEngine() const;
 	private:
 		IniFile m_config;
 		EngineRunState m_runState;
 		Window * m_window;
+		Game * m_game;
 		GraphicsEngine * m_graphicsEngine;
 	};
 

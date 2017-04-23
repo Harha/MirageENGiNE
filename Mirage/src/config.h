@@ -1,8 +1,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-// 0 = alpha, 1 = beta, 2 = release
-#define VERSION_STATE 0
+// Release version
+#define VERSION_RELEASE 0
 
 // Major version, increments at each major commit
 #define VERSION_MAJOR 0

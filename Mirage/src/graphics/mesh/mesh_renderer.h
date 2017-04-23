@@ -4,6 +4,10 @@
 // std includes
 #include <map>
 
+// mirage includes
+#include "core/vertex.h"
+#include "core/transform.h"
+
 typedef unsigned int GLuint;
 
 namespace mirage
@@ -37,8 +41,10 @@ namespace mirage
 		MeshRenderer(MeshBase * const meshBase = nullptr);
 		~MeshRenderer();
 		void render();
+		void prepareVertices();
 		MeshBase * const getMeshBase();
 		MeshRendererData * const getData();
+		Transform * const getTransform();
 	private:
 		MeshBase * m_meshBase;
 		MeshRendererData * m_data;

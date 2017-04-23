@@ -1,43 +1,60 @@
 #include "camera.h"
 
+// mirage includes
+#include "macros.h"
+
 namespace mirage
 {
 
-	Camera::Camera(Transform t, glm::mat4 p, float e) :
-		m_transform(t),
-		m_projection(p),
-		m_exposure(e)
+	Camera::Camera(
+		Transform * const transform,
+		glm::mat4 projection,
+		float exposure
+	) :
+		m_transform(transform),
+		m_projection(projection),
+		m_exposure(exposure)
 	{
-
+		MLOG_DEBUG("Camera::Camera, created.");
 	}
 
-	void Camera::setTransform(const Transform &t)
+	Camera::~Camera()
 	{
-		m_transform = t;
+		MLOG_DEBUG("Camera::~Camera, destroyed.");
 	}
 
-	void Camera::setProjectionMatrix(const glm::mat4 &p)
+	void Camera::setTransform(Transform * const transform)
 	{
-		m_projection = p;
+		m_transform = transform;
 	}
 
-	void Camera::setExposure(const float e)
+	Transform * const Camera::getTransform() const
 	{
-		m_exposure = (m_exposure + e <= 1e-3f) ? m_exposure + e * 0.1f : m_exposure + e;
-		m_exposure = (m_exposure + e * 0.1f <= 1e-3f) ? m_exposure + e * 0.01f : m_exposure + e * 0.1f;
+		return m_transform;
 	}
 
-	glm::mat4 Camera::getViewMatrix()
+	void Camera::setProjectionMatrix(const glm::mat4 & projection)
 	{
-		glm::mat4 t = glm::translate(m_transform.getPosition());
-		glm::mat4 r = glm::mat4_cast(m_transform.getOrientation());
-
-		return r * t;
+		m_projection = projection;
 	}
 
 	const glm::mat4 & Camera::getProjectionMatrix() const
 	{
 		return m_projection;
+	}
+
+	glm::mat4 Camera::getViewMatrix()
+	{
+		glm::mat4 t = glm::translate(m_transform->getPosition());
+		glm::mat4 r = glm::mat4_cast(m_transform->getOrientation());
+
+		return r * t;
+	}
+
+	void Camera::setExposure(const float exposure)
+	{
+		m_exposure = (m_exposure + exposure <= 1e-3f) ? m_exposure + exposure * 0.1f : m_exposure + exposure;
+		m_exposure = (m_exposure + exposure * 0.1f <= 1e-3f) ? m_exposure + exposure * 0.01f : m_exposure + exposure * 0.1f;
 	}
 
 	float Camera::getExposure() const

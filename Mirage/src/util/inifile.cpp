@@ -19,7 +19,7 @@ namespace mirage
 
 		if (file.is_open() == false)
 		{
-			MLOG_ERROR("IniFile::IniFile, error loading given file (%s) into memory.", m_filePath.c_str());
+			MLOG_ERROR("IniFile::IniFile, error loading file (%s) into memory.", m_filePath.c_str());
 			return;
 		}
 
@@ -72,7 +72,7 @@ namespace mirage
 			}
 		}
 
-		MLOG_DEBUG("IniFile::IniFile, loaded given file (%s) into memory. Lines: %d, sections: %d", m_filePath.c_str(), m_lines.size(), m_entries.size());
+		MLOG_DEBUG("IniFile::IniFile, loaded file (%s) into memory. Lines: %d, sections: %d", m_filePath.c_str(), m_lines.size(), m_entries.size());
 	}
 
 	const std::string & IniFile::getString(const std::string & section, const std::string & key, const std::string & defval)

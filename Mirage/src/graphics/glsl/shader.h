@@ -6,12 +6,18 @@
 #include <string>
 #include <map>
 
+// lib includes
+#include <glm/glm.hpp>
+
 // mirage includes
 #include "graphics/glsl/uniform.h"
 
 typedef unsigned int GLuint;
 typedef unsigned int GLenum;
+typedef int GLint;
 typedef int GLsizei;
+typedef float GLfloat;
+typedef double GLdouble;
 
 namespace mirage
 {
@@ -48,11 +54,18 @@ namespace mirage
 			const std::string & filePathFrag
 		);
 		~ShaderProgram();
+		void bind();
 		std::string preprocessShader(const TxtFile & src);
 		void attachShader(const std::string & src, GLenum type);
 		void linkProgram();
 		void validateProgram();
 		void gatherActiveUniforms();
+		void setUniformBool(const std::string & name, GLint b);
+		void setUniformInt(const std::string & name, GLint i);
+		void setUniformFloat(const std::string & name, GLfloat f);
+		void setUniformVec3(const std::string & name, const glm::vec3 & v);
+		void setUniformVec4(const std::string & name, const glm::vec4 & v);
+		void setUniformMat4(const std::string & name, const glm::mat4 & m);
 		std::string getShaderInfoLog(GLuint handle) const;
 		std::string getProgramInfoLog() const;
 	private:

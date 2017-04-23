@@ -19,7 +19,7 @@ namespace mirage
 
 		if (file.is_open() == false)
 		{
-			MLOG_ERROR("TxtFile::TxtFile, error loading given file (%s) into memory.", m_filePath.c_str());
+			MLOG_ERROR("TxtFile::TxtFile, error loading file (%s) into memory.", m_filePath.c_str());
 			return;
 		}
 
@@ -29,7 +29,7 @@ namespace mirage
 			m_lines.push_back(line);
 		}
 
-		MLOG_DEBUG("TxtFile::TxtFile, loaded given file (%s) into memory. Lines: %d", m_filePath.c_str(), m_lines.size());
+		MLOG_DEBUG("TxtFile::TxtFile, loaded file (%s) into memory. Lines: %d", m_filePath.c_str(), m_lines.size());
 	}
 
 	const std::string TxtFile::getFilePath() const

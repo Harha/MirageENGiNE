@@ -1,5 +1,5 @@
-#ifndef MESH_H
-#define MESH_H
+#ifndef MESH_BASE_H
+#define MESH_BASE_H
 
 // std includes
 #include <string>
@@ -9,6 +9,7 @@
 // mirage includes
 #include "core/vertex.h"
 #include "core/transform.h"
+#include "core/material/material_base.h"
 
 typedef int GLsizei;
 
@@ -19,17 +20,20 @@ namespace mirage
 	{
 	public:
 		MeshBaseData(
-			std::vector<Vertex> vertices = std::vector<Vertex>()
+			std::vector<Vertex> vertices = std::vector<Vertex>(),
+			MaterialBase material = MaterialBase()
 		);
 		~MeshBaseData();
 		void setSize(GLsizei size);
 		void addReference();
 		void delReference();
+		MaterialBase & getMaterial();
 		std::vector<Vertex> & getVertices();
 		const GLsizei getSize() const;
 		const int32_t getRefAmount() const;
 	private:
 		std::vector<Vertex> m_vertices;
+		MaterialBase m_material;
 		GLsizei m_size;
 		int32_t m_refAmount;
 	};
@@ -41,19 +45,20 @@ namespace mirage
 	public:
 		MeshBase(
 			const std::string & filePath = "null",
-			Transform transform = Transform(),
-			std::vector<Vertex> vertices = std::vector<Vertex>()
+			std::vector<Vertex> vertices = std::vector<Vertex>(),
+			MaterialBase material = MaterialBase()
 		);
 		~MeshBase();
 		const std::string getFilePath() const;
 		MeshBaseData * const getData();
-		Transform & getTransform();
+		void setTransform(Transform * const transform);
+		Transform * const getTransform() const;
 	private:
 		std::string m_filePath;
 		MeshBaseData * m_data;
-		Transform m_transform;
+		Transform * m_transform;
 	};
 
 }
 
-#endif // MESH_H
+#endif // MESH_BASE_H

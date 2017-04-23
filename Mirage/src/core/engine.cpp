@@ -6,9 +6,12 @@
 // std includes
 #include <iostream>
 #include <thread>
+#include <chrono>
 
 // lib includes
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtx/transform.hpp>
 
 // mirage includes
 #include "config.h"
@@ -16,19 +19,19 @@
 #include "runstate.h"
 #include "graphics/window.h"
 #include "graphics/gfxengine.h"
-#include "core/model_formats/wavefront_file.h"
-#include "core/mesh/mesh_base.h"
-#include "graphics/mesh/mesh_renderer.h"
-#include "core/model_formats/mesh_converters.h"
-#include "graphics/glsl/shader.h"
+#include "game/game.h"
 
 namespace mirage
 {
 
-	CoreEngine::CoreEngine(const std::string & cfgFilePath) :
+	CoreEngine::CoreEngine(
+		const std::string & cfgFilePath,
+		Game * const game
+	) :
 		m_config(cfgFilePath),
 		m_runState(ERS_UNINTIALIZED),
 		m_window(nullptr),
+		m_game(game),
 		m_graphicsEngine(nullptr)
 	{
 		// Initialize window
@@ -45,16 +48,22 @@ namespace mirage
 		// Initialize graphics engine
 		m_graphicsEngine = new GraphicsEngine(this);
 
+		// Initialize game
+		setGame(game);
+
 		// Set engine run state to initialized
 		m_runState = ERS_INITIALIZED;
 
-		MLOG_INFO("CoreEngine::CoreEngine, initialized successfully. Config file path: %s", m_config.getFilePath().c_str());
+		MLOG_INFO("CoreEngine::CoreEngine, initialized. Config file path: %s", m_config.getFilePath().c_str());
 	}
 
 	CoreEngine::~CoreEngine()
 	{
-		MDELETES(m_window);
+		MDELETES(m_game);
 		MDELETES(m_graphicsEngine);
+		MDELETES(m_window);
+
+		MLOG_INFO("CoreEngine::~CoreEngine, destroyed.");
 	}
 
 	void CoreEngine::glfwKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods)
@@ -72,25 +81,25 @@ namespace mirage
 			return;
 		}
 
+		// Initialize graphics engine
+		m_graphicsEngine->initialize();
+
+		// Initialize game
+		m_game->initialize();
+
 		m_runState = ERS_RUNNING;
-
-		auto mesh = WavefrontFile("./data/models/crytek_sponza/crytek_sponza.obj");
-		auto meshes = convertWavefrontToMeshBase(&mesh);
-
 		while (glfwWindowShouldClose(m_window->getHandle()) == GL_FALSE && m_runState == ERS_RUNNING)
 		{
 			// Poll for any glfw-related events
 			glfwPollEvents();
 
+			// Update / Render game & execute all rendering tasks in graphicsEngine
+			m_game->update(1.0f);
+			m_game->render(m_graphicsEngine);
 			m_graphicsEngine->render();
 
 			// Sleep for a bit, because why not?
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
-		}
-
-		for (auto * m : meshes)
-		{
-			MDELETES(m);
 		}
 
 		MLOG_INFO("CoreEngine::run, exiting main loop. Engine run state: %d", m_runState);
@@ -109,6 +118,22 @@ namespace mirage
 	Window * const CoreEngine::getWindow() const
 	{
 		return m_window;
+	}
+
+	void CoreEngine::setGame(Game * const game)
+	{
+		if (game != nullptr)
+		{
+			m_game = game;
+			m_game->setEngine(this);
+		}
+
+		MLOG_DEBUG("Game::setGame, called. Game *: %p", (void *)game);
+	}
+
+	Game * const CoreEngine::getGame() const
+	{
+		return m_game;
 	}
 
 	GraphicsEngine * const CoreEngine::getGraphicsEngine() const

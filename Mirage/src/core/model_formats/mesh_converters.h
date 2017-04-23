@@ -9,8 +9,14 @@ namespace mirage
 
 	class WavefrontFile;
 	class MeshBase;
+	class MeshRenderer;
 
-	std::vector<MeshBase *> convertWavefrontToMeshBase(WavefrontFile * const wfFile);
+	std::vector<MeshBase *> convert_wavefront_to_basemesh(WavefrontFile * const wfFile);
+	void convert_wavefront_to_all(
+		WavefrontFile * const wfFile,
+		std::vector<MeshBase *> & out_base,
+		std::vector<MeshRenderer *> & out_renderer
+	);
 
 }
 

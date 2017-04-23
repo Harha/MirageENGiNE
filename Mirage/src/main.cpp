@@ -18,7 +18,8 @@
 #include "config.h"
 #include "macros.h"
 #include "core/engine.h"
-#include "graphics/window.h"
+
+#include "test_game.h"
 
 static void glfwErrorCallback(int error, const char * description)
 {
@@ -27,7 +28,7 @@ static void glfwErrorCallback(int error, const char * description)
 
 int main(int argc, char * argv[])
 {
-	MLOG_INFO("Mirage Game Engine, version %d.%d.%d", VERSION_STATE, VERSION_MAJOR, VERSION_MINOR);
+	MLOG_INFO("Mirage Game Engine, version %d.%d.%d", VERSION_RELEASE, VERSION_MAJOR, VERSION_MINOR);
 
 	// Set glfw error callback function
 	glfwSetErrorCallback(glfwErrorCallback);
@@ -41,9 +42,16 @@ int main(int argc, char * argv[])
 	// Create core engine instance
 	mirage::CoreEngine * engine = new mirage::CoreEngine("./data/config.ini");
 
+	// Create test game instance
+	mirage::TestGame * game = new mirage::TestGame();
+
+	// Set engine game to our game instance
+	engine->setGame(game);
+
 	// Initialize glad, return error if failed
 	if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == GL_FALSE)
 	{
+		MDELETES(game);
 		MDELETES(engine);
 		glfwTerminate();
 		return 1;

@@ -1,5 +1,7 @@
 #include "shader.h"
 
+#pragma warning(disable : 4307)
+
 // std includes
 #include <vector>
 #include <regex>
@@ -118,6 +120,8 @@ namespace mirage
 			linkProgram();
 			validateProgram();
 			gatherActiveUniforms();
+
+
 		}
 		// This is an existing shader program
 		else
@@ -140,6 +144,11 @@ namespace mirage
 
 			MLOG_INFO("ShaderProgram::~ShaderProgram, destroying program. Name: %s", m_name.c_str());
 		}
+	}
+
+	void ShaderProgram::bind()
+	{
+		glUseProgram(m_data->getProgram());
 	}
 
 	std::string ShaderProgram::preprocessShader(const TxtFile & src)
@@ -236,6 +245,36 @@ namespace mirage
 		}
 
 		MLOG_DEBUG("ShaderProgram::gatherActiveUniforms, program(%s), active uniforms: %zd", m_name.c_str(), m_data->getUniforms().size());
+	}
+
+	void ShaderProgram::setUniformBool(const std::string & name, GLint b)
+	{
+		glUniform1i(m_data->getUniforms()[name].location, b);
+	}
+
+	void ShaderProgram::setUniformInt(const std::string & name, GLint i)
+	{
+		glUniform1i(m_data->getUniforms()[name].location, i);
+	}
+
+	void ShaderProgram::setUniformFloat(const std::string & name, GLfloat f)
+	{
+		glUniform1f(m_data->getUniforms()[name].location, f);
+	}
+
+	void ShaderProgram::setUniformVec3(const std::string & name, const glm::vec3 & v)
+	{
+		glUniform3f(m_data->getUniforms()[name].location, v.x, v.y, v.z);
+	}
+
+	void ShaderProgram::setUniformVec4(const std::string & name, const glm::vec4 & v)
+	{
+		glUniform4f(m_data->getUniforms()[name].location, v.x, v.y, v.z, v.w);
+	}
+
+	void ShaderProgram::setUniformMat4(const std::string & name, const glm::mat4 & m)
+	{
+		glUniformMatrix4fv(m_data->getUniforms()[name].location, 1, GL_FALSE, &m[0][0]);
 	}
 
 	std::string ShaderProgram::getShaderInfoLog(GLuint handle) const

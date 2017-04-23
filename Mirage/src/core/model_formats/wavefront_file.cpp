@@ -1,5 +1,7 @@
 #include "wavefront_file.h"
 
+#pragma warning(disable : 4307)
+
 // std includes
 #include <fstream>
 #include <regex>
@@ -90,8 +92,11 @@ namespace mirage
 			case cstr2int("o"):
 			case cstr2int("g"):
 			{
+				std::string lastMesh(currentMesh);
 				l_stream >> currentMesh;
 				m_meshes[currentMesh] = WavefrontMesh();
+
+				MLOG_DEBUG("WavefrontFile::loadObj, lastMesh: %s, currentMesh: %s", lastMesh.c_str(), currentMesh.c_str());
 			} break;
 			case cstr2int("usemtl"):
 			{
@@ -110,7 +115,7 @@ namespace mirage
 			case cstr2int("f"):
 			{
 				// Initially create the face with current material
-				WavefrontFace face(currentMaterial);
+				WavefrontFace face(currentMesh, currentMaterial);
 				bool hasNormals = false;
 				bool hasTexcoords = false;
 
@@ -251,8 +256,11 @@ namespace mirage
 			{
 			case cstr2int("newmtl"):
 			{
+				std::string lastMaterial(currentMaterial);
 				l_stream >> currentMaterial;
 				m_materials[currentMaterial] = WavefrontMaterial();
+
+				MLOG_DEBUG("WavefrontFile::loadMtl, lastMaterial: %s, currentMaterial: %s", lastMaterial.c_str(), currentMaterial.c_str());
 			} break;
 			case cstr2int("illum"):
 			{

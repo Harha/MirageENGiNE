@@ -32,12 +32,17 @@ namespace mirage
 		std::vector<int> points;
 		std::vector<int> normals;
 		std::vector<int> texcoords;
+		std::string mesh;
 		std::string material;
 
-		WavefrontFace(const std::string & material = "NULL") :
+		WavefrontFace(
+			const std::string & mesh = "NULL",
+			const std::string & material = "NULL"
+		) :
 			points(3),
 			normals(3),
 			texcoords(3),
+			mesh(mesh),
 			material(material)
 		{
 

@@ -11,7 +11,8 @@ namespace mirage
 {
 
 	Window::Window(const std::string t, int w, int h, bool fs) :
-		m_window(NULL)
+		m_window(NULL),
+		m_title(t)
 	{
 
 		// Setup GLFW window hints
@@ -45,6 +46,12 @@ namespace mirage
 	void Window::setTitle(const std::string t)
 	{
 		glfwSetWindowTitle(m_window, t.c_str());
+		m_title = t;
+	}
+
+	std::string Window::getTitle() const
+	{
+		return m_title;
 	}
 
 	int Window::getWidth() const

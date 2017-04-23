@@ -83,6 +83,10 @@ namespace mirage
 		{
 			m_data = new MeshRendererData;
 			m_data->addReference();
+
+			// Prepare vertex data for the GPU
+			prepareVertices();
+
 			LOADED_MESH_RENDERERS[m_meshBase->getFilePath()] = m_data;
 		}
 		// This is an existing mesh renderer
@@ -117,10 +121,10 @@ namespace mirage
 
 		glBindVertexArray(m_data->getVao());
 		glBindBuffer(GL_ARRAY_BUFFER, m_data->getVbo());
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, BUFFER_OFFSET(0));
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, BUFFER_OFFSET(12));
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, BUFFER_OFFSET(24));
-		glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, BUFFER_OFFSET(36));
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), BUFFER_OFFSET(0));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), BUFFER_OFFSET(12));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), BUFFER_OFFSET(24));
+		glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), BUFFER_OFFSET(36));
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_data->getIbo());
 		glDrawElements(GL_TRIANGLES, m_meshBase->getData()->getSize(), GL_UNSIGNED_INT, 0);
@@ -129,6 +133,43 @@ namespace mirage
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 		glDisableVertexAttribArray(3);
+	}
+
+	void MeshRenderer::prepareVertices()
+	{
+		// Prepare indices
+		std::vector<uint32_t> indices(m_meshBase->getData()->getSize());
+
+		for (size_t i = 0; i < indices.size(); i++)
+		{
+			indices[i] = i;
+		}
+
+		// Prepare vertices
+		std::vector<Vertex> & vertices(m_meshBase->getData()->getVertices());
+
+		// Upload vertices to GPU
+		glBindBuffer(GL_ARRAY_BUFFER, m_data->getVbo());
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * Vertex::SIZE * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+
+		// Upload indices to GPU
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_data->getIbo());
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+	}
+
+	MeshBase * const MeshRenderer::getMeshBase()
+	{
+		return m_meshBase;
+	}
+
+	MeshRendererData * const MeshRenderer::getData()
+	{
+		return m_data;
+	}
+
+	Transform * const MeshRenderer::getTransform()
+	{
+		return m_meshBase->getTransform();
 	}
 
 }

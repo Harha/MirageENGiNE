@@ -6,7 +6,7 @@
 namespace mirage
 {
 
-	const int Vertex::SIZE = 12;
+	const int Vertex::SIZE = 11;
 
 	Vertex::Vertex(glm::vec3 p, glm::vec3 n, glm::vec3 t, glm::vec2 uv) :
 		m_position(p),
