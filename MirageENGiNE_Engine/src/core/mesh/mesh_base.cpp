@@ -25,16 +25,42 @@ namespace mirage
 		m_size(vertices.size()),
 		m_refAmount(0)
 	{
-		MLOG_DEBUG("MeshData::MeshBaseData initialized. Size: %d", m_size);
+		MLOG_DEBUG("MeshData::MeshBaseData, created. Size: %d", m_size);
 	}
 
 	MeshBaseData::~MeshBaseData()
 	{
+
+	}
+
+	void MeshBaseData::setVertices(std::vector<Vertex> vertices)
+	{
+		m_vertices = vertices;
+	}
+
+	std::vector<Vertex> & MeshBaseData::getVertices()
+	{
+		return m_vertices;
+	}
+
+	void MeshBaseData::setMaterial(MaterialBase material)
+	{
+		m_material = material;
+	}
+
+	MaterialBase & MeshBaseData::getMaterial()
+	{
+		return m_material;
 	}
 
 	void MeshBaseData::setSize(GLsizei size)
 	{
 		m_size = size;
+	}
+
+	const GLsizei MeshBaseData::getSize() const
+	{
+		return m_size;
 	}
 
 	void MeshBaseData::addReference()
@@ -45,21 +71,6 @@ namespace mirage
 	void MeshBaseData::delReference()
 	{
 		m_refAmount = (m_refAmount - 1 < 0) ? 0 : m_refAmount - 1;
-	}
-
-	MaterialBase & MeshBaseData::getMaterial()
-	{
-		return m_material;
-	}
-
-	std::vector<Vertex> & MeshBaseData::getVertices()
-	{
-		return m_vertices;
-	}
-
-	const GLsizei MeshBaseData::getSize() const
-	{
-		return m_size;
 	}
 
 	const int32_t MeshBaseData::getRefAmount() const
@@ -98,19 +109,20 @@ namespace mirage
 			m_data->addReference();
 		}
 
-		MLOG_DEBUG("MeshBase::MeshBase initialized. FilePath: %s, reference amount: %d", m_filePath.c_str(), m_data->getRefAmount());
+		MLOG_DEBUG("MeshBase::MeshBase, created. FilePath: %s, reference amount: %d", m_filePath.c_str(), m_data->getRefAmount());
 	}
 
 	MeshBase::~MeshBase()
 	{
 		m_data->delReference();
 
+		// If no references to this left, deallocate memory
 		if (m_data->getRefAmount() <= 0)
 		{
 			LOADED_BASE_MESHES.erase(m_filePath);
 			MDELETES(m_data);
 
-			MLOG_DEBUG("MeshBase::~MeshBase destroyed. FilePath: %s", m_filePath.c_str());
+			MLOG_DEBUG("MeshBase::~MeshBase, destroyed. FilePath: %s", m_filePath.c_str());
 		}
 	}
 

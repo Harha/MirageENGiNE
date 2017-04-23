@@ -8,10 +8,15 @@ namespace mirage
 
 	const int Vertex::SIZE = 11;
 
-	Vertex::Vertex(glm::vec3 p, glm::vec3 n, glm::vec3 t, glm::vec2 uv) :
-		m_position(p),
-		m_normal(n),
-		m_tangent(t),
+	Vertex::Vertex(
+		glm::vec3 position,
+		glm::vec3 normal,
+		glm::vec3 tangent,
+		glm::vec2 uv
+	) :
+		m_position(position),
+		m_normal(normal),
+		m_tangent(tangent),
 		m_uv(uv)
 	{
 

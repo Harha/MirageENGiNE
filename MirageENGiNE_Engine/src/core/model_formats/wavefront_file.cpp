@@ -29,7 +29,7 @@ namespace mirage
 
 	WavefrontFile::~WavefrontFile()
 	{
-		MLOG_INFO("WavefrontFile::~WavefrontFile, destroying loaded file. File path: %s", m_objFilePath.c_str());
+		MLOG_INFO("WavefrontFile::~WavefrontFile, destroyed. FilePath: %s", m_objFilePath.c_str());
 	}
 
 	void WavefrontFile::loadObj(const std::string & filePath)
@@ -41,7 +41,9 @@ namespace mirage
 
 		// Throw if the file didn't open
 		if (file.is_open() == false)
-			throw std::exception("WavefrontFile::loadObj failed to open target .obj file, make sure it exists.");
+		{
+			throw std::exception("WavefrontFile::loadObj, failed to open target .obj file, make sure it exists.");
+		}
 
 		// State variables
 		std::string currentMesh = "root";
@@ -230,7 +232,9 @@ namespace mirage
 
 		// Throw if the file didn't open
 		if (file.is_open() == false)
-			throw std::exception("WavefrontFile::loadMtl failed to open target .mtl file, make sure it exists.");
+		{
+			throw std::exception("WavefrontFile::loadMtl, failed to open target .mtl file, make sure it exists.");
+		}
 
 		// State variables
 		std::string currentMaterial = "root";
@@ -260,7 +264,7 @@ namespace mirage
 				l_stream >> currentMaterial;
 				m_materials[currentMaterial] = WavefrontMaterial();
 
-				MLOG_DEBUG("WavefrontFile::loadMtl, lastMaterial: %s, currentMaterial: %s", lastMaterial.c_str(), currentMaterial.c_str());
+				MLOG_DEBUG("WavefrontFile::loadMtl, newmtl. LastMaterial: %s, currentMaterial: %s", lastMaterial.c_str(), currentMaterial.c_str());
 			} break;
 			case cstr2int("illum"):
 			{

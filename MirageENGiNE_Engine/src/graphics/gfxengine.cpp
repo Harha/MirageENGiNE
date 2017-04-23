@@ -89,7 +89,7 @@ namespace mirage
 				MeshRenderer * mesh = meshes[j];
 
 				program->setUniformMat4("u_MMatrix", mesh->getTransform()->getModelMatrix());
-				program->setUniformVec3("u_col_diffuse", mesh->getMeshBase()->getData()->getMaterial().getColorKd());
+				program->setUniformVec3("u_col_diffuse", mesh->getMeshBase()->getData()->getMaterial().getColorDiffuse());
 
 				mesh->render();
 			}

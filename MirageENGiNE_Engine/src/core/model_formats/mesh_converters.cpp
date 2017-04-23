@@ -16,7 +16,9 @@ namespace mirage
 	std::vector<MeshBase *> convert_wavefront_to_basemesh(WavefrontFile * const wfFile)
 	{
 		if (wfFile == nullptr)
-			throw std::exception("mirage::convertWavefrontToMeshBase failed to convert file to base meshes, input file handle points to null.");
+		{
+			throw std::exception("mirage::convert_wavefront_to_basemesh, failed. Cannot convert file to base meshes, input file handle points to null.");
+		}
 
 		std::vector<MeshBase *> converted;
 
@@ -27,7 +29,7 @@ namespace mirage
 		auto & meshes = wfFile->getMeshes();
 		auto & materials = wfFile->getMaterials();
 
-		// Export vertices from each mesh
+		// Export vertices & materials from each mesh
 		for (auto const & mesh : meshes)
 		{
 			std::vector<Vertex> vertices;
@@ -72,24 +74,25 @@ namespace mirage
 				auto material_wff = materials_it->second;
 
 				// Transfer values from wavefront material to base material
-				material.setColorKd(glm::vec3(material_wff.Kd.r, material_wff.Kd.g, material_wff.Kd.b));
-				material.setColorKs(glm::vec3(material_wff.Ks.r, material_wff.Ks.g, material_wff.Ks.b));
+				material.setColorDiffuse(glm::vec3(material_wff.Kd.r, material_wff.Kd.g, material_wff.Kd.b));
+				material.setColorSpecular(glm::vec3(material_wff.Ks.r, material_wff.Ks.g, material_wff.Ks.b));
 			}
 
 			// Only convert current mesh if it contains vertex data
 			if (vertices.size() > 0)
 			{
-				converted.push_back(
-					new MeshBase(
-						wfFile->getObjFilePath() + ((name_suffix.empty()) ? "" : ("_" + name_suffix)),
-						vertices,
-						material
-					)
-				);
+				converted.push_back(new MeshBase(
+					wfFile->getObjFilePath() + ((name_suffix.empty()) ? "" : ("_" + name_suffix)),
+					vertices,
+					material
+				));
 
-				MLOG_DEBUG("convert_wavefront_to_basemesh, object: %s vertices: %zu", mesh_str.c_str(), vertices.size());
+				MLOG_DEBUG("mirage::convert_wavefront_to_basemesh, converted. Object: %s, vertices: %zu", mesh_str.c_str(), vertices.size());
 			}
-
+			else
+			{
+				MLOG_WARNING("mirage::convert_wavefront_to_basemesh, skipped. Object: %s", mesh_str.c_str());
+			}
 		}
 
 		return converted;
@@ -101,6 +104,11 @@ namespace mirage
 		std::vector<MeshRenderer *> & out_renderer
 	)
 	{
+		if (wfFile == nullptr)
+		{
+			throw std::exception("mirage::convert_wavefront_to_all, failed. Cannot convert file to base meshes, input file handle points to null.");
+		}
+
 		// First, convert to base meshes
 		out_base = convert_wavefront_to_basemesh(wfFile);
 
@@ -109,7 +117,7 @@ namespace mirage
 		{
 			out_renderer.push_back(new MeshRenderer(out_base[i]));
 
-			MLOG_DEBUG("convert_wavefront_to_meshrenderer");
+			MLOG_DEBUG("mirage::convert_wavefront_to_all, converted. Index: %zu", i);
 		}
 	}
 

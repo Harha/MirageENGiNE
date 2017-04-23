@@ -24,12 +24,15 @@ namespace mirage
 			MaterialBase material = MaterialBase()
 		);
 		~MeshBaseData();
+
+		void setVertices(std::vector<Vertex> vertices);
+		std::vector<Vertex> & getVertices();
+		void setMaterial(MaterialBase material);
+		MaterialBase & getMaterial();
 		void setSize(GLsizei size);
+		const GLsizei getSize() const;
 		void addReference();
 		void delReference();
-		MaterialBase & getMaterial();
-		std::vector<Vertex> & getVertices();
-		const GLsizei getSize() const;
 		const int32_t getRefAmount() const;
 	private:
 		std::vector<Vertex> m_vertices;
@@ -44,11 +47,12 @@ namespace mirage
 	{
 	public:
 		MeshBase(
-			const std::string & filePath = "null",
+			const std::string & filePath,
 			std::vector<Vertex> vertices = std::vector<Vertex>(),
 			MaterialBase material = MaterialBase()
 		);
 		~MeshBase();
+
 		const std::string getFilePath() const;
 		MeshBaseData * const getData();
 		void setTransform(Transform * const transform);

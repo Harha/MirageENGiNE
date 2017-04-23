@@ -26,9 +26,8 @@ namespace mirage
 		}
 	};
 
-	class WavefrontFace
+	struct WavefrontFace
 	{
-	public:
 		std::vector<int> points;
 		std::vector<int> normals;
 		std::vector<int> texcoords;
@@ -49,9 +48,8 @@ namespace mirage
 		}
 	};
 
-	class WavefrontMaterial
+	struct WavefrontMaterial
 	{
-	public:
 		uint16_t illum;		// Illumination mode
 		std::string KdText;	// Diffuse texture
 		std::string KsText;	// Specular texture
@@ -112,8 +110,9 @@ namespace mirage
 	class WavefrontFile
 	{
 	public:
-		WavefrontFile(const std::string & filePath = "NULL");
+		WavefrontFile(const std::string & filePath);
 		~WavefrontFile();
+
 		void loadObj(const std::string & filePath);
 		void loadMtl(const std::string & filePath);
 		std::string getObjFilePath() const;

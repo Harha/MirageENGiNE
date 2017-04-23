@@ -12,20 +12,21 @@ namespace mirage
 	{
 	public:
 		Transform(
-			glm::vec3 p = glm::vec3(0.0f),
-			glm::quat o = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
-			glm::vec3 s = glm::vec3(1.0f, 1.0f, 1.0f)
+			glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
+			glm::quat orientation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+			glm::vec3 sscale = glm::vec3(1.0f, 1.0f, 1.0f)
 		);
-		void translate(const glm::vec3 & dir, float l);
-		void rotate(const glm::vec3 & axis, float theta);
-		void rotate(const glm::quat & q);
+
+		void translate(const glm::vec3 & direction, float t);
+		void rotate(const glm::vec3 & axis, float angle);
+		void rotate(const glm::quat & rotation);
 		void scale(const glm::vec3 & scale);
 		glm::mat4 getModelMatrix() const;
-		void setPosition(const glm::vec3 &v);
-		void setOrientation(const glm::quat &q);
-		void setScale(const glm::vec3 &v);
+		void setPosition(const glm::vec3 & position);
 		const glm::vec3 & getPosition() const;
+		void setOrientation(const glm::quat & orientation);
 		const glm::quat & getOrientation() const;
+		void setScale(const glm::vec3 & scale);
 		const glm::vec3 & getScale() const;
 	private:
 		glm::vec3 m_position;
