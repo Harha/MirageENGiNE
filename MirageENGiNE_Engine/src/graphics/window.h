@@ -23,7 +23,9 @@ namespace mirage
 		GLFWwindow * const getHandle() const;
 		void setTitle(const std::string title);
 		std::string getTitle() const;
+		void setWidth(int width);
 		int getWidth() const;
+		void setHeight(int height);
 		int getHeight() const;
 	private:
 		GLFWwindow * m_window;

@@ -33,7 +33,7 @@ namespace mirage
 	void TestGame::initialize()
 	{
 		// Create game objects
-		GameObject * player = new GameObject("player", Transform(glm::vec3(0, -2, -10)));
+		GameObject * player = new GameObject("player", Transform(glm::vec3(0, -30, -160)));
 		CameraPerspective * camera_perspective = new CameraPerspective(
 			"camera_perspective",
 			70.0f,
@@ -44,22 +44,22 @@ namespace mirage
 		);
 		player->addComponent(camera_perspective);
 
-		GameObject * mitsuba = new GameObject("mitsuba");
-		ModelBasic * model_mitsuba = new ModelBasic(
-			"mitsuba/mitsuba.obj",
-			"model_mitsuba"
+		GameObject * lost_empire = new GameObject("lost_empire");
+		ModelBasic * model_lost_empire = new ModelBasic(
+			"lost_empire/lost_empire.obj",
+			"model_lost_empire"
 		);
-		mitsuba->addComponent(model_mitsuba);
+		lost_empire->addComponent(model_lost_empire);
 
 		// Add game objects to game
 		GameObject * root = getObject("root");
 		root->addChildren(player);
-		root->addChildren(mitsuba);
+		root->addChildren(lost_empire);
 	}
 
 	void TestGame::update(float dt)
 	{
-		getObject("mitsuba")->getTransform().rotate(glm::vec3(0, 1, 0), 0.001f);
+		getObject("lost_empire")->getTransform().rotate(glm::vec3(0, 1, 0), 0.001f);
 	}
 
 	void TestGame::render(GraphicsEngine * const gfxEngine)
@@ -68,7 +68,7 @@ namespace mirage
 		gfxEngine->setCurrentCamera(getObject("player")->getComponent<CameraPerspective *>("camera_perspective")->getCamera());
 
 		// Render models
-		getObject("mitsuba")->render(gfxEngine);
+		getObject("lost_empire")->render(gfxEngine);
 	}
 
 	void TestGame::renderGUI()

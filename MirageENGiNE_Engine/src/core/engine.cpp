@@ -39,9 +39,6 @@ namespace mirage
 			m_config.getBool("[gfx]", "fullscreen", false)
 		);
 
-		// Set glfw window key callback function
-		glfwSetKeyCallback(m_window->getHandle(), glfwKeyCallback);
-
 		// Create graphics engine
 		m_graphicsEngine = new GraphicsEngine(this);
 
@@ -57,9 +54,16 @@ namespace mirage
 		MLOG_INFO("CoreEngine::~CoreEngine, destroyed.");
 	}
 
+	void CoreEngine::glfwWindowSizeCallback(GLFWwindow * window, int width, int height)
+	{
+		glfwSetWindowSize(window, width, height);
+
+		MLOG_DEBUG("CoreEngine::glfwWindowSizeCallback, called. Width: %d, height: %d", width, height);
+	}
+
 	void CoreEngine::glfwKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods)
 	{
-		MLOG_DEBUG("CoreEngine::glfwKeyCallback, key: %d, scancode: %d, action: %d, mods: %d", key, scancode, action, mods);
+		MLOG_DEBUG("CoreEngine::glfwKeyCallback, called. Key: %d, scancode: %d, action: %d, mods: %d", key, scancode, action, mods);
 	}
 
 	void CoreEngine::run()
@@ -83,6 +87,10 @@ namespace mirage
 
 		// Initialize current game instance
 		m_game->initialize();
+
+		// Register GLFW callback functions
+		glfwSetWindowSizeCallback(m_window->getHandle(), glfwWindowSizeCallback);
+		glfwSetKeyCallback(m_window->getHandle(), glfwKeyCallback);
 
 		// Enter the engine's main loop
 		m_runState = ERS_RUNNING;

@@ -64,11 +64,21 @@ namespace mirage
 		return m_title;
 	}
 
+	void Window::setWidth(int width)
+	{
+		glfwSetWindowSize(m_window, width, getHeight());
+	}
+
 	int Window::getWidth() const
 	{
 		int w = 0, h = 0;
 		glfwGetWindowSize(m_window, &w, &h);
 		return w;
+	}
+
+	void Window::setHeight(int height)
+	{
+		glfwSetWindowSize(m_window, getWidth(), height);
 	}
 
 	int Window::getHeight() const
