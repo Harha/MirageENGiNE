@@ -6,9 +6,10 @@
 
 // mirage includes
 #include "macros.h"
+#include "util/strutil.h"
+#include "graphics/gfxengine.h"
 #include "game/gobject.h"
 #include "core/mesh/mesh_base.h"
-#include "graphics/gfxengine.h"
 #include "graphics/mesh/mesh_renderer.h"
 #include "graphics/rendercmd.h"
 #include "core/model_formats/wavefront_file.h"
@@ -26,6 +27,13 @@ namespace mirage
 		m_meshBases(),
 		m_meshRenderers()
 	{
+		// Throw if input file extension is not supported
+		std::string fileExtension = filetoextension(m_filePath);
+		if (fileExtension != "obj")
+		{
+			throw std::exception("ModelBasic::ModelBasic, error. Input file extension is not supported! Supported extensions: .obj");
+		}
+
 		// Load mesh data in chosen format
 		WavefrontFile * w_file = new WavefrontFile(m_filePath);
 
@@ -38,11 +46,13 @@ namespace mirage
 
 	ModelBasic::~ModelBasic()
 	{
+		// Deallocate mesh renderers
 		for (auto mesh_renderer : m_meshRenderers)
 		{
 			MDELETES(mesh_renderer);
 		}
 
+		// Deallocate base meshes
 		for (auto mesh_base : m_meshBases)
 		{
 			MDELETES(mesh_base);
@@ -56,7 +66,7 @@ namespace mirage
 
 	void ModelBasic::render(GraphicsEngine * const gfxEngine)
 	{
-		RenderCMD * r_cmd = new RenderCMD(gfxEngine->getShaderProgram("model_basic"), gfxEngine->getCurrentCamera(), m_meshRenderers);
+		RenderCMD * r_cmd = new RenderCMD(gfxEngine->getShaderProgram("gbuffer"), gfxEngine->getCurrentCamera(), m_meshRenderers);
 		gfxEngine->pushRenderCMD(r_cmd);
 	}
 

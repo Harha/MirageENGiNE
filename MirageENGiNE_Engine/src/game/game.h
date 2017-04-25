@@ -25,10 +25,10 @@ namespace mirage
 		virtual void renderGUI() = 0;
 		virtual void renderGUI_GameObjectTree(GameObject * const node);
 		virtual void setEngine(CoreEngine * const engine);
-		virtual CoreEngine * getEngine();
-		virtual void addObject(GameObject * const object);
-		virtual void clearObjects();
-		virtual const std::vector<GameObject *> & getObjects() const;
+		virtual CoreEngine * const getEngine();
+		virtual void addRootLevelObject(GameObject * const object);
+		virtual void clearAllObjects();
+		virtual const std::vector<GameObject *> & getRootLevelObjects() const;
 		virtual GameObject * const getObject(const std::string & identifier, GameObject * const node = nullptr);
 	private:
 	protected:

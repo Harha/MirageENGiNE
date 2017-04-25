@@ -11,11 +11,11 @@ namespace mirage
 	RenderCMD::RenderCMD(
 		ShaderProgram * const program,
 		Camera * const camera,
-		std::vector<MeshRenderer *> meshes
+		std::vector<MeshRenderer *> meshRenderers
 	) :
 		m_program(program),
 		m_camera(camera),
-		m_meshes(meshes)
+		m_meshRenderers(meshRenderers)
 	{
 
 	}
@@ -30,9 +30,9 @@ namespace mirage
 		return m_camera;
 	}
 
-	std::vector<MeshRenderer *> RenderCMD::getMeshes() const
+	const std::vector<MeshRenderer *> & RenderCMD::getMeshRenderers() const
 	{
-		return m_meshes;
+		return m_meshRenderers;
 	}
 
 }

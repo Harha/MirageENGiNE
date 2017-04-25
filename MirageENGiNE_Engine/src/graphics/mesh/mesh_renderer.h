@@ -4,27 +4,25 @@
 // std includes
 #include <map>
 
-// mirage includes
-#include "core/vertex.h"
-#include "core/transform.h"
-
 typedef unsigned int GLuint;
 
 namespace mirage
 {
 
 	class MeshBase;
+	class Transform;
 
 	class MeshRendererData
 	{
 	public:
 		MeshRendererData();
 		~MeshRendererData();
-		void addReference();
-		void delReference();
+
 		const GLuint getVao() const;
 		const GLuint getVbo() const;
 		const GLuint getIbo() const;
+		void addReference();
+		void delReference();
 		const int32_t getRefAmount() const;
 	private:
 		GLuint m_vao;
@@ -40,12 +38,14 @@ namespace mirage
 	public:
 		MeshRenderer(MeshBase * const meshBase = nullptr);
 		~MeshRenderer();
+
 		void render();
-		void prepareVertices();
 		MeshBase * const getMeshBase();
 		MeshRendererData * const getData();
 		Transform * const getTransform();
 	private:
+		void processVerticesAndUploadToGPU();
+
 		MeshBase * m_meshBase;
 		MeshRendererData * m_data;
 	};

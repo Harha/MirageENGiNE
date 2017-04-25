@@ -14,6 +14,21 @@ namespace mirage
 		glm::quat orientation,
 		glm::vec3 scale
 	) :
+		m_parent(nullptr),
+		m_position(position),
+		m_orientation(orientation),
+		m_scale(scale)
+	{
+
+	}
+
+	Transform::Transform(
+		Transform * const parent,
+		glm::vec3 position,
+		glm::quat orientation,
+		glm::vec3 scale
+	) :
+		m_parent(parent),
 		m_position(position),
 		m_orientation(orientation),
 		m_scale(scale)
@@ -41,13 +56,33 @@ namespace mirage
 		m_scale *= scale;
 	}
 
+	glm::mat4 Transform::getParentMatrix() const
+	{
+		if (m_parent != nullptr)
+		{
+			return m_parent->getModelMatrix();
+		}
+
+		return glm::mat4();
+	}
+
 	glm::mat4 Transform::getModelMatrix() const
 	{
 		glm::mat4 translation = glm::translate(m_position);
 		glm::mat4 rotation = glm::mat4_cast(m_orientation);
 		glm::mat4 scale = glm::scale(m_scale);
 
-		return translation * rotation * scale;
+		return getParentMatrix() * translation * rotation * scale;
+	}
+
+	void Transform::setParent(Transform * const parent)
+	{
+		m_parent = parent;
+	}
+
+	Transform * const Transform::getParent() const
+	{
+		return m_parent;
 	}
 
 	void Transform::setPosition(const glm::vec3 & position)

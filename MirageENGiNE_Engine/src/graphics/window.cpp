@@ -10,11 +10,15 @@
 namespace mirage
 {
 
-	Window::Window(const std::string t, int w, int h, bool fs) :
+	Window::Window(
+		const std::string title,
+		int width,
+		int height,
+		bool fullscreen
+	) :
 		m_window(NULL),
-		m_title(t)
+		m_title(title)
 	{
-
 		// Setup GLFW window hints
 		glfwDefaultWindowHints();
 		glfwWindowHint(GLFW_VISIBLE, GL_FALSE);
@@ -25,17 +29,18 @@ namespace mirage
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_FALSE);
 
 		// Create the window, inform errors
-		m_window = glfwCreateWindow(w, h, t.c_str(), (fs == true) ? glfwGetPrimaryMonitor() : NULL, NULL);
+		m_window = glfwCreateWindow(width, height, m_title.c_str(), (fullscreen == true) ? glfwGetPrimaryMonitor() : NULL, NULL);
 
+		// Throw exception if glfwCreateWindow returns NULL
 		if (m_window == NULL)
 			throw std::exception("Window::Window glfwCreateWindow failed.");
 
-		// Create GL context, bind it to the window, etc...
+		// Create GL context for this window, make it current and so on...
 		glfwMakeContextCurrent(m_window);
 		glfwSwapInterval(GL_SWAP_INTERVAL);
 		glfwShowWindow(m_window);
 
-		MLOG_INFO("Window::Window initialized successfully. Title: %s, width: %d, height: %d, fullscreen: %s", t.c_str(), w, h, (fs == true) ? "true" : "false");
+		MLOG_INFO("Window::Window, created. Title: %s, width: %d, height: %d, fullscreen: %s", m_title.c_str(), width, height, (fullscreen == true) ? "true" : "false");
 	}
 
 	Window::~Window()
@@ -43,10 +48,15 @@ namespace mirage
 		glfwDestroyWindow(m_window);
 	}
 
-	void Window::setTitle(const std::string t)
+	GLFWwindow * const Window::getHandle() const
 	{
-		glfwSetWindowTitle(m_window, t.c_str());
-		m_title = t;
+		return m_window;
+	}
+
+	void Window::setTitle(const std::string title)
+	{
+		glfwSetWindowTitle(m_window, title.c_str());
+		m_title = title;
 	}
 
 	std::string Window::getTitle() const
@@ -66,11 +76,6 @@ namespace mirage
 		int w = 0, h = 0;
 		glfwGetWindowSize(m_window, &w, &h);
 		return h;
-	}
-
-	GLFWwindow * const Window::getHandle() const
-	{
-		return m_window;
 	}
 
 }

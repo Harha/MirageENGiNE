@@ -32,7 +32,32 @@ namespace mirage
 
 	void TestGame::initialize()
 	{
-		GameObject * player_freelook = new GameObject("player_freelook", Transform(glm::vec3(0, 0, -5)), nullptr, nullptr);
+		// Create game objects
+		GameObject * player = new GameObject("player", Transform(glm::vec3(0, -2, -10)));
+		CameraPerspective * camera_perspective = new CameraPerspective(
+			"camera_perspective",
+			70.0f,
+			(float)m_coreEngine->getWindow()->getWidth() / (float)m_coreEngine->getWindow()->getHeight(),
+			0.01f,
+			1028.0f,
+			1.0f
+		);
+		player->addComponent(camera_perspective);
+
+		GameObject * mitsuba = new GameObject("mitsuba");
+		ModelBasic * model_mitsuba = new ModelBasic(
+			"mitsuba/mitsuba.obj",
+			"model_mitsuba"
+		);
+		mitsuba->addComponent(model_mitsuba);
+
+		// Add game objects to game
+		GameObject * root = getObject("root");
+		root->addChildren(player);
+		root->addChildren(mitsuba);
+
+		/*
+		GameObject * player_freelook = new GameObject("player_freelook", Transform(glm::vec3(0, 0, -5)));
 		getObject("root")->addChildren(player_freelook);
 		CameraPerspective * camera_perspective = new CameraPerspective(
 			"camera_perspective",
@@ -44,36 +69,39 @@ namespace mirage
 		);
 		getObject("player_freelook")->addComponent(camera_perspective);
 
-		GameObject * player_fps = new GameObject("player_fps", Transform(), nullptr, nullptr);
+		GameObject * player_fps = new GameObject("player_fps", Transform());
 		getObject("root")->addChildren(player_fps);
 
-		GameObject * model_test = new GameObject("model_test", Transform(), nullptr, nullptr);
+		GameObject * model_test = new GameObject("model_test", Transform());
 		getObject("root")->addChildren(model_test);
 		ModelBasic * model_basic = new ModelBasic(
 			"mitsuba/mitsuba.obj",
 			"mitsuba_testmodel"
 		);
 		model_test->addComponent(model_basic);
+		*/
 	}
 
 	void TestGame::update(float dt)
 	{
-		getObject("model_test")->getTransform().rotate(glm::vec3(0, 1, 0), 0.0025f);
+		getObject("mitsuba")->getTransform().rotate(glm::vec3(0, 1, 0), 0.001f);
 	}
 
 	void TestGame::render(GraphicsEngine * const gfxEngine)
 	{
-		gfxEngine->setCurrentCamera(getObject("player_freelook")->getComponent<CameraPerspective *>("camera_perspective")->getCamera());
+		// Set current camera for scene
+		gfxEngine->setCurrentCamera(getObject("player")->getComponent<CameraPerspective *>("camera_perspective")->getCamera());
 
-		getObject("model_test")->render(gfxEngine);
+		// Render models
+		getObject("mitsuba")->render(gfxEngine);
 	}
 
 	void TestGame::renderGUI()
 	{
 		ImGui_ImplGlfwGL3_NewFrame();
 
-		// Render Game Object node tree
-		ImGui::Begin("Game Object tree");
+		// Render GameObject node tree
+		ImGui::Begin("GameObject tree");
 		renderGUI_GameObjectTree(getObject("root"));
 		ImGui::End();
 

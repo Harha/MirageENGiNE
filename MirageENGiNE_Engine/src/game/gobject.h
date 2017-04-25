@@ -20,9 +20,7 @@ namespace mirage
 	public:
 		GameObject(
 			const std::string & identifier = "GameObject",
-			Transform transform = Transform(),
-			Game * game = nullptr,
-			GameObject * parent = nullptr
+			Transform transform = Transform()
 		);
 		~GameObject();
 

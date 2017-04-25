@@ -8,6 +8,7 @@
 #include "3rdparty/imgui/imgui_impl_glfw_gl3.h"
 #include "3rdparty/glad/glad.h"
 #include <GLFW/glfw3.h>
+#include <glm/gtx/string_cast.hpp>
 
 // mirage includes
 #include "config.h"
@@ -30,29 +31,42 @@ namespace mirage
 		m_objects()
 	{
 		// Create initial root game object
-		GameObject * root = new GameObject("root", Transform(), nullptr, nullptr);
-		addObject(root);
+		GameObject * root = new GameObject("root", Transform());
+		addRootLevelObject(root);
 
-		MLOG_INFO("Game::Game, initialized.");
+		MLOG_INFO("Game::Game, created.");
 	}
 
 	Game::~Game()
 	{
-		// Clear all game objects from memory
-		clearObjects();
+		// Deallocate all game objects from memory
+		clearAllObjects();
 
-		MLOG_INFO("Game::~Game, destroyed. CoreEngine *: %p", (void *)m_coreEngine);
+		MLOG_INFO("Game::~Game, destroyed.");
 	}
 
 	void Game::renderGUI_GameObjectTree(GameObject * const node)
 	{
 		if (node == nullptr)
-			throw std::exception("Game::renderGUI_GameObjectTree(node), target node object is pointing to NULL!");
+		{
+			throw std::exception("Game::renderGUI_GameObjectTree(node), error. Target node object is pointing to NULL!");
+		}
 
+		// Current game object text label
 		std::string id_go("(object): " + node->getIdentifier());
 
 		if (ImGui::TreeNode(id_go.c_str()))
 		{
+			// Render information about current game object
+			if (ImGui::TreeNode("information: "))
+			{
+				ImGui::Text("Position: %s", glm::to_string(node->getTransform().getPosition()));
+				ImGui::Text("Orientation: %s", glm::to_string(node->getTransform().getOrientation()));
+				ImGui::Text("Scale: %s", glm::to_string(node->getTransform().getScale()));
+
+				ImGui::TreePop();
+			}
+
 			for (auto child : node->getChildren())
 			{
 				renderGUI_GameObjectTree(child);
@@ -60,8 +74,10 @@ namespace mirage
 
 			for (auto component : node->getComponents())
 			{
+				// Current component text label
 				std::string id_gc("(component): " + component->getIdentifier());
 
+				// Render extra information about each component type
 				if (ImGui::TreeNode(id_gc.c_str()))
 				{
 					switch (component->getType())
@@ -110,18 +126,18 @@ namespace mirage
 		m_coreEngine = engine;
 	}
 
-	CoreEngine * Game::getEngine()
+	CoreEngine * const Game::getEngine()
 	{
 		return m_coreEngine;
 	}
 
-	void Game::addObject(GameObject * const object)
+	void Game::addRootLevelObject(GameObject * const object)
 	{
 		m_objects.push_back(object);
 		object->setGame(this);
 	}
 
-	void Game::clearObjects()
+	void Game::clearAllObjects()
 	{
 		for (auto object : m_objects)
 		{
@@ -131,7 +147,7 @@ namespace mirage
 		m_objects.clear();
 	}
 
-	const std::vector<GameObject *> & Game::getObjects() const
+	const std::vector<GameObject *> & Game::getRootLevelObjects() const
 	{
 		return m_objects;
 	}
@@ -175,74 +191,6 @@ namespace mirage
 		}
 
 		return nullptr;
-
-		/*
-		if (node != nullptr)
-		{
-			MLOG_DEBUG("getObject, node: %s", node->getIdentifier().c_str());
-
-			if (node->getIdentifier() == identifier)
-				return node;
-
-			for (auto child : node->getChildren())
-			{
-				return getObject(identifier, child);
-			}
-		}
-		else
-		{
-			MLOG_DEBUG("getObject, identifier: %s", identifier.c_str());
-
-			for (auto object : m_objects)
-			{
-				return getObject(identifier, object);
-			}
-		}*/
-
-		/*
-		// If no target node specified, start from root level
-		if (node == nullptr)
-		{
-			for (auto object : m_objects)
-			{
-				if (object->getIdentifier() == identifier)
-					return object;
-
-				return getObject(identifier, object);
-			}
-
-			// No objects to search, return NULL
-			return nullptr;
-		}
-		else
-		{
-			MLOG_DEBUG("getObject, identifier: %s", node->getIdentifier().c_str());
-
-			for (auto child : node->getChildren())
-			{
-				MLOG_DEBUG("getObject, child_identifier: %s", child->getIdentifier().c_str());
-
-				if (child->getIdentifier() == identifier)
-					return child;
-
-				return getObject(identifier, child);
-			}
-
-			return nullptr;
-
-			if (node->getIdentifier() == identifier)
-				return node;
-
-			for (auto child : node->getChildren())
-			{
-				if (child == nullptr)
-					throw std::exception("GameObject::getObject(id, node), node child object is pointing to NULL!");
-
-				return getObject(identifier, child);
-			}
-
-			// No childs to search, return NULL
-			return nullptr;*/
 	}
 
 }

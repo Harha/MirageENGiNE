@@ -29,12 +29,13 @@ namespace mirage
 	public:
 		ShaderData();
 		~ShaderData();
-		void addReference();
-		void delReference();
+
+		const GLuint getProgram() const;
 		void addUniform(GLSLUniform u);
 		void delUniform(const std::string & name);
-		const GLuint getProgram() const;
 		std::map<std::string, GLSLUniform> getUniforms() const;
+		void addReference();
+		void delReference();
 		const int32_t getRefAmount() const;
 	private:
 		GLuint m_program;
@@ -54,6 +55,7 @@ namespace mirage
 			const std::string & filePathFrag
 		);
 		~ShaderProgram();
+
 		void bind();
 		std::string preprocessShader(const TxtFile & src);
 		void attachShader(const std::string & src, GLenum type);

@@ -22,24 +22,6 @@ namespace mirage
 		GLenum type;
 		GLint size;
 		GLint location;
-
-		GLSLUniform(
-			const std::string & name = "NULL",
-			GLenum type = 0,
-			GLint size = 0,
-			GLint location = 0
-		) :
-			name(name),
-			type(type),
-			size(size),
-			location(location)
-		{
-			MLOG_DEBUG(
-				"GLSLUniform::GLSLUniform, created. Name: %s, type: %u, size: %d, location: %d",
-				name.c_str(), type, size, location
-			);
-		}
-
 	};
 
 }

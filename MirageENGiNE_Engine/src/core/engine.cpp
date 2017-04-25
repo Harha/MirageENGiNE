@@ -14,7 +14,7 @@
 // mirage includes
 #include "config.h"
 #include "macros.h"
-#include "runstate.h"
+#include "core/runstate.h"
 #include "graphics/window.h"
 #include "graphics/gfxengine.h"
 #include "game/game.h"

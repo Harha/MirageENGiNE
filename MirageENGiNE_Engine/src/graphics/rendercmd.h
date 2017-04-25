@@ -4,10 +4,6 @@
 // std includes
 #include <vector>
 
-// lib includes
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
-
 namespace mirage
 {
 
@@ -21,16 +17,16 @@ namespace mirage
 		RenderCMD(
 			ShaderProgram * const program,
 			Camera * const camera,
-			std::vector<MeshRenderer *> meshes
+			std::vector<MeshRenderer *> meshRenderers
 		);
 
 		ShaderProgram * const getProgram() const;
 		Camera * const getCamera() const;
-		std::vector<MeshRenderer *> getMeshes() const;
+		const std::vector<MeshRenderer *> & getMeshRenderers() const;
 	private:
 		ShaderProgram * m_program;
 		Camera * m_camera;
-		std::vector<MeshRenderer *> m_meshes;
+		std::vector<MeshRenderer *> m_meshRenderers;
 	};
 }
 

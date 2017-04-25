@@ -29,22 +29,19 @@ namespace mirage
 	{
 		m_program = glCreateProgram();
 
-		MLOG_INFO("ShaderData::ShaderData initialized successfully, program: %d", m_program);
+		MLOG_DEBUG("ShaderData::ShaderData, initialized. Program: %d", m_program);
 	}
 
 	ShaderData::~ShaderData()
 	{
 		glDeleteProgram(m_program);
+
+		MLOG_DEBUG("ShaderData::~ShaderData, destroyed.");
 	}
 
-	void ShaderData::addReference()
+	const GLuint ShaderData::getProgram() const
 	{
-		m_refAmount++;
-	}
-
-	void ShaderData::delReference()
-	{
-		m_refAmount = (m_refAmount - 1 < 0) ? 0 : m_refAmount - 1;
+		return m_program;
 	}
 
 	void ShaderData::addUniform(GLSLUniform u)
@@ -57,14 +54,19 @@ namespace mirage
 		m_uniforms.erase(name);
 	}
 
-	const GLuint ShaderData::getProgram() const
-	{
-		return m_program;
-	}
-
 	std::map<std::string, GLSLUniform> ShaderData::getUniforms() const
 	{
 		return m_uniforms;
+	}
+
+	void ShaderData::addReference()
+	{
+		m_refAmount++;
+	}
+
+	void ShaderData::delReference()
+	{
+		m_refAmount = (m_refAmount - 1 < 0) ? 0 : m_refAmount - 1;
 	}
 
 	const int32_t ShaderData::getRefAmount() const
@@ -120,8 +122,6 @@ namespace mirage
 			linkProgram();
 			validateProgram();
 			gatherActiveUniforms();
-
-
 		}
 		// This is an existing shader program
 		else
@@ -130,7 +130,7 @@ namespace mirage
 			m_data->addReference();
 		}
 
-		MLOG_INFO("ShaderProgram::ShaderProgram initialized successfully. Name: %s, reference amount: %d", m_name.c_str(), m_data->getRefAmount());
+		MLOG_DEBUG("ShaderProgram::ShaderProgram created. Name: %s, reference amount: %d", m_name.c_str(), m_data->getRefAmount());
 	}
 
 	ShaderProgram::~ShaderProgram()
@@ -142,7 +142,7 @@ namespace mirage
 			LOADED_SHADERS.erase(m_name);
 			MDELETES(m_data);
 
-			MLOG_INFO("ShaderProgram::~ShaderProgram, destroying program. Name: %s", m_name.c_str());
+			MLOG_DEBUG("ShaderProgram::~ShaderProgram, destroying program. Name: %s", m_name.c_str());
 		}
 	}
 
@@ -180,71 +180,102 @@ namespace mirage
 
 	void ShaderProgram::attachShader(const std::string & src, GLenum type)
 	{
+		// Create the shader with specified type
 		GLuint handle = glCreateShader(type);
 
 		if (handle == NULL)
-			throw std::exception("Shader::attachShader glCreateShader returned NULL.");
+		{
+			throw std::exception("Shader::attachShader, error. glCreateShader returned NULL.");
+		}
 
+		// Convert source to c-string
 		const char * src_data = src.c_str();
 
+		// Compile the shader
 		glShaderSource(handle, 1, &src_data, NULL);
 		glCompileShader(handle);
 
+		// Get compile status
 		GLint status;
 		glGetShaderiv(handle, GL_COMPILE_STATUS, &status);
 
 		if (status == NULL)
-			throw std::exception(std::string("Shader::attachShader glCompileShader failed. Info log:\n\n" + getShaderInfoLog(handle)).c_str());
+		{
+			throw std::exception(std::string("Shader::attachShader, error. glCompileShader failed. Info log:\n\n" + getShaderInfoLog(handle)).c_str());
+		}
 
+		// Attach the shader to program
 		glAttachShader(m_data->getProgram(), handle);
 
-		MLOG_DEBUG("ShaderProgram::attachShader, shader(%zd) compiled and attached to program(%s) successfully.", type, m_name.c_str());
+		MLOG_DEBUG("ShaderProgram::attachShader, success. Shader compiled and attached to program successfully. Type: %zd, name: %s", type, m_name.c_str());
 	}
 
 	void ShaderProgram::linkProgram()
 	{
+		// Link the program
 		glLinkProgram(m_data->getProgram());
 
+		// Get link status
 		GLint status;
 		glGetProgramiv(m_data->getProgram(), GL_LINK_STATUS, &status);
-		if (status == NULL)
-			throw std::exception(std::string("Shader::linkProgram glLinkProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
 
-		MLOG_DEBUG("ShaderProgram::linkProgram, program(%s) linked successfully.", m_name.c_str());
+		if (status == NULL)
+		{
+			throw std::exception(std::string("Shader::linkProgram, error. glLinkProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
+		}
+
+		MLOG_DEBUG("ShaderProgram::linkProgram, success. Program linked successfully. Name: %s", m_name.c_str());
 	}
 
 	void ShaderProgram::validateProgram()
 	{
+		// Validate the program
 		glValidateProgram(m_data->getProgram());
 
+		// Get validation status
 		GLint status;
 		glGetProgramiv(m_data->getProgram(), GL_VALIDATE_STATUS, &status);
-		if (status == NULL)
-			throw std::exception(std::string("Shader::validateProgram glValidateProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
 
-		MLOG_DEBUG("ShaderProgram::validateProgram, program(%s) validated successfully.", m_name.c_str());
+		if (status == NULL)
+		{
+			throw std::exception(std::string("Shader::validateProgram, error. glValidateProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
+		}
+
+		MLOG_DEBUG("ShaderProgram::validateProgram, success. Program validated successfully. Name: %s", m_name.c_str());
 	}
 
 	void ShaderProgram::gatherActiveUniforms()
 	{
+		// Get uniform count
 		GLint uniforms_num;
 		glGetProgramiv(m_data->getProgram(), GL_ACTIVE_UNIFORMS, &uniforms_num);
 
+		// Gather all uniforms from the program
 		for (GLint i = 0; i < uniforms_num; i++)
 		{
-			GLSLUniform uniform;
-			GLchar name[255];
-			glGetActiveUniform(m_data->getProgram(), i, sizeof(name) - 1, NULL, &uniform.size, &uniform.type, name);
-			uniform.location = glGetUniformLocation(m_data->getProgram(), name);
+			// Uniform data temp storage
+			GLchar u_name[255];
+			GLenum u_type;
+			GLint u_size;
+			GLint u_location;
 
-			if (uniform.location == -1)
-				throw std::exception("Shader::gatherActiveUniforms glGetUniformLocation failed.");
+			// Get uniform information
+			glGetActiveUniform(m_data->getProgram(), i, sizeof(u_name) - 1, NULL, &u_size, &u_type, u_name);
+			u_location = glGetUniformLocation(m_data->getProgram(), u_name);
 
-			uniform.name = std::string(name);
+			if (u_location == -1)
+			{
+				throw std::exception("Shader::gatherActiveUniforms, error. glGetUniformLocation failed.");
+			}
+
+			// Create the uniform object & save it
+			GLSLUniform uniform{ std::string(u_name), u_type, u_size, u_location };
 			m_data->addUniform(uniform);
+
+			MLOG_DEBUG("ShaderProgram::gatherActiveUniforms, addUniform. Name: %s, type: %u, size: %d, location: %d", u_name, u_type, u_size, u_location);
 		}
 
-		MLOG_DEBUG("ShaderProgram::gatherActiveUniforms, program(%s), active uniforms: %zd", m_name.c_str(), m_data->getUniforms().size());
+		MLOG_DEBUG("ShaderProgram::gatherActiveUniforms, success. Program uniforms gathered successfully. Name: %s, active uniform count: %zd", m_name.c_str(), m_data->getUniforms().size());
 	}
 
 	void ShaderProgram::setUniformBool(const std::string & name, GLint b)

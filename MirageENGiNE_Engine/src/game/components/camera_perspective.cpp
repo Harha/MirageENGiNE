@@ -6,9 +6,10 @@
 
 // mirage includes
 #include "macros.h"
-#include "game/gobject.h"
 #include "graphics/gfxengine.h"
+#include "game/gobject.h"
 #include "graphics/camera/camera.h"
+#include "core/transform.h"
 
 namespace mirage
 {

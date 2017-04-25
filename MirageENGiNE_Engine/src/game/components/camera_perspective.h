@@ -6,9 +6,6 @@
 // std includes
 #include <string>
 
-// mirage includes
-#include "core/transform.h"
-
 namespace mirage
 {
 

@@ -5,59 +5,70 @@
 
 // std includes
 #include <iostream>
+#include <exception>
 
 // lib includes
 #include "3rdparty/imgui/imgui.h"
 #include "3rdparty/imgui/imgui_impl_glfw_gl3.h"
 #include "3rdparty/glad/glad.h"
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-#include <glm/gtx/transform.hpp>
 
 // mirage includes
 #include "config.h"
 #include "macros.h"
 #include "core/runstate.h"
 #include "core/engine.h"
-#include "window.h"
-#include "graphics/glsl/shader.h"
+#include "graphics/window.h"
 #include "graphics/camera/camera.h"
-#include "core/mesh/mesh_base.h"
-#include "graphics/mesh/mesh_renderer.h"
 #include "graphics/rendercmd.h"
 #include "graphics/glsl/shader.h"
+#include "core/mesh/mesh_base.h"
+#include "graphics/mesh/mesh_renderer.h"
 #include "game/game.h"
 
 namespace mirage
 {
 
-	GraphicsEngine::GraphicsEngine(CoreEngine * const coreEngine) :
+	GraphicsEngine::GraphicsEngine(
+		CoreEngine * const coreEngine
+	) :
 		m_runState(ERS_UNINTIALIZED),
 		m_coreEngine(coreEngine),
 		m_currentCamera(nullptr),
 		m_renderCmds(),
 		m_shaderPrograms()
 	{
-
 		MLOG_INFO("GraphicsEngine::GraphicsEngine, created.");
 	}
 
 	GraphicsEngine::~GraphicsEngine()
 	{
 		ImGui_ImplGlfwGL3_Shutdown();
+
+		// Deallocate shader programs
+		for (auto program_KeyValue : m_shaderPrograms)
+		{
+			MDELETES(program_KeyValue.second);
+		}
 	}
 
 	void GraphicsEngine::initialize()
 	{
+		// Throw if graphics engine run state is not correct
+		if (m_runState != ERS_UNINTIALIZED)
+		{
+			throw std::exception("GraphicsEngine::initialize, m_runState != ERS_UNITIALIZED! Engine run state:" + m_runState);
+		}
+
 		// Setup GLFW3 / ImGui window binding
 		ImGui_ImplGlfwGL3_Init(m_coreEngine->getWindow()->getHandle(), true);
 
 		// Load shader programs
-		m_shaderPrograms["model_basic"] = new ShaderProgram("test", "", "basicmesh.vert.glsl", "basicmesh.frag.glsl");
+		m_shaderPrograms["gbuffer"] = new ShaderProgram("gbuffer", "", "basicmesh.vert.glsl", "basicmesh.frag.glsl");
 
 		// Set state to initialized
 		m_runState = ERS_INITIALIZED;
-		MLOG_INFO("GraphicsEngine::initialize, executed successfully.");
+		MLOG_INFO("GraphicsEngine::initialize, initialized.");
 	}
 
 	void GraphicsEngine::render()
@@ -78,7 +89,7 @@ namespace mirage
 			RenderCMD * r_cmd = m_renderCmds[i];
 			ShaderProgram * program = r_cmd->getProgram();
 			Camera * camera = r_cmd->getCamera();
-			std::vector<MeshRenderer *> meshes = r_cmd->getMeshes();
+			std::vector<MeshRenderer *> meshes = r_cmd->getMeshRenderers();
 
 			program->bind();
 			program->setUniformMat4("u_VMatrix", camera->getViewMatrix());
@@ -139,7 +150,7 @@ namespace mirage
 				break;
 			}
 
-			MLOG_ERROR("glErrorCheck::glErrorCheck, glGetError(): %s", glErrorStr.c_str());
+			MLOG_ERROR("glErrorCheck::glErrorCheck, error. glGetError(): %s", glErrorStr.c_str());
 		}
 	}
 
@@ -156,6 +167,40 @@ namespace mirage
 	void GraphicsEngine::pushRenderCMD(RenderCMD * const r_cmd)
 	{
 		m_renderCmds.push_back(r_cmd);
+	}
+
+	void GraphicsEngine::clearRenderCMDs()
+	{
+		// Deallocate render commands
+		for (auto r_cmd : m_renderCmds)
+		{
+			MDELETES(r_cmd);
+		}
+
+		// Clear render commands
+		m_renderCmds.clear();
+	}
+
+	const std::vector<RenderCMD *> & GraphicsEngine::getRenderCMDs() const
+	{
+		return m_renderCmds;
+	}
+
+	void GraphicsEngine::addShaderProgram(const std::string & identifier, ShaderProgram * program)
+	{
+		auto programs_it = m_shaderPrograms.find(identifier);
+		if (programs_it != m_shaderPrograms.end())
+		{
+			throw std::exception(("GraphicsEngine::addShaderProgram, error. Program with input identifier already exists! Identifier: " + identifier).c_str());
+		}
+
+		m_shaderPrograms[identifier] = program;
+	}
+
+	void GraphicsEngine::removeShaderProgram(const std::string & identifier)
+	{
+		MDELETES(m_shaderPrograms[identifier]);
+		m_shaderPrograms.erase(identifier);
 	}
 
 	ShaderProgram * const GraphicsEngine::getShaderProgram(const std::string & name)

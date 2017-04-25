@@ -30,7 +30,7 @@ namespace mirage
 
 	MeshBaseData::~MeshBaseData()
 	{
-
+		MLOG_DEBUG("MeshBaseData::~MeshBaseData, destroyed.");
 	}
 
 	void MeshBaseData::setVertices(std::vector<Vertex> vertices)

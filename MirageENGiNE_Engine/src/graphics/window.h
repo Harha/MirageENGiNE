@@ -12,13 +12,19 @@ namespace mirage
 	class Window
 	{
 	public:
-		Window(const std::string t = "window", int w = 1280, int h = 720, bool fs = false);
+		Window(
+			const std::string title = "NULL",
+			int width = 1280,
+			int height = 720,
+			bool fullscreen = false
+		);
 		~Window();
-		void setTitle(const std::string t);
+
+		GLFWwindow * const getHandle() const;
+		void setTitle(const std::string title);
 		std::string getTitle() const;
 		int getWidth() const;
 		int getHeight() const;
-		GLFWwindow * const getHandle() const;
 	private:
 		GLFWwindow * m_window;
 		std::string m_title;

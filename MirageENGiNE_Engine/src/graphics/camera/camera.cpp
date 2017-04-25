@@ -2,6 +2,7 @@
 
 // mirage includes
 #include "macros.h"
+#include "core/transform.h"
 
 namespace mirage
 {
@@ -15,7 +16,7 @@ namespace mirage
 		m_projection(projection),
 		m_exposure(exposure)
 	{
-		MLOG_DEBUG("Camera::Camera, created.");
+		MLOG_DEBUG("Camera::Camera, created. Exposure: %.2f", m_exposure);
 	}
 
 	Camera::~Camera()
@@ -45,13 +46,13 @@ namespace mirage
 
 	glm::mat4 Camera::getViewMatrix()
 	{
-		glm::mat4 t = glm::translate(m_transform->getPosition());
-		glm::mat4 r = glm::mat4_cast(m_transform->getOrientation());
+		glm::mat4 translation = glm::translate(m_transform->getPosition());
+		glm::mat4 rotation = glm::mat4_cast(m_transform->getOrientation());
 
-		return r * t;
+		return rotation * translation;
 	}
 
-	void Camera::setExposure(const float exposure)
+	void Camera::setExposure(float exposure)
 	{
 		m_exposure = (m_exposure + exposure <= 1e-3f) ? m_exposure + exposure * 0.1f : m_exposure + exposure;
 		m_exposure = (m_exposure + exposure * 0.1f <= 1e-3f) ? m_exposure + exposure * 0.01f : m_exposure + exposure * 0.1f;

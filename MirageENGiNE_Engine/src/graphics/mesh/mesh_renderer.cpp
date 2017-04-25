@@ -7,6 +7,7 @@
 #include "config.h"
 #include "macros.h"
 #include "core/vertex.h"
+#include "core/transform.h"
 #include "core/mesh/mesh_base.h"
 
 namespace mirage
@@ -26,7 +27,7 @@ namespace mirage
 		glGenBuffers(1, &m_vbo);
 		glGenBuffers(1, &m_ibo);
 
-		MLOG_INFO("MeshRendererData::MeshRendererData initialized. VAO: %d, VBO: %d, IBO: %d", m_vao, m_vbo, m_ibo);
+		MLOG_DEBUG("MeshRendererData::MeshRendererData, created. VAO: %d, VBO: %d, IBO: %d", m_vao, m_vbo, m_ibo);
 	}
 
 	MeshRendererData::~MeshRendererData()
@@ -34,16 +35,8 @@ namespace mirage
 		glDeleteVertexArrays(1, &m_vao);
 		glDeleteBuffers(1, &m_vbo);
 		glDeleteBuffers(1, &m_ibo);
-	}
 
-	void MeshRendererData::addReference()
-	{
-		m_refAmount++;
-	}
-
-	void MeshRendererData::delReference()
-	{
-		m_refAmount = (m_refAmount - 1 < 0) ? 0 : m_refAmount - 1;
+		MLOG_DEBUG("MeshRendererData::~MeshRendererData, destroyed.");
 	}
 
 	const GLuint MeshRendererData::getVao() const
@@ -59,6 +52,16 @@ namespace mirage
 	const GLuint MeshRendererData::getIbo() const
 	{
 		return m_ibo;
+	}
+
+	void MeshRendererData::addReference()
+	{
+		m_refAmount++;
+	}
+
+	void MeshRendererData::delReference()
+	{
+		m_refAmount = (m_refAmount - 1 < 0) ? 0 : m_refAmount - 1;
 	}
 
 	const int32_t MeshRendererData::getRefAmount() const
@@ -84,8 +87,8 @@ namespace mirage
 			m_data = new MeshRendererData;
 			m_data->addReference();
 
-			// Prepare vertex data for the GPU
-			prepareVertices();
+			// Process vertices and upload them to GPU
+			processVerticesAndUploadToGPU();
 
 			LOADED_MESH_RENDERERS[m_meshBase->getFilePath()] = m_data;
 		}
@@ -96,7 +99,7 @@ namespace mirage
 			m_data->addReference();
 		}
 
-		MLOG_INFO("MeshRenderer::MeshRenderer initialized. FilePath: %s, reference amount: %d", m_meshBase->getFilePath().c_str(), m_data->getRefAmount());
+		MLOG_DEBUG("MeshRenderer::MeshRenderer, created. FilePath: %s, reference amount: %d", m_meshBase->getFilePath().c_str(), m_data->getRefAmount());
 	}
 
 	MeshRenderer::~MeshRenderer()
@@ -108,7 +111,7 @@ namespace mirage
 			LOADED_MESH_RENDERERS.erase(m_meshBase->getFilePath());
 			MDELETES(m_data);
 
-			MLOG_INFO("MeshRenderer::~MeshRenderer destroyed. FilePath: %s", m_meshBase->getFilePath().c_str());
+			MLOG_DEBUG("MeshRenderer::~MeshRenderer, destroyed. FilePath: %s", m_meshBase->getFilePath().c_str());
 		}
 	}
 
@@ -135,28 +138,6 @@ namespace mirage
 		glDisableVertexAttribArray(3);
 	}
 
-	void MeshRenderer::prepareVertices()
-	{
-		// Prepare indices
-		std::vector<uint32_t> indices(m_meshBase->getData()->getSize());
-
-		for (size_t i = 0; i < indices.size(); i++)
-		{
-			indices[i] = i;
-		}
-
-		// Prepare vertices
-		std::vector<Vertex> & vertices(m_meshBase->getData()->getVertices());
-
-		// Upload vertices to GPU
-		glBindBuffer(GL_ARRAY_BUFFER, m_data->getVbo());
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * Vertex::SIZE * sizeof(float), &vertices[0], GL_STATIC_DRAW);
-
-		// Upload indices to GPU
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_data->getIbo());
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
-	}
-
 	MeshBase * const MeshRenderer::getMeshBase()
 	{
 		return m_meshBase;
@@ -170,6 +151,28 @@ namespace mirage
 	Transform * const MeshRenderer::getTransform()
 	{
 		return m_meshBase->getTransform();
+	}
+
+	void MeshRenderer::processVerticesAndUploadToGPU()
+	{
+		// Get the indice data into temp vector
+		std::vector<uint32_t> indices(m_meshBase->getData()->getSize());
+
+		for (size_t i = 0; i < indices.size(); i++)
+		{
+			indices[i] = i;
+		}
+
+		// Get the vertex data into temp reference vector
+		std::vector<Vertex> & vertices(m_meshBase->getData()->getVertices());
+
+		// Upload vertices to GPU
+		glBindBuffer(GL_ARRAY_BUFFER, m_data->getVbo());
+		glBufferData(GL_ARRAY_BUFFER, vertices.size() * Vertex::SIZE * sizeof(float), &vertices[0], GL_STATIC_DRAW);
+
+		// Upload indices to GPU
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_data->getIbo());
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
 	}
 
 }

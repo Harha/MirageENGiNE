@@ -11,14 +11,12 @@ namespace mirage
 
 	GameObject::GameObject(
 		const std::string & identifier,
-		Transform transform,
-		Game * game,
-		GameObject * parent
+		Transform transform
 	) :
 		m_identifier(identifier),
 		m_transform(transform),
-		m_game(game),
-		m_parent(parent),
+		m_game(nullptr),
+		m_parent(nullptr),
 		m_children(),
 		m_components()
 	{
@@ -101,6 +99,8 @@ namespace mirage
 	void GameObject::setParent(GameObject * const parent)
 	{
 		m_parent = parent;
+		m_game = parent->getGame();
+		m_transform.setParent(&parent->getTransform());
 	}
 
 	GameObject * const GameObject::getParent() const
