@@ -55,31 +55,6 @@ namespace mirage
 		GameObject * root = getObject("root");
 		root->addChildren(player);
 		root->addChildren(mitsuba);
-
-		/*
-		GameObject * player_freelook = new GameObject("player_freelook", Transform(glm::vec3(0, 0, -5)));
-		getObject("root")->addChildren(player_freelook);
-		CameraPerspective * camera_perspective = new CameraPerspective(
-			"camera_perspective",
-			70.0f,
-			(float)m_coreEngine->getWindow()->getWidth() / (float)m_coreEngine->getWindow()->getHeight(),
-			0.01f,
-			1028.0f,
-			1.0f
-		);
-		getObject("player_freelook")->addComponent(camera_perspective);
-
-		GameObject * player_fps = new GameObject("player_fps", Transform());
-		getObject("root")->addChildren(player_fps);
-
-		GameObject * model_test = new GameObject("model_test", Transform());
-		getObject("root")->addChildren(model_test);
-		ModelBasic * model_basic = new ModelBasic(
-			"mitsuba/mitsuba.obj",
-			"mitsuba_testmodel"
-		);
-		model_test->addComponent(model_basic);
-		*/
 	}
 
 	void TestGame::update(float dt)
