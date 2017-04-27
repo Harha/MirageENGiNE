@@ -30,6 +30,10 @@ namespace mirage
 		virtual void clearAllObjects();
 		virtual const std::vector<GameObject *> & getRootLevelObjects() const;
 		virtual GameObject * const getObject(const std::string & identifier, GameObject * const node = nullptr);
+
+		virtual void api_lockCursor(bool lock) const;
+		virtual bool api_isCursorLocked() const;
+		virtual void api_setCursorPos(float x, float y);
 	private:
 	protected:
 		CoreEngine * m_coreEngine;

@@ -145,12 +145,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\core\engine.cpp" />
+    <ClCompile Include="src\core\input.cpp" />
     <ClCompile Include="src\core\material\material_base.cpp" />
     <ClCompile Include="src\core\mesh\mesh_base.cpp" />
     <ClCompile Include="src\core\model_formats\mesh_converters.cpp" />
     <ClCompile Include="src\core\model_formats\wavefront_file.cpp" />
     <ClCompile Include="src\core\transform.cpp" />
     <ClCompile Include="src\game\components\camera_perspective.cpp" />
+    <ClCompile Include="src\game\components\freelook.cpp" />
+    <ClCompile Include="src\game\components\freemove.cpp" />
     <ClCompile Include="src\game\components\model_basic.cpp" />
     <ClCompile Include="src\game\game.cpp" />
     <ClCompile Include="src\game\gcomponent.cpp" />
@@ -175,6 +178,7 @@
   <ItemGroup>
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\core\engine.h" />
+    <ClInclude Include="src\core\input.h" />
     <ClInclude Include="src\core\material\material_base.h" />
     <ClInclude Include="src\core\mesh\mesh_base.h" />
     <ClInclude Include="src\core\model_formats\mesh_converters.h" />
@@ -182,6 +186,8 @@
     <ClInclude Include="src\core\runstate.h" />
     <ClInclude Include="src\core\transform.h" />
     <ClInclude Include="src\game\components\camera_perspective.h" />
+    <ClInclude Include="src\game\components\freelook.h" />
+    <ClInclude Include="src\game\components\freemove.h" />
     <ClInclude Include="src\game\components\model_basic.h" />
     <ClInclude Include="src\game\game.h" />
     <ClInclude Include="src\game\gcomponent.h" />

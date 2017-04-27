@@ -4,7 +4,7 @@ layout(location = 0) in vec3 i_position;
 layout(location = 3) in vec2 i_texcoord;
 
 layout(location = 0) out vec4 o_position;
-layout(location = 2) out vec2 o_texcoord;
+layout(location = 3) out vec2 o_texcoord;
 
 uniform mat4 u_MMatrix;
 uniform mat4 u_VMatrix;

@@ -15,12 +15,12 @@ namespace mirage
 {
 
 	CameraPerspective::CameraPerspective(
-		const std::string & identifier,
 		float fov,
 		float aspect,
 		float nearplane,
 		float farplane,
-		float exposure
+		float exposure,
+		const std::string & identifier
 	) :
 		GameComponent(GC_CAMERA_PERSPECTIVE, identifier),
 		m_settings{ fov, aspect, nearplane, farplane },

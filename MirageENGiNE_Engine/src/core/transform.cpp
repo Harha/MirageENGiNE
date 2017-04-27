@@ -105,6 +105,36 @@ namespace mirage
 		return m_orientation;
 	}
 
+	glm::vec3 Transform::getForward() const
+	{
+		return glm::vec3(0, 0, 1) * m_orientation;
+	}
+
+	glm::vec3 Transform::getBackward() const
+	{
+		return glm::vec3(0, 0, -1) * m_orientation;
+	}
+
+	glm::vec3 Transform::getLeft() const
+	{
+		return glm::vec3(-1, 0, 0) * m_orientation;
+	}
+
+	glm::vec3 Transform::getRight() const
+	{
+		return glm::vec3(1, 0, 0) * m_orientation;
+	}
+
+	glm::vec3 Transform::getUp() const
+	{
+		return glm::vec3(0, 1, 0) * m_orientation;
+	}
+
+	glm::vec3 Transform::getDown() const
+	{
+		return glm::vec3(0, -1, 0) * m_orientation;
+	}
+
 	void Transform::setScale(const glm::vec3 & scale)
 	{
 		m_scale = scale;

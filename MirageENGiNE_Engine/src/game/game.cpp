@@ -193,4 +193,19 @@ namespace mirage
 		return nullptr;
 	}
 
+	void Game::api_lockCursor(bool lock) const
+	{
+		glfwSetInputMode(m_coreEngine->getWindow()->getHandle(), GLFW_CURSOR, (lock == true) ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+	}
+
+	bool Game::api_isCursorLocked() const
+	{
+		return (glfwGetInputMode(m_coreEngine->getWindow()->getHandle(), GLFW_CURSOR) == GLFW_CURSOR_DISABLED) ? true : false;
+	}
+
+	void Game::api_setCursorPos(float x, float y)
+	{
+		glfwSetCursorPos(m_coreEngine->getWindow()->getHandle(), static_cast<double>(x), static_cast<double>(y));
+	}
+
 }

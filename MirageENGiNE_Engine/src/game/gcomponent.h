@@ -15,7 +15,8 @@ namespace mirage
 		GC_GENERIC = 0,
 		GC_CAMERA_PERSPECTIVE = 1,
 		GC_CAMERA_ORTHOGRAPHIC = 2,
-		GC_MODEL_BASIC = 3
+		GC_MODEL_BASIC = 3,
+		GC_FREEMOVE = 4
 	};
 
 	class GameComponent

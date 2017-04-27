@@ -18,6 +18,7 @@
 #include "graphics/window.h"
 #include "graphics/gfxengine.h"
 #include "game/game.h"
+#include "core/input.h"
 
 namespace mirage
 {
@@ -63,7 +64,24 @@ namespace mirage
 
 	void CoreEngine::glfwKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods)
 	{
+		input::KB_KEYS[key] = static_cast<input::KBK_State_t>(action);
+
 		MLOG_DEBUG("CoreEngine::glfwKeyCallback, called. Key: %d, scancode: %d, action: %d, mods: %d", key, scancode, action, mods);
+	}
+
+	void CoreEngine::glfwMouseButtonCallback(GLFWwindow * window, int button, int action, int mods)
+	{
+		input::MS_BUTTONS[button] = (1 & action) != 0;
+
+		MLOG_DEBUG("CoreEngine::glfwMouseButtonCallback, called. Button: %d, action: %d, mods: %d", button, action, mods);
+	}
+
+	void CoreEngine::glfwCursorPosCallback(GLFWwindow * window, double x, double y)
+	{
+		input::MS_POS_X = static_cast<float>(x);
+		input::MS_POS_Y = static_cast<float>(y);
+
+		//MLOG_DEBUG("CoreEngine::glfwCursorPosCallback, called. x: %.2f, y: %.2f", x, y);
 	}
 
 	void CoreEngine::run()
@@ -91,6 +109,8 @@ namespace mirage
 		// Register GLFW callback functions
 		glfwSetWindowSizeCallback(m_window->getHandle(), glfwWindowSizeCallback);
 		glfwSetKeyCallback(m_window->getHandle(), glfwKeyCallback);
+		glfwSetMouseButtonCallback(m_window->getHandle(), glfwMouseButtonCallback);
+		glfwSetCursorPosCallback(m_window->getHandle(), glfwCursorPosCallback);
 
 		// Enter the engine's main loop
 		m_runState = ERS_RUNNING;

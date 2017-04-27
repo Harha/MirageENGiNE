@@ -12,14 +12,14 @@ namespace mirage
 	{
 	public:
 		Transform(
-			glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::quat orientation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+			glm::vec3 position = glm::vec3(),
+			glm::quat orientation = glm::quat(),
 			glm::vec3 sscale = glm::vec3(1.0f, 1.0f, 1.0f)
 		);
 		Transform(
 			Transform * const parent,
-			glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
-			glm::quat orientation = glm::quat(1.0f, 0.0f, 0.0f, 0.0f),
+			glm::vec3 position = glm::vec3(),
+			glm::quat orientation = glm::quat(),
 			glm::vec3 sscale = glm::vec3(1.0f, 1.0f, 1.0f)
 		);
 
@@ -35,6 +35,12 @@ namespace mirage
 		const glm::vec3 & getPosition() const;
 		void setOrientation(const glm::quat & orientation);
 		const glm::quat & getOrientation() const;
+		glm::vec3 getForward() const;
+		glm::vec3 getBackward() const;
+		glm::vec3 getLeft() const;
+		glm::vec3 getRight() const;
+		glm::vec3 getUp() const;
+		glm::vec3 getDown() const;
 		void setScale(const glm::vec3 & scale);
 		const glm::vec3 & getScale() const;
 	private:

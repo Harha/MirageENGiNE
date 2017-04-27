@@ -27,6 +27,8 @@ namespace mirage
 
 		static void glfwWindowSizeCallback(GLFWwindow * window, int width, int height);
 		static void glfwKeyCallback(GLFWwindow * window, int key, int scancode, int action, int mods);
+		static void glfwMouseButtonCallback(GLFWwindow * window, int button, int action, int mods);
+		static void glfwCursorPosCallback(GLFWwindow * window, double x, double y);
 
 		void run();
 		const IniFile & getConfig() const;
