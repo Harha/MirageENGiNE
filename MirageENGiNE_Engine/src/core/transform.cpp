@@ -43,7 +43,7 @@ namespace mirage
 
 	void Transform::rotate(const glm::vec3 & axis, float angle)
 	{
-		rotate(glm::angleAxis(angle, axis));
+		rotate(glm::angleAxis(glm::radians(angle), axis));
 	}
 
 	void Transform::rotate(const glm::quat & rotation)
@@ -107,32 +107,32 @@ namespace mirage
 
 	glm::vec3 Transform::getForward() const
 	{
-		return glm::vec3(0, 0, 1) * m_orientation;
+		return m_orientation * glm::vec3(0, 0, 1);
 	}
 
 	glm::vec3 Transform::getBackward() const
 	{
-		return glm::vec3(0, 0, -1) * m_orientation;
+		return m_orientation * glm::vec3(0, 0, -1);
 	}
 
 	glm::vec3 Transform::getLeft() const
 	{
-		return glm::vec3(-1, 0, 0) * m_orientation;
+		return m_orientation * glm::vec3(-1, 0, 0);
 	}
 
 	glm::vec3 Transform::getRight() const
 	{
-		return glm::vec3(1, 0, 0) * m_orientation;
+		return m_orientation * glm::vec3(1, 0, 0);
 	}
 
 	glm::vec3 Transform::getUp() const
 	{
-		return glm::vec3(0, 1, 0) * m_orientation;
+		return m_orientation * glm::vec3(0, 1, 0);
 	}
 
 	glm::vec3 Transform::getDown() const
 	{
-		return glm::vec3(0, -1, 0) * m_orientation;
+		return m_orientation * glm::vec3(0, -1, 0);
 	}
 
 	void Transform::setScale(const glm::vec3 & scale)

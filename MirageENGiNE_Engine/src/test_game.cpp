@@ -37,7 +37,7 @@ namespace mirage
 	void TestGame::initialize()
 	{
 		// Create game objects
-		GameObject * player = new GameObject("player", Transform(glm::vec3(0, -30, -160)));
+		GameObject * player = new GameObject("player", Transform(glm::vec3(0, 0, 0)));
 		CameraPerspective * camera_perspective = new CameraPerspective(
 			70.0f,
 			(float)m_coreEngine->getWindow()->getWidth() / (float)m_coreEngine->getWindow()->getHeight(),
@@ -46,7 +46,7 @@ namespace mirage
 			1.0f
 		);
 		FreeMove * freemove = new FreeMove(0.1f);
-		FreeLook * freelook = new FreeLook(0.001f);
+		FreeLook * freelook = new FreeLook(0.01f, 0.1f);
 		player->addComponent(camera_perspective);
 		player->addComponent(freemove);
 		player->addComponent(freelook);
@@ -92,14 +92,23 @@ namespace mirage
 			// Rotate around x
 			if (rotate_x)
 			{
-				freelook->rotate(FLD_X, delta.x, dt);
+				freelook->look(FLD_X, -delta.x, dt);
 			}
 
 			// Rotate around y
 			if (rotate_x)
 			{
-				freelook->rotate(FLD_Y, delta.y, dt);
+				freelook->look(FLD_Y, -delta.y, dt);
 			}
+		}
+
+		if (input::KB_KEYS[GLFW_KEY_Q] != input::KBK_RELEASED)
+		{
+			freelook->look(FLD_Z, 1.0f, dt);
+		}
+		else if (input::KB_KEYS[GLFW_KEY_E] != input::KBK_RELEASED)
+		{
+			freelook->look(FLD_Z, -1.0f, dt);
 		}
 
 		// Player movement

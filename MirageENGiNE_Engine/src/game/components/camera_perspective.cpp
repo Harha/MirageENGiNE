@@ -26,7 +26,7 @@ namespace mirage
 		m_settings{ fov, aspect, nearplane, farplane },
 		m_camera(new Camera(
 			nullptr,
-			glm::perspective(fov, aspect, nearplane, farplane),
+			glm::perspective(glm::radians(fov), aspect, nearplane, farplane),
 			exposure
 		))
 	{
@@ -62,7 +62,7 @@ namespace mirage
 	void CameraPerspective::setSettings(const CameraPerspectiveSettings & settings)
 	{
 		m_settings = settings;
-		m_camera->setProjectionMatrix(glm::perspective(settings.fov, settings.aspect, settings.nearplane, settings.farplane));
+		m_camera->setProjectionMatrix(glm::perspective(glm::radians(settings.fov), settings.aspect, settings.nearplane, settings.farplane));
 	}
 
 	const CameraPerspectiveSettings & CameraPerspective::getSettings() const

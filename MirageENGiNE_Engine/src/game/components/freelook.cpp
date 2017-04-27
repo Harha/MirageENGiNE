@@ -15,10 +15,12 @@ namespace mirage
 
 	FreeLook::FreeLook(
 		float sensitivity,
+		float rollSpeed,
 		const std::string & identifier
 	) :
 		GameComponent(GC_FREEMOVE, identifier),
-		m_sensitivity(sensitivity)
+		m_sensitivity(sensitivity),
+		m_rollSpeed(rollSpeed)
 	{
 
 	}
@@ -38,7 +40,7 @@ namespace mirage
 
 	}
 
-	void FreeLook::rotate(FreeLookDirection_t direction, float delta, float dt)
+	void FreeLook::look(FreeLookDirection_t direction, float delta, float dt)
 	{
 		glm::vec3 axis(0.0f);
 
@@ -50,12 +52,15 @@ namespace mirage
 		case FLD_Y:
 			axis = m_parent->getTransform().getRight();
 			break;
+		case FLD_Z:
+			axis = m_parent->getTransform().getForward();
+			break;
 		}
 
-		m_parent->getTransform().rotate(axis, delta * m_sensitivity * dt);
+		m_parent->getTransform().rotate(axis, delta * ((direction != FLD_Z) ? m_sensitivity : m_rollSpeed) * dt);
 	}
 
-	float FreeLook::setSensitivity(float sensitivity)
+	void FreeLook::setSensitivity(float sensitivity)
 	{
 		m_sensitivity = sensitivity;
 	}
@@ -63,6 +68,16 @@ namespace mirage
 	float FreeLook::getSensitivity() const
 	{
 		return m_sensitivity;
+	}
+
+	void FreeLook::setRollSpeed(float rollSpeed)
+	{
+		m_rollSpeed = rollSpeed;
+	}
+
+	float FreeLook::getRollSpeed() const
+	{
+		return m_rollSpeed;
 	}
 
 }

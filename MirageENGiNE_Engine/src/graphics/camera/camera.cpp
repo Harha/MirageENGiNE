@@ -46,8 +46,8 @@ namespace mirage
 
 	glm::mat4 Camera::getViewMatrix()
 	{
-		glm::mat4 translation = glm::translate(m_transform->getPosition());
-		glm::mat4 rotation = glm::mat4_cast(m_transform->getOrientation());
+		glm::mat4 translation = glm::translate(m_transform->getPosition() * glm::vec3(-1.0f));
+		glm::mat4 rotation = glm::mat4_cast(glm::conjugate(m_transform->getOrientation()));
 
 		return rotation * translation;
 	}
