@@ -38,7 +38,7 @@ namespace mirage
 		WavefrontFile * w_file = new WavefrontFile(m_filePath);
 
 		// Convert loaded mesh data into engine mesh objects
-		convert_wavefront_to_all(w_file, m_meshBases, m_meshRenderers);
+		convert_wavefront_to_all(w_file, true, m_meshBases, m_meshRenderers);
 
 		// Deallocate the original mesh data
 		MDELETES(w_file);

@@ -41,12 +41,12 @@ namespace mirage
 		CameraPerspective * camera_perspective = new CameraPerspective(
 			70.0f,
 			(float)m_coreEngine->getWindow()->getWidth() / (float)m_coreEngine->getWindow()->getHeight(),
-			0.01f,
-			1028.0f,
+			0.1f,
+			1028.0f * 2.5f,
 			1.0f
 		);
-		FreeMove * freemove = new FreeMove(0.1f);
-		FreeLook * freelook = new FreeLook(0.01f, 0.1f);
+		FreeMove * freemove = new FreeMove(0.005f);
+		FreeLook * freelook = new FreeLook(0.025f, 0.1f);
 		player->addComponent(camera_perspective);
 		player->addComponent(freemove);
 		player->addComponent(freelook);
@@ -76,14 +76,14 @@ namespace mirage
 				static_cast<float>(m_coreEngine->getWindow()->getHeight() * 0.5f)
 			);
 
-			// Center mouse
-			api_setCursorPos(center.x, center.y);
-
 			// Get mouse move amount
 			glm::vec2 delta(
 				input::MS_POS_X - center.x,
 				input::MS_POS_Y - center.y
 			);
+
+			// Center mouse
+			api_setCursorPos(center.x, center.y);
 
 			// Do we rotate around x or y?
 			bool rotate_x = delta.x > 0.0f || delta.x < 0.0f;

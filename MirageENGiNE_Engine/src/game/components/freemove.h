@@ -35,7 +35,7 @@ namespace mirage
 		virtual void update(float dt) override;
 		virtual void render(GraphicsEngine * const gfxEngine) override;
 		void move(FreeMoveDirection_t direction, float dt);
-		float setSpeed(float speed);
+		void setSpeed(float speed);
 		float getSpeed() const;
 	private:
 		float m_speed;

@@ -99,7 +99,7 @@ namespace mirage
 			m_data->addReference();
 		}
 
-		MLOG_DEBUG("MeshRenderer::MeshRenderer, created. FilePath: %s, reference amount: %d", m_meshBase->getFilePath().c_str(), m_data->getRefAmount());
+		MLOG_DEBUG("MeshRenderer::MeshRenderer, created. FilePath: %s, ref amount: %d", m_meshBase->getFilePath().c_str(), m_data->getRefAmount());
 	}
 
 	MeshRenderer::~MeshRenderer()
@@ -124,13 +124,13 @@ namespace mirage
 
 		glBindVertexArray(m_data->getVao());
 		glBindBuffer(GL_ARRAY_BUFFER, m_data->getVbo());
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), BUFFER_OFFSET(0));
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), BUFFER_OFFSET(12));
-		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), BUFFER_OFFSET(24));
-		glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, Vertex::SIZE * sizeof(float), BUFFER_OFFSET(36));
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, BUFFER_OFFSET(0));
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, BUFFER_OFFSET(12));
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, BUFFER_OFFSET(24));
+		glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, Vertex::SIZE * 4, BUFFER_OFFSET(36));
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_data->getIbo());
-		glDrawElements(GL_TRIANGLES, m_meshBase->getData()->getSize(), GL_UNSIGNED_INT, 0);
+		glDrawElements(GL_TRIANGLES, m_meshBase->getData()->getSize(), GL_UNSIGNED_INT, NULL);
 
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);

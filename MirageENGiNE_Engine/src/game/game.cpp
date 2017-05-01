@@ -22,6 +22,8 @@
 #include "game/gcomponent.h"
 #include "game/components/camera_perspective.h"
 #include "game/components/model_basic.h"
+#include "game/components/freemove.h"
+#include "game/components/freelook.h"
 
 namespace mirage
 {
@@ -110,6 +112,22 @@ namespace mirage
 
 						ImGui::Text("File path: %s", model->getFilePath().c_str());
 						ImGui::Text("Meshes: %zu", model->getMeshBases().size());
+					} break;
+					case GC_FREEMOVE:
+					{
+						ImGui::Text("Type: GC_FREEMOVE");
+
+						FreeMove * freemove = static_cast<FreeMove *>(component);
+
+						ImGui::Text("Speed: %.5f", freemove->getSpeed());
+					} break;
+					case GC_FREELOOK:
+					{
+						ImGui::Text("Type: GC_FREELOOK");
+
+						FreeLook * freelook = static_cast<FreeLook *>(component);
+
+						ImGui::Text("Sensitivity: %.5f, roll speed: %.5f", freelook->getSensitivity(), freelook->getRollSpeed());
 					} break;
 					}
 

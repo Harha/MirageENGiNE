@@ -105,14 +105,15 @@ namespace mirage
 		return m_orientation;
 	}
 
+	// TODO: Figure out how to get forward to +1 and backwards to -1 in Z
 	glm::vec3 Transform::getForward() const
 	{
-		return m_orientation * glm::vec3(0, 0, 1);
+		return m_orientation * glm::vec3(0, 0, -1);
 	}
 
 	glm::vec3 Transform::getBackward() const
 	{
-		return m_orientation * glm::vec3(0, 0, -1);
+		return m_orientation * glm::vec3(0, 0, 1);
 	}
 
 	glm::vec3 Transform::getLeft() const

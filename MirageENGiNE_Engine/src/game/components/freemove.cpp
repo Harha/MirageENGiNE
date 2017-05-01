@@ -67,7 +67,7 @@ namespace mirage
 		m_parent->getTransform().translate(direction_v, m_speed * dt);
 	}
 
-	float FreeMove::setSpeed(float speed)
+	void FreeMove::setSpeed(float speed)
 	{
 		m_speed = speed;
 	}

@@ -66,14 +66,14 @@ namespace mirage
 	{
 		input::KB_KEYS[key] = static_cast<input::KBK_State_t>(action);
 
-		MLOG_DEBUG("CoreEngine::glfwKeyCallback, called. Key: %d, scancode: %d, action: %d, mods: %d", key, scancode, action, mods);
+		//MLOG_DEBUG("CoreEngine::glfwKeyCallback, called. Key: %d, scancode: %d, action: %d, mods: %d", key, scancode, action, mods);
 	}
 
 	void CoreEngine::glfwMouseButtonCallback(GLFWwindow * window, int button, int action, int mods)
 	{
 		input::MS_BUTTONS[button] = (1 & action) != 0;
 
-		MLOG_DEBUG("CoreEngine::glfwMouseButtonCallback, called. Button: %d, action: %d, mods: %d", button, action, mods);
+		//MLOG_DEBUG("CoreEngine::glfwMouseButtonCallback, called. Button: %d, action: %d, mods: %d", button, action, mods);
 	}
 
 	void CoreEngine::glfwCursorPosCallback(GLFWwindow * window, double x, double y)

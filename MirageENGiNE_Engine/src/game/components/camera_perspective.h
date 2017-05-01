@@ -27,7 +27,7 @@ namespace mirage
 		CameraPerspective(
 			float fov = 70.0f,
 			float aspect = 1.0f,
-			float nearplane = 0.01f,
+			float nearplane = 0.1f,
 			float farplane = 1028.0f,
 			float exposure = 1.0f,
 			const std::string & identifier = "camera_perspective"

@@ -14,13 +14,14 @@ namespace mirage
 	// ---------------------------------------------------------------------------
 	// -- Convert wavefront .obj mesh to list of MeshBase
 	// ---------------------------------------------------------------------------
-	std::vector<MeshBase *> convert_wavefront_to_basemesh(WavefrontFile * const wfFile);
+	std::vector<MeshBase *> convert_wavefront_to_basemesh(WavefrontFile * const wfFile, bool erase_wfFile);
 
 	// ---------------------------------------------------------------------------
 	// -- Convert wavefront .obj mesh to lists of MeshBase & MeshRenderer
 	// ---------------------------------------------------------------------------
 	void convert_wavefront_to_all(
 		WavefrontFile * const wfFile,
+		bool erase_wfFile,
 		std::vector<MeshBase *> & out_base,
 		std::vector<MeshRenderer *> & out_renderer
 	);

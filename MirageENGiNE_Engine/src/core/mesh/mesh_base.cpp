@@ -17,7 +17,7 @@ namespace mirage
 	// ---------------------------------------------------------------------------
 
 	MeshBaseData::MeshBaseData(
-		std::vector<Vertex> vertices,
+		std::vector<Vertex> & vertices,
 		MaterialBase material
 	) :
 		m_vertices(vertices),
@@ -33,7 +33,7 @@ namespace mirage
 		MLOG_DEBUG("MeshBaseData::~MeshBaseData, destroyed.");
 	}
 
-	void MeshBaseData::setVertices(std::vector<Vertex> vertices)
+	void MeshBaseData::setVertices(const std::vector<Vertex> & vertices)
 	{
 		m_vertices = vertices;
 	}
@@ -86,7 +86,7 @@ namespace mirage
 
 	MeshBase::MeshBase(
 		const std::string & filePath,
-		std::vector<Vertex> vertices,
+		std::vector<Vertex> & vertices,
 		MaterialBase material
 	) :
 		m_filePath(filePath),
@@ -109,7 +109,7 @@ namespace mirage
 			m_data->addReference();
 		}
 
-		MLOG_DEBUG("MeshBase::MeshBase, created. FilePath: %s, reference amount: %d", m_filePath.c_str(), m_data->getRefAmount());
+		MLOG_DEBUG("MeshBase::MeshBase, created. FilePath: %s, ref amount: %d", m_filePath.c_str(), m_data->getRefAmount());
 	}
 
 	MeshBase::~MeshBase()

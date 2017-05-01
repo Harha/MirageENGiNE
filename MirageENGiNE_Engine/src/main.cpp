@@ -70,12 +70,14 @@ int main(int argc, char * argv[])
 		state = -1;
 
 		// Log the exception type
-		MLOG_ERROR("MirageENGINE, exception: %s", e.what());
+		MLOG_ERROR("MirageENGiNE, exception: %s", e.what());
 	}
 
 	// After shutdown, cleanup resources
 	MDELETES(engine);
 	glfwTerminate();
+
+	std::cin.get();
 
 	return state;
 }

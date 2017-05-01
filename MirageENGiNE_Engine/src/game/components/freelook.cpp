@@ -18,7 +18,7 @@ namespace mirage
 		float rollSpeed,
 		const std::string & identifier
 	) :
-		GameComponent(GC_FREEMOVE, identifier),
+		GameComponent(GC_FREELOOK, identifier),
 		m_sensitivity(sensitivity),
 		m_rollSpeed(rollSpeed)
 	{
