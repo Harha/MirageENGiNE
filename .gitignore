@@ -17,6 +17,9 @@
 tags
 TAGS
 
+# CMake related files & folders
+CMakeFiles/
+
 # Visual Studio project related files & folders
 *.VC.opendb
 *.VC.db
