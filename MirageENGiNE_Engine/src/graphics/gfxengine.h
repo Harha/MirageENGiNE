@@ -6,13 +6,15 @@
 #include <vector>
 #include <map>
 
+// mirage includes
+#include "core/runstate.h"
+
 typedef unsigned int GLuint;
 typedef unsigned int GLenum;
 
 namespace mirage
 {
 
-	enum EngineRunState;
 	class CoreEngine;
 	class Camera;
 	class RenderCMD;

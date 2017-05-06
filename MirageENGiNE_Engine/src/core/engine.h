@@ -5,6 +5,7 @@
 #include <string>
 
 // mirage includes
+#include "core/runstate.h"
 #include "util/inifile.h"
 
 typedef struct GLFWwindow GLFWwindow;
@@ -12,7 +13,6 @@ typedef struct GLFWwindow GLFWwindow;
 namespace mirage
 {
 
-	enum EngineRunState;
 	class Window;
 	class GraphicsEngine;
 	class Game;

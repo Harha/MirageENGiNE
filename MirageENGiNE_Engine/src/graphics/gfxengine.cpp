@@ -16,7 +16,6 @@
 // mirage includes
 #include "config.h"
 #include "macros.h"
-#include "core/runstate.h"
 #include "core/engine.h"
 #include "graphics/window.h"
 #include "graphics/camera/camera.h"
