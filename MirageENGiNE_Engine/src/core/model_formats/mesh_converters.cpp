@@ -7,6 +7,7 @@
 #include "core/mesh/mesh_base.h"
 #include "graphics/mesh/mesh_renderer.h"
 #include "core/material/material_base.h"
+#include "graphics/material/texture.h"
 #include "core/transform.h"
 #include "core/vertex.h"
 
@@ -86,6 +87,7 @@ namespace mirage
 			if (wf_material != nullptr)
 			{
 				// Assign material data
+				material.setTextureDiffuse((wf_material->KdTex.empty() == false) ? new Texture(wf_material->KdTex) : nullptr);
 				material.setColorDiffuse(glm::vec3(wf_material->Kd.r, wf_material->Kd.g, wf_material->Kd.b));
 				material.setColorSpecular(glm::vec3(wf_material->Ks.r, wf_material->Ks.g, wf_material->Ks.b));
 			}

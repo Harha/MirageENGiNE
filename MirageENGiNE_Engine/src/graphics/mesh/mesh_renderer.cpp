@@ -158,7 +158,7 @@ namespace mirage
 		// Get the indice data into temp vector
 		std::vector<uint32_t> indices(m_meshBase->getData()->getSize());
 
-		for (size_t i = 0; i < indices.size(); i++)
+		for (uint32_t i = 0; i < indices.size(); i++)
 		{
 			indices[i] = i;
 		}

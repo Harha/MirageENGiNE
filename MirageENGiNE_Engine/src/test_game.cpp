@@ -45,8 +45,8 @@ namespace mirage
 			1028.0f * 2.5f,
 			1.0f
 		);
-		FreeMove * freemove = new FreeMove(0.005f);
-		FreeLook * freelook = new FreeLook(0.025f, 0.1f);
+		FreeMove * freemove = new FreeMove(0.2f);
+		FreeLook * freelook = new FreeLook(0.025f, 0.25f);
 		player->addComponent(camera_perspective);
 		player->addComponent(freemove);
 		player->addComponent(freelook);

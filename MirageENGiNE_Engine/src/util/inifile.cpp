@@ -72,7 +72,7 @@ namespace mirage
 			}
 		}
 
-		MLOG_DEBUG("IniFile::IniFile, loaded file (%s) into memory. Lines: %d, sections: %d", m_filePath.c_str(), m_lines.size(), m_entries.size());
+		MLOG_DEBUG("IniFile::IniFile, loaded file (%s) into memory. Lines: %zu, sections: %zu", m_filePath.c_str(), m_lines.size(), m_entries.size());
 	}
 
 	const std::string & IniFile::getString(const std::string & section, const std::string & key, const std::string & defval)

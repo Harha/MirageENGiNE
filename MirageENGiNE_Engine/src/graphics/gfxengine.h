@@ -6,6 +6,9 @@
 #include <vector>
 #include <map>
 
+typedef unsigned int GLuint;
+typedef unsigned int GLenum;
+
 namespace mirage
 {
 
@@ -40,6 +43,7 @@ namespace mirage
 		Camera * m_currentCamera;
 		std::vector<RenderCMD *> m_renderCmds;
 		std::map<std::string, ShaderProgram *> m_shaderPrograms;
+		std::map<std::string, GLenum> m_textureSamplers;
 	};
 
 }

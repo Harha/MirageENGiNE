@@ -29,7 +29,7 @@ namespace mirage
 			m_lines.push_back(line);
 		}
 
-		MLOG_DEBUG("TxtFile::TxtFile, loaded file (%s) into memory. Lines: %d", m_filePath.c_str(), m_lines.size());
+		MLOG_DEBUG("TxtFile::TxtFile, loaded file (%s) into memory. Lines: %zu", m_filePath.c_str(), m_lines.size());
 	}
 
 	const std::string TxtFile::getFilePath() const

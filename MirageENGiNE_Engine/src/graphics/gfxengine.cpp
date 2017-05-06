@@ -24,6 +24,8 @@
 #include "graphics/glsl/shader.h"
 #include "core/mesh/mesh_base.h"
 #include "graphics/mesh/mesh_renderer.h"
+#include "core/material/material_base.h"
+#include "graphics/material/texture.h"
 #include "game/game.h"
 
 namespace mirage
@@ -36,7 +38,8 @@ namespace mirage
 		m_coreEngine(coreEngine),
 		m_currentCamera(nullptr),
 		m_renderCmds(),
-		m_shaderPrograms()
+		m_shaderPrograms(),
+		m_textureSamplers()
 	{
 		MLOG_INFO("GraphicsEngine::GraphicsEngine, created.");
 	}
@@ -65,6 +68,9 @@ namespace mirage
 
 		// Load shader programs
 		m_shaderPrograms["gbuffer"] = new ShaderProgram("gbuffer", "", "basicmesh.vert.glsl", "basicmesh.frag.glsl");
+
+		// Initialize texture samplers
+		m_textureSamplers["texture_albedo"] = 0;
 
 		// Set state to initialized
 		m_runState = ERS_INITIALIZED;
@@ -100,7 +106,18 @@ namespace mirage
 				MeshRenderer * mesh = meshes[j];
 
 				program->setUniformMat4("u_MMatrix", mesh->getTransform()->getModelMatrix());
-				program->setUniformVec3("u_col_diffuse", mesh->getMeshBase()->getData()->getMaterial().getColorDiffuse());
+
+				MaterialBase & mesh_material = mesh->getMeshBase()->getData()->getMaterial();
+
+				program->setUniformVec3("u_col_diffuse", mesh_material.getColorDiffuse());
+
+				if (mesh_material.getTextureDiffuse() != nullptr)
+				{
+					GLenum samplerId = m_textureSamplers["texture_albedo"];
+					mesh_material.getTextureDiffuse()->bind(samplerId);
+					program->setUniformInt("u_tex_diffuse", static_cast<GLint>(samplerId));
+				}
+
 
 				mesh->render();
 			}

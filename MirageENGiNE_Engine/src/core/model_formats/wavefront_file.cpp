@@ -6,6 +6,7 @@
 #include <fstream>
 #include <regex>
 #include <sstream>
+#include <cstddef> // std::ptrdiff_t, etc...
 
 // mirage includes
 #include "config.h"
@@ -143,7 +144,7 @@ namespace mirage
 				if (l.find("//") == std::string::npos)
 				{
 					// Count the number of values on this line
-					int n = std::count_if(l.begin(), l.end(), [](unsigned char c) { return c == '/'; });
+					std::ptrdiff_t n = std::count_if(l.begin(), l.end(), [](unsigned char c) { return c == '/'; });
 
 					// Replace slashes with whitespace & create sstream
 					std::replace(l.begin(), l.end(), '/', ' ');
@@ -249,7 +250,7 @@ namespace mirage
 			}
 		}
 
-		MLOG_INFO("WavefrontFile::loadObj, loaded successfully. Mesh count: %d", m_meshes.size());
+		MLOG_INFO("WavefrontFile::loadObj, loaded successfully. Mesh count: %zu", m_meshes.size());
 	}
 
 	void WavefrontFile::loadMtl(const std::string & filePath)
@@ -359,7 +360,7 @@ namespace mirage
 			}
 		}
 
-		MLOG_INFO("WavefrontFile::loadMtl, loaded successfully. Material count: %d", m_materials.size());
+		MLOG_INFO("WavefrontFile::loadMtl, loaded successfully. Material count: %zu", m_materials.size());
 	}
 
 	std::string WavefrontFile::getObjFilePath() const

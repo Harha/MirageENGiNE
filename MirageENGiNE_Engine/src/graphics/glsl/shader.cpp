@@ -207,7 +207,7 @@ namespace mirage
 		// Attach the shader to program
 		glAttachShader(m_data->getProgram(), handle);
 
-		MLOG_DEBUG("ShaderProgram::attachShader, success. Shader compiled and attached to program successfully. Type: %zd, name: %s", type, m_name.c_str());
+		MLOG_DEBUG("ShaderProgram::attachShader, success. Shader compiled and attached to program successfully. Type: %zu, name: %s", type, m_name.c_str());
 	}
 
 	void ShaderProgram::linkProgram()

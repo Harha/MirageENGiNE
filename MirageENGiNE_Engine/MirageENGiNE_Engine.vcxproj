@@ -170,6 +170,7 @@
     <ClCompile Include="src\graphics\camera\camera.cpp" />
     <ClCompile Include="src\graphics\gfxengine.cpp" />
     <ClCompile Include="src\graphics\glsl\shader.cpp" />
+    <ClCompile Include="src\graphics\material\texture.cpp" />
     <ClCompile Include="src\graphics\mesh\mesh_renderer.cpp" />
     <ClCompile Include="src\core\vertex.cpp" />
     <ClCompile Include="src\graphics\rendercmd.cpp" />
@@ -184,6 +185,7 @@
     <ClCompile Include="src\util\txtfile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\3rdparty\stb\stb_image.h" />
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\core\engine.h" />
     <ClInclude Include="src\core\input.h" />
@@ -206,6 +208,7 @@
     <ClInclude Include="src\graphics\gfxengine.h" />
     <ClInclude Include="src\graphics\glsl\shader.h" />
     <ClInclude Include="src\graphics\glsl\uniform.h" />
+    <ClInclude Include="src\graphics\material\texture.h" />
     <ClInclude Include="src\graphics\mesh\mesh_renderer.h" />
     <ClInclude Include="src\core\vertex.h" />
     <ClInclude Include="src\graphics\rendercmd.h" />
