@@ -7,6 +7,8 @@
 #include <regex>
 #include <sstream>
 #include <cstddef> // std::ptrdiff_t, etc...
+#include <exception>
+#include <stdexcept>
 
 // mirage includes
 #include "config.h"
@@ -43,7 +45,7 @@ namespace mirage
 		// Throw if the file didn't open
 		if (file.is_open() == false)
 		{
-			throw std::exception("WavefrontFile::loadObj, failed to open target .obj file, make sure it exists.");
+			throw std::runtime_error("WavefrontFile::loadObj, failed to open target .obj file, make sure it exists.");
 		}
 
 		// Loading process related variables
@@ -263,7 +265,7 @@ namespace mirage
 		// Throw if the file didn't open
 		if (file.is_open() == false)
 		{
-			throw std::exception("WavefrontFile::loadMtl, failed to open target .mtl file, make sure it exists.");
+			throw std::runtime_error("WavefrontFile::loadMtl, failed to open target .mtl file, make sure it exists.");
 		}
 
 		// Loading process related variables
@@ -383,7 +385,7 @@ namespace mirage
 		return m_normals;
 	}
 
-	std::vector<glm::vec2> WavefrontFile::getTexcoords()
+	std::vector<glm::vec2> & WavefrontFile::getTexcoords()
 	{
 		return m_texcoords;
 	}

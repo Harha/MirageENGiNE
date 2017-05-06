@@ -2,6 +2,8 @@
 
 // std includes
 #include <cassert>
+#include <exception>
+#include <stdexcept>
 
 // lib includes
 #include "3rdparty/imgui/imgui.h"
@@ -51,7 +53,7 @@ namespace mirage
 	{
 		if (node == nullptr)
 		{
-			throw std::exception("Game::renderGUI_GameObjectTree(node), error. Target node object is pointing to NULL!");
+			throw std::runtime_error("Game::renderGUI_GameObjectTree(node), error. Target node object is pointing to NULL!");
 		}
 
 		// Current game object text label
@@ -62,9 +64,9 @@ namespace mirage
 			// Render information about current game object
 			if (ImGui::TreeNode("information: "))
 			{
-				ImGui::Text("Position: %s", glm::to_string(node->getTransform().getPosition()));
-				ImGui::Text("Orientation: %s", glm::to_string(node->getTransform().getOrientation()));
-				ImGui::Text("Scale: %s", glm::to_string(node->getTransform().getScale()));
+				ImGui::Text("Position: %s", glm::to_string(node->getTransform().getPosition()).c_str());
+				ImGui::Text("Orientation: %s", glm::to_string(node->getTransform().getOrientation()).c_str());
+				ImGui::Text("Scale: %s", glm::to_string(node->getTransform().getScale()).c_str());
 
 				ImGui::TreePop();
 			}

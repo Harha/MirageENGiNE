@@ -2,6 +2,7 @@
 #define INPUT_H
 
 // std includes
+#include <cstdint>
 #include <vector>
 
 namespace mirage

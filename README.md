@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/Harha/MirageENGiNE.svg?branch=master)](https://travis-ci.org/Harha/MirageENGiNE)
+
+
 MirageENGiNE
 ============
 MirageENGiNE is a 3D game engine, it is written using C++ as the main language. For now, only OpenGL is supported as a GPU API.

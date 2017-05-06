@@ -1,5 +1,9 @@
 #include "texture.h"
 
+// std includes
+#include <exception>
+#include <stdexcept>
+
 // lib includes
 #include "3rdparty/glad/glad.h"
 #define STB_IMAGE_IMPLEMENTATION
@@ -139,7 +143,7 @@ namespace mirage
 			// Throw if error occurred
 			if (m_data->getImage() == NULL)
 			{
-				throw std::exception(("Texture::Texture, error.Texture failed to load! FilePath: " + m_filePath).c_str());
+				throw std::runtime_error(("Texture::Texture, error.Texture failed to load! FilePath: " + m_filePath).c_str());
 			}
 
 			// Assign loaded texture's data to our data object

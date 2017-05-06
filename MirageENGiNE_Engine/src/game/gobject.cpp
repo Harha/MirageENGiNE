@@ -4,7 +4,6 @@
 #include "macros.h"
 #include "graphics/gfxengine.h"
 #include "game/game.h"
-#include "game/gcomponent.h"
 
 namespace mirage
 {

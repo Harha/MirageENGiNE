@@ -1,5 +1,9 @@
 #include "mesh_converters.h"
 
+// std includes
+#include <exception>
+#include <stdexcept>
+
 // mirage includes
 #include "config.h"
 #include "macros.h"
@@ -19,7 +23,7 @@ namespace mirage
 		// Throw if input file is null
 		if (wfFile == nullptr)
 		{
-			throw std::exception("mirage::convert_wavefront_to_basemesh, failed. Cannot convert file to base meshes, input file handle points to null.");
+			throw std::runtime_error("mirage::convert_wavefront_to_basemesh, failed. Cannot convert file to base meshes, input file handle points to null.");
 		}
 
 		std::vector<MeshBase *> converted;
@@ -118,7 +122,7 @@ namespace mirage
 		// Throw if input file is null
 		if (wfFile == nullptr)
 		{
-			throw std::exception("mirage::convert_wavefront_to_all, failed. Cannot convert file to base meshes, input file handle points to null.");
+			throw std::runtime_error("mirage::convert_wavefront_to_all, failed. Cannot convert file to base meshes, input file handle points to null.");
 		}
 
 		// First, convert to base meshes

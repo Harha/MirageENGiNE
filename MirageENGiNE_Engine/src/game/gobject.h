@@ -7,13 +7,13 @@
 
 // mirage includes
 #include "core/transform.h"
+#include "game/gcomponent.h"
 
 namespace mirage
 {
 
 	class GraphicsEngine;
 	class Game;
-	class GameComponent;
 
 	class GameObject
 	{
@@ -38,7 +38,7 @@ namespace mirage
 		const std::vector<GameObject *> & getChildren() const;
 		void addComponent(GameComponent * const component);
 		const std::vector<GameComponent *> & getComponents() const;
-		template<typename T> T const getComponent(const std::string & identifier)
+		template<class T> T const getComponent(const std::string & identifier)
 		{
 			for (auto component : m_components)
 			{

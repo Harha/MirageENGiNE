@@ -5,6 +5,8 @@
 // std includes
 #include <vector>
 #include <regex>
+#include <exception>
+#include <stdexcept>
 
 // lib includes
 #include "3rdparty/glad/glad.h"
@@ -185,7 +187,7 @@ namespace mirage
 
 		if (handle == NULL)
 		{
-			throw std::exception("Shader::attachShader, error. glCreateShader returned NULL.");
+			throw std::runtime_error("Shader::attachShader, error. glCreateShader returned NULL.");
 		}
 
 		// Convert source to c-string
@@ -201,7 +203,7 @@ namespace mirage
 
 		if (status == NULL)
 		{
-			throw std::exception(std::string("Shader::attachShader, error. glCompileShader failed. Info log:\n\n" + getShaderInfoLog(handle)).c_str());
+			throw std::runtime_error(std::string("Shader::attachShader, error. glCompileShader failed. Info log:\n\n" + getShaderInfoLog(handle)).c_str());
 		}
 
 		// Attach the shader to program
@@ -221,7 +223,7 @@ namespace mirage
 
 		if (status == NULL)
 		{
-			throw std::exception(std::string("Shader::linkProgram, error. glLinkProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
+			throw std::runtime_error(std::string("Shader::linkProgram, error. glLinkProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
 		}
 
 		MLOG_DEBUG("ShaderProgram::linkProgram, success. Program linked successfully. Name: %s", m_name.c_str());
@@ -238,7 +240,7 @@ namespace mirage
 
 		if (status == NULL)
 		{
-			throw std::exception(std::string("Shader::validateProgram, error. glValidateProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
+			throw std::runtime_error(std::string("Shader::validateProgram, error. glValidateProgram failed. Info log:\n\n" + getProgramInfoLog()).c_str());
 		}
 
 		MLOG_DEBUG("ShaderProgram::validateProgram, success. Program validated successfully. Name: %s", m_name.c_str());
@@ -265,7 +267,7 @@ namespace mirage
 
 			if (u_location == -1)
 			{
-				throw std::exception("Shader::gatherActiveUniforms, error. glGetUniformLocation failed.");
+				throw std::runtime_error("Shader::gatherActiveUniforms, error. glGetUniformLocation failed.");
 			}
 
 			// Create the uniform object & save it

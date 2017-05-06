@@ -6,6 +6,7 @@
 // std includes
 #include <iostream>
 #include <exception>
+#include <stdexcept>
 
 // lib includes
 #include "3rdparty/imgui/imgui.h"
@@ -59,7 +60,7 @@ namespace mirage
 		// Throw if graphics engine run state is not correct
 		if (m_runState != ERS_UNINTIALIZED)
 		{
-			throw std::exception("GraphicsEngine::initialize, m_runState != ERS_UNITIALIZED! Engine run state:" + m_runState);
+			throw std::runtime_error(("GraphicsEngine::initialize, m_runState != ERS_UNITIALIZED! Engine run state:" + std::to_string(m_runState)).c_str());
 		}
 
 		// Setup GLFW3 / ImGui window binding
@@ -207,7 +208,7 @@ namespace mirage
 		auto programs_it = m_shaderPrograms.find(identifier);
 		if (programs_it != m_shaderPrograms.end())
 		{
-			throw std::exception(("GraphicsEngine::addShaderProgram, error. Program with input identifier already exists! Identifier: " + identifier).c_str());
+			throw std::runtime_error(("GraphicsEngine::addShaderProgram, error. Program with input identifier already exists! Identifier: " + identifier).c_str());
 		}
 
 		m_shaderPrograms[identifier] = program;

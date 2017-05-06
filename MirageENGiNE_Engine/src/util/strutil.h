@@ -49,19 +49,19 @@ namespace mirage
 	// ltrim
 	// Trim from start (in place)
 	// ---------------------------------------------------------------------------
-	extern inline void ltrim(std::string &s);
+	extern void ltrim(std::string &s);
 
 	// ---------------------------------------------------------------------------
 	// rtrim
 	// Trim from end (in place)
 	// ---------------------------------------------------------------------------
-	extern inline void rtrim(std::string &s);
+	extern void rtrim(std::string &s);
 
 	// ---------------------------------------------------------------------------
 	// trim
 	// Trim from both ends (in place)
 	// ---------------------------------------------------------------------------
-	extern inline void trim(std::string &s);
+	extern void trim(std::string &s);
 
 }
 

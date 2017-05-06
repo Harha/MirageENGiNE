@@ -17,7 +17,7 @@ namespace mirage
 	// ---------------------------------------------------------------------------
 
 	MeshBaseData::MeshBaseData(
-		std::vector<Vertex> & vertices,
+		const std::vector<Vertex> & vertices,
 		MaterialBase material
 	) :
 		m_vertices(vertices),
@@ -86,7 +86,7 @@ namespace mirage
 
 	MeshBase::MeshBase(
 		const std::string & filePath,
-		std::vector<Vertex> & vertices,
+		const std::vector<Vertex> & vertices,
 		MaterialBase material
 	) :
 		m_filePath(filePath),

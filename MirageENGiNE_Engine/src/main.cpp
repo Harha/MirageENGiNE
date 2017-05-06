@@ -9,6 +9,8 @@
 
  // std includes
 #include <iostream>
+#include <exception>
+#include <stdexcept>
 
 // lib includes
 #include "3rdparty/glad/glad.h"
@@ -44,7 +46,7 @@ int main(int argc, char * argv[])
 		// Initialize GLFW3
 		if (glfwInit() == GL_FALSE)
 		{
-			throw std::exception("Failed to initialize GLFW3!");
+			throw std::runtime_error("Failed to initialize GLFW3!");
 		}
 
 		// Create core engine instance
@@ -58,13 +60,13 @@ int main(int argc, char * argv[])
 		if (gladLoadGLLoader((GLADloadproc)glfwGetProcAddress) == GL_FALSE)
 		{
 			glfwTerminate();
-			throw std::exception("Failed to initialize glad!");
+			throw std::runtime_error("Failed to initialize glad!");
 		}
 
 		// Run the game engine logic
 		engine->run();
 	}
-	catch (const std::exception & e)
+	catch (const std::runtime_error & e)
 	{
 		// Set state to failure
 		state = -1;

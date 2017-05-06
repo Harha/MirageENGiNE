@@ -20,7 +20,7 @@ namespace mirage
 	{
 	public:
 		MeshBaseData(
-			std::vector<Vertex> & vertices = std::vector<Vertex>(),
+			const std::vector<Vertex> & vertices = std::vector<Vertex>(),
 			MaterialBase material = MaterialBase()
 		);
 		~MeshBaseData();
@@ -48,7 +48,7 @@ namespace mirage
 	public:
 		MeshBase(
 			const std::string & filePath,
-			std::vector<Vertex> & vertices = std::vector<Vertex>(),
+			const std::vector<Vertex> & vertices = std::vector<Vertex>(),
 			MaterialBase material = MaterialBase()
 		);
 		~MeshBase();

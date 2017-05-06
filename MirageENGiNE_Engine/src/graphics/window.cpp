@@ -1,5 +1,9 @@
 #include "window.h"
 
+// std includes
+#include <exception>
+#include <stdexcept>
+
 // lib includes
 #include <GLFW/glfw3.h>
 
@@ -33,7 +37,7 @@ namespace mirage
 
 		// Throw exception if glfwCreateWindow returns NULL
 		if (m_window == NULL)
-			throw std::exception("Window::Window glfwCreateWindow failed.");
+			throw std::runtime_error("Window::Window glfwCreateWindow failed.");
 
 		// Create GL context for this window, make it current and so on...
 		glfwMakeContextCurrent(m_window);

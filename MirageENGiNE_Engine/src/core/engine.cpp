@@ -7,6 +7,8 @@
 #include <iostream>
 #include <thread>
 #include <chrono>
+#include <exception>
+#include <stdexcept>
 
 // lib includes
 #include <GLFW/glfw3.h>
@@ -90,7 +92,7 @@ namespace mirage
 		// Throw if engine run state is not correct
 		if (m_runState != ERS_UNINTIALIZED)
 		{
-			throw std::exception("CoreEngine::run, m_runState != ERS_UNITIALIZED! Engine run state:" + m_runState);
+			throw std::runtime_error("CoreEngine::run, m_runState != ERS_UNITIALIZED! Engine run state:" + m_runState);
 		}
 
 		// Initialize graphics engine
@@ -99,7 +101,7 @@ namespace mirage
 		// Throw if game is pointing to null
 		if (m_game == nullptr)
 		{
-			throw std::exception("CoreEngine::run, m_game == nullptr!");
+			throw std::runtime_error("CoreEngine::run, m_game == nullptr!");
 		}
 
 		// Initialize current game instance
@@ -154,7 +156,7 @@ namespace mirage
 	{
 		if (game == nullptr)
 		{
-			throw std::exception("CoreEngine::setGame, game == nullptr!");
+			throw std::runtime_error("CoreEngine::setGame, game == nullptr!");
 		}
 
 		m_game = game;

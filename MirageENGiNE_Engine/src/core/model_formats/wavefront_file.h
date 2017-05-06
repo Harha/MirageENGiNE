@@ -121,7 +121,7 @@ namespace mirage
 		std::string getMtlFilePath() const;
 		std::vector<glm::vec3> & getPoints();
 		std::vector<glm::vec3> & getNormals();
-		std::vector<glm::vec2> getTexcoords();
+		std::vector<glm::vec2> & getTexcoords();
 		std::map<std::string, WavefrontMesh> & getMeshes();
 		std::map<std::string, WavefrontMaterial> & getMaterials();
 	private:

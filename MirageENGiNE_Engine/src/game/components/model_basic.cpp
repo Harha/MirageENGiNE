@@ -1,5 +1,9 @@
 #include "model_basic.h"
 
+// std includes
+#include <exception>
+#include <stdexcept>
+
 // lib includes
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
@@ -31,7 +35,7 @@ namespace mirage
 		std::string fileExtension = filetoextension(m_filePath);
 		if (fileExtension != "obj")
 		{
-			throw std::exception("ModelBasic::ModelBasic, error. Input file extension is not supported! Supported extensions: .obj");
+			throw std::runtime_error("ModelBasic::ModelBasic, error. Input file extension is not supported! Supported extensions: .obj");
 		}
 
 		// Load mesh data in chosen format
