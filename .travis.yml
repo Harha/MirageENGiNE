@@ -20,7 +20,7 @@ script:
   - gcc -v && g++ -v && cmake --version
   - export C=gcc
   - export CXX=g++
-  - cd CmakeBuild
+  - cd CMakeBuild
   - sudo chmod +x linux*
   - ./linux_x86_local.sh
 branches:
