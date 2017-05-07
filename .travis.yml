@@ -2,7 +2,7 @@ language: cpp
 sudo: required
 dist: trusty
 compiler:
-  - gcc
+  - g++
 os:
   - linux
 addons:
@@ -21,6 +21,7 @@ script:
   - export C=gcc
   - export CXX=g++
   - cd CmakeBuild
+  - sudo chmod +x linux*
   - ./linux_x86_local.sh
 branches:
   only:
