@@ -18,10 +18,10 @@ script:
   - sudo ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
   - sudo ln -s /usr/bin/g++-6 /usr/local/bin/g++
   - gcc -v && g++ -v && cmake --version
-  - mkdir CMakeFiles
-  - cd CMakeFiles
-  - cmake ../ -G "Unix Makefiles" -DMIRAGE_PLATFORM=linux -DMIRAGE_ARCH=x64
-  - make
+  - export C=gcc
+  - export CXX=g++
+  - cd CmakeBuild
+  - ./linux_x86_local.sh
 branches:
   only:
     - master

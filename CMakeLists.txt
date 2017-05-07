@@ -10,6 +10,10 @@ if (NOT MIRAGE_ARCH)
 	set(MIRAGE_ARCH "x86")
 endif()
 
+if (NOT MIRAGE_LIBS)
+	set(MIRAGE_LIBS "local")
+endif()
+
 # Create and initialize the project
 project(MirageENGiNE CXX)
 set(MIRAGE_ENGINE_DIR "${PROJECT_SOURCE_DIR}/MirageENGiNE_Engine")
@@ -26,6 +30,7 @@ enable_language(C)
 # Print all build process related variables
 message(STATUS "Target platform: ${MIRAGE_PLATFORM}")
 message(STATUS "Target architecture: ${MIRAGE_ARCH}")
+message(STATUS "Library source: ${MIRAGE_LIBS}")
 message(STATUS "Source directory: ${MIRAGE_ENGINE_DIR_SRC}")
 message(STATUS "Include directory: ${MIRAGE_ENGINE_DIR_INC}")
 message(STATUS "Library directory: ${MIRAGE_ENGINE_DIR_LIB}")
@@ -57,23 +62,58 @@ endif()
 # Setup compiler / linker flags for CXX
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-# Find external dependencies
-if (MIRAGE_PLATFORM STREQUAL "windows")
-	set(GLFW_LIBRARY "${MIRAGE_ENGINE_DIR_LIB}/glfw3.lib")
-else()
-	find_package(glfw3 3.2 REQUIRED)
-	set(GLFW_LIBRARY "glfw")
-endif()
-find_package(OpenGL REQUIRED)
+if (MSVC)
 
-# Setup project include directoires
+elseif (MINGW)
+	target_link_libraries (MirageENGiNE PUBLIC
+		-lmingw32
+		-mconsole
+		-static
+		-lstdc++
+		-lm
+		-static-libgcc
+		-static-libstdc++
+	)
+else()
+	target_link_libraries (MirageENGiNE PUBLIC
+		-lstdc++
+		-lm
+		-static-libgcc
+		-static-libstdc++
+	)
+endif()
+
+# Setup project include directories
 target_include_directories(MirageENGiNE PUBLIC "${OPENGL_INCLUDE_DIR}")
 target_include_directories(MirageENGiNE PUBLIC "${MIRAGE_ENGINE_DIR_SRC}")
 target_include_directories(MirageENGiNE PUBLIC "${MIRAGE_ENGINE_DIR_INC}")
 
+# Setup project library directories
+link_directories("${MIRAGE_ENGINE_DIR_LIB}")
+
+# Find project libraries
+find_package(OpenGL REQUIRED)
+
+if (MIRAGE_LIBS STREQUAL "os")
+	find_package(glfw3 3.2 REQUIRED)
+	set(OPENGL_LIBRARY "${OPENGL_gl_LIBRARY}")
+	set(GLFW_LIBRARY "glfw")
+else()
+	if (MSVC)
+		file(GLOB_RECURSE LIBRARIES_GLFW "${MIRAGE_ENGINE_DIR_LIB}/*glfw3*.lib")
+	else()
+		file(GLOB_RECURSE LIBRARIES_GLFW "${MIRAGE_ENGINE_DIR_LIB}/*glfw3*.a")
+	endif()
+	set(GLFW_LIBRARY "${LIBRARIES_GLFW}")
+endif()
+
+# Print all library related variables
+message(STATUS "OpenGL Library: ${OPENGL_LIBRARY}")
+message(STATUS "GLFW3 Library: ${GLFW_LIBRARY}")
+
 # Setup project libraries to link against
 target_link_libraries(MirageENGiNE PUBLIC
-	${OPENGL_gl_LIBRARY}
+	${OPENGL_LIBRARY}
 	${GLFW_LIBRARY}
 )
 
