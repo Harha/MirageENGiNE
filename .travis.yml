@@ -23,6 +23,8 @@ script:
   - cd CMakeBuild
   - sudo chmod +x linux*
   - ./linux_x86_local.sh
+  - make
+  - sudo make install
 branches:
   only:
     - master
