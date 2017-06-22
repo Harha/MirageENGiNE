@@ -17,9 +17,12 @@
 #include "macros.h"
 #include "core/engine.h"
 #include "core/transform.h"
+#include "core/mesh/mesh_base.h"
+#include "core/material/material_base.h"
 #include "graphics/gfxengine.h"
 #include "graphics/window.h"
 #include "graphics/camera/camera.h"
+#include "graphics/material/texture.h"
 #include "game/gobject.h"
 #include "game/gcomponent.h"
 #include "game/components/camera_perspective.h"
@@ -79,7 +82,7 @@ namespace mirage
 			for (auto component : node->getComponents())
 			{
 				// Current component text label
-				std::string id_gc("(component): " + component->getIdentifier());
+				std::string id_gc("(component:" + std::to_string(component->getType()) + "): " + component->getIdentifier());
 
 				// Render extra information about each component type
 				if (ImGui::TreeNode(id_gc.c_str()))
@@ -114,6 +117,15 @@ namespace mirage
 
 						ImGui::Text("File path: %s", model->getFilePath().c_str());
 						ImGui::Text("Meshes: %zu", model->getMeshBases().size());
+
+						size_t vertices_n = 0;
+						for (auto mesh_base : model->getMeshBases())
+						{
+							vertices_n += mesh_base->getData()->getVertices().size();
+						}
+
+						ImGui::Text("Vertices: %zu", vertices_n);
+						ImGui::Text("Triangles: %zu", vertices_n / 3);
 					} break;
 					case GC_FREEMOVE:
 					{

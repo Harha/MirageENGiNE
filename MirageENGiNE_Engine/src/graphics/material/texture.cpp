@@ -43,6 +43,7 @@ namespace mirage
 	TextureData::~TextureData()
 	{
 		glDeleteTextures(1, &m_id);
+		// TODO: FREE IMAGE DATA HERE?
 	}
 
 	const GLuint TextureData::getId() const
@@ -156,7 +157,7 @@ namespace mirage
 
 			LOADED_TEXTURES[m_filePath] = m_data;
 		}
-		// This is an existing mesh renderer
+		// This is an existing texture
 		else
 		{
 			m_data = data;

@@ -124,6 +124,11 @@ namespace mirage
 			linkProgram();
 			validateProgram();
 			gatherActiveUniforms();
+
+			// Clean up heap allocated data
+			MDELETES(txtFileGeom);
+			MDELETES(txtFileVert);
+			MDELETES(txtFileFrag);
 		}
 		// This is an existing shader program
 		else

@@ -109,13 +109,13 @@ namespace mirage
 
 				MaterialBase & mesh_material = mesh->getMeshBase()->getData()->getMaterial();
 
-				program->setUniformVec3("u_col_diffuse", mesh_material.getColorDiffuse());
+				//program->setUniformVec3("u_col_albedo", mesh_material.getColorDiffuse());
 
 				if (mesh_material.getTextureDiffuse() != nullptr)
 				{
 					GLenum samplerId = m_textureSamplers["texture_albedo"];
 					mesh_material.getTextureDiffuse()->bind(samplerId);
-					program->setUniformInt("u_tex_diffuse", static_cast<GLint>(samplerId));
+					program->setUniformInt("u_tex_albedo", static_cast<GLint>(samplerId));
 				}
 
 
