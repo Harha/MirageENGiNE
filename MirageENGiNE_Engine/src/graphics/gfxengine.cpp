@@ -111,10 +111,10 @@ namespace mirage
 
 				//program->setUniformVec3("u_col_albedo", mesh_material.getColorDiffuse());
 
-				if (mesh_material.getTextureDiffuse() != nullptr)
+				if (mesh_material.getTexAlbedo() != nullptr)
 				{
 					GLenum samplerId = m_textureSamplers["texture_albedo"];
-					mesh_material.getTextureDiffuse()->bind(samplerId);
+					mesh_material.getTexAlbedo()->bind(samplerId);
 					program->setUniformInt("u_tex_albedo", static_cast<GLint>(samplerId));
 				}
 

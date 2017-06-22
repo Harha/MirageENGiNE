@@ -7,45 +7,33 @@ namespace mirage
 {
 
 	MaterialBase::MaterialBase(
-		Texture * const textureDiffuse,
-		glm::vec3 colorDiffuse,
-		glm::vec3 colorSpecular
+		Texture * const texAlbedo,
+		glm::vec3 colAlbedo
 	) :
-		m_textureDiffuse(textureDiffuse),
-		m_colorDiffuse(colorDiffuse),
-		m_colorSpecular(colorSpecular)
+		m_texAlbedo(texAlbedo),
+		m_colAlbedo(colAlbedo)
 	{
 
 	}
 
-	void MaterialBase::setTextureDiffuse(Texture * const textureDiffuse)
+	void MaterialBase::setTexAlbedo(Texture * const texAlbedo)
 	{
-		m_textureDiffuse = textureDiffuse;
+		m_texAlbedo = texAlbedo;
 	}
 
-	Texture * const MaterialBase::getTextureDiffuse() const
+	Texture * const MaterialBase::getTexAlbedo() const
 	{
-		return m_textureDiffuse;
+		return m_texAlbedo;
 	}
 
-	void MaterialBase::setColorDiffuse(const glm::vec3 & colorDiffuse)
+	void MaterialBase::setColAlbedo(const glm::vec3 & colAlbedo)
 	{
-		m_colorDiffuse = colorDiffuse;
+		m_colAlbedo = colAlbedo;
 	}
 
-	glm::vec3 MaterialBase::getColorDiffuse() const
+	glm::vec3 MaterialBase::getColAlbedo() const
 	{
-		return m_colorDiffuse;
-	}
-
-	void MaterialBase::setColorSpecular(const glm::vec3 & colorSpecular)
-	{
-		m_colorSpecular = colorSpecular;
-	}
-
-	glm::vec3 MaterialBase::getColorSpecular() const
-	{
-		return m_colorSpecular;
+		return m_colAlbedo;
 	}
 
 }

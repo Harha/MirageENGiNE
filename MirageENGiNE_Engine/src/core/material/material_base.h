@@ -13,21 +13,17 @@ namespace mirage
 	{
 	public:
 		MaterialBase(
-			Texture * const textureDiffuse = nullptr,
-			glm::vec3 colorDiffuse = glm::vec3(1, 1, 1),
-			glm::vec3 colorSpecular = glm::vec3(1, 1, 1)
+			Texture * const texAlbedo = nullptr,
+			glm::vec3 colAlbedo = glm::vec3(1, 1, 1)
 		);
 
-		void setTextureDiffuse(Texture * const textureDiffuse);
-		Texture * const getTextureDiffuse() const;
-		void setColorDiffuse(const glm::vec3 & colorDiffuse);
-		glm::vec3 getColorDiffuse() const;
-		void setColorSpecular(const glm::vec3 & colorSpecular);
-		glm::vec3 getColorSpecular() const;
+		void setTexAlbedo(Texture * const texAlbedo);
+		Texture * const getTexAlbedo() const;
+		void setColAlbedo(const glm::vec3 & colAlbedo);
+		glm::vec3 getColAlbedo() const;
 	private:
-		Texture * m_textureDiffuse;
-		glm::vec3 m_colorDiffuse;
-		glm::vec3 m_colorSpecular;
+		Texture * m_texAlbedo;
+		glm::vec3 m_colAlbedo;
 	};
 
 }
