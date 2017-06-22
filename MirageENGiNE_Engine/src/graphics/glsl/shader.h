@@ -70,6 +70,7 @@ namespace mirage
 		void setUniformMat4(const std::string & name, const glm::mat4 & m);
 		std::string getShaderInfoLog(GLuint handle) const;
 		std::string getProgramInfoLog() const;
+		ShaderData * const getData() const;
 	private:
 		std::string m_name;
 		std::string m_filePathGeom;

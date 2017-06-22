@@ -9,6 +9,7 @@ namespace mirage
 {
 
 	RenderCMD::RenderCMD(
+		RenderCMD_t type,
 		ShaderProgram * const program,
 		Camera * const camera,
 		std::vector<MeshRenderer *> meshRenderers
@@ -18,6 +19,11 @@ namespace mirage
 		m_meshRenderers(meshRenderers)
 	{
 
+	}
+
+	RenderCMD_t RenderCMD::getType() const
+	{
+		return m_type;
 	}
 
 	ShaderProgram * const RenderCMD::getProgram() const

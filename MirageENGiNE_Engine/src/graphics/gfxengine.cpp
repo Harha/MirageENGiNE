@@ -82,62 +82,75 @@ namespace mirage
 		glClearColor(0.33f, 0.33f, 0.33f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-		//MLOG_DEBUG("Executing RenderCMDs. Size: %zu", m_renderCmds.size());
-
-		glEnable(GL_DEPTH_TEST);
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT);
-		glFrontFace(GL_CW);
-
 		for (size_t i = 0; i < m_renderCmds.size(); i++)
 		{
-			// Current render command & data for this command
-			RenderCMD * r_cmd = m_renderCmds[i];
-			ShaderProgram * program = r_cmd->getProgram();
-			Camera * camera = r_cmd->getCamera();
-			std::vector<MeshRenderer *> meshes = r_cmd->getMeshRenderers();
+			// Get current render command related generic data
+			RenderCMD * renderCmd = m_renderCmds[i];
+			ShaderProgram * shaderProgram = renderCmd->getProgram();
+			Camera * camera = renderCmd->getCamera();
+			std::vector<MeshRenderer *> meshRenderers = renderCmd->getMeshRenderers();
 
-			program->bind();
-			program->setUniformMat4("u_VMatrix", camera->getViewMatrix());
-			program->setUniformMat4("u_PMatrix", camera->getProjectionMatrix());
-
-			for (size_t j = 0; j < meshes.size(); j++)
+			// Bind shader program (in future materials can have shaders, figure out how to handle those (probably just re-bind later material program))
+			if (shaderProgram != nullptr)
 			{
-				MeshRenderer * mesh = meshes[j];
+				shaderProgram->bind();
 
-				program->setUniformMat4("u_MMatrix", mesh->getTransform()->getModelMatrix());
-
-				MaterialBase & mesh_material = mesh->getMeshBase()->getData()->getMaterial();
-
-				//program->setUniformVec3("u_col_albedo", mesh_material.getColorDiffuse());
-
-				if (mesh_material.getTexAlbedo() != nullptr)
-				{
-					GLenum samplerId = m_textureSamplers["texture_albedo"];
-					mesh_material.getTexAlbedo()->bind(samplerId);
-					program->setUniformInt("u_tex_albedo", static_cast<GLint>(samplerId));
-				}
-
-
-				mesh->render();
+				// Bind some generic shader uniforms
+				shaderProgram->setUniformMat4("u_VMatrix", camera->getViewMatrix());
+				shaderProgram->setUniformMat4("u_PMatrix", camera->getProjectionMatrix());
 			}
 
-			//MLOG_DEBUG("RenderCMD. Camera: %s, Meshes size: %zu", (camera == nullptr) ? "null" : "not null", meshes.size());
+			// --------------------------------------------------------------------
+			// -- Render debug
+			// --------------------------------------------------------------------
+			if (renderCmd->getType() == RCMD_DEBUG)
+			{
+				// Set GL flags
+				glEnable(GL_DEPTH_TEST);
+				glEnable(GL_CULL_FACE);
+				glCullFace(GL_FRONT);
+				glFrontFace(GL_CW);
+
+				for (size_t j = 0; j < meshRenderers.size(); j++)
+				{
+					// Get current mesh renderer related generic data
+					MeshRenderer * mesh = meshRenderers[j];
+					MaterialBase & mesh_material = mesh->getMeshBase()->getData()->getMaterial();
+
+					// Bind some generic shader uniforms
+					shaderProgram->setUniformMat4("u_MMatrix", mesh->getTransform()->getModelMatrix());
+					shaderProgram->setUniformVec3("u_col_albedo", mesh_material.getColAlbedo());
+					if (mesh_material.getTexAlbedo() != nullptr)
+					{
+						GLenum samplerId = m_textureSamplers["texture_albedo"];
+						mesh_material.getTexAlbedo()->bind(samplerId);
+						shaderProgram->setUniformInt("u_tex_albedo", static_cast<GLint>(samplerId));
+					}
+
+					mesh->render();
+				}
+
+			}
+
+			// --------------------------------------------------------------------
+			// -- Render g-buffer
+			// --------------------------------------------------------------------
+
 		}
 
-		// Deallocate render commands
+		// Clean up render commands
 		for (auto r_cmd : m_renderCmds)
 		{
 			MDELETES(r_cmd);
 		}
-
-		// Clear render commands
 		m_renderCmds.clear();
 
 		// Render game GUI (ImGui)
 		m_coreEngine->getGame()->renderGUI();
 
+		// Do OpenGL error check
 		glErrorCheck();
+
 		glfwSwapBuffers(m_coreEngine->getWindow()->getHandle());
 	}
 

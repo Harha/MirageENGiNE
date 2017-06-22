@@ -70,7 +70,7 @@ namespace mirage
 
 	void ModelBasic::render(GraphicsEngine * const gfxEngine)
 	{
-		RenderCMD * r_cmd = new RenderCMD(gfxEngine->getShaderProgram("gbuffer"), gfxEngine->getCurrentCamera(), m_meshRenderers);
+		RenderCMD * r_cmd = new RenderCMD(RCMD_DEBUG, gfxEngine->getShaderProgram("gbuffer"), gfxEngine->getCurrentCamera(), m_meshRenderers);
 		gfxEngine->pushRenderCMD(r_cmd);
 	}
 

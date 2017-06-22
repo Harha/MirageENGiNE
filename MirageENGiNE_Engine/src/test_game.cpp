@@ -51,10 +51,10 @@ namespace mirage
 		player->addComponent(freemove);
 		player->addComponent(freelook);
 
-		GameObject * lost_empire = new GameObject("lost_empire");
+		GameObject * lost_empire = new GameObject("rungholt");
 		ModelBasic * model_lost_empire = new ModelBasic(
-			"lost_empire/lost_empire.obj",
-			"model_lost_empire"
+			"rungholt/rungholt.obj",
+			"model_rungholt"
 		);
 		lost_empire->addComponent(model_lost_empire);
 
@@ -150,7 +150,7 @@ namespace mirage
 		gfxEngine->setCurrentCamera(getObject("player")->getComponent<CameraPerspective *>("camera_perspective")->getCamera());
 
 		// Render models
-		getObject("lost_empire")->render(gfxEngine);
+		getObject("rungholt")->render(gfxEngine);
 	}
 
 	void TestGame::renderGUI()

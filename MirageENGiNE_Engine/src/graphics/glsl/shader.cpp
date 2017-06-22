@@ -287,32 +287,62 @@ namespace mirage
 
 	void ShaderProgram::setUniformBool(const std::string & name, GLint b)
 	{
-		glUniform1i(m_data->getUniforms()[name].location, b);
+		auto & uniforms = m_data->getUniforms();
+
+		if (uniforms.find(name) != uniforms.end())
+		{
+			glUniform1i(m_data->getUniforms()[name].location, b);
+		}
 	}
 
 	void ShaderProgram::setUniformInt(const std::string & name, GLint i)
 	{
-		glUniform1i(m_data->getUniforms()[name].location, i);
+		auto & uniforms = m_data->getUniforms();
+
+		if (uniforms.find(name) != uniforms.end())
+		{
+			glUniform1i(m_data->getUniforms()[name].location, i);
+		}
 	}
 
 	void ShaderProgram::setUniformFloat(const std::string & name, GLfloat f)
 	{
-		glUniform1f(m_data->getUniforms()[name].location, f);
+		auto & uniforms = m_data->getUniforms();
+
+		if (uniforms.find(name) != uniforms.end())
+		{
+			glUniform1f(m_data->getUniforms()[name].location, f);
+		}
 	}
 
 	void ShaderProgram::setUniformVec3(const std::string & name, const glm::vec3 & v)
 	{
-		glUniform3f(m_data->getUniforms()[name].location, v.x, v.y, v.z);
+		auto & uniforms = m_data->getUniforms();
+
+		if (uniforms.find(name) != uniforms.end())
+		{
+			glUniform3f(m_data->getUniforms()[name].location, v.x, v.y, v.z);
+		}
 	}
 
 	void ShaderProgram::setUniformVec4(const std::string & name, const glm::vec4 & v)
 	{
-		glUniform4f(m_data->getUniforms()[name].location, v.x, v.y, v.z, v.w);
+		auto & uniforms = m_data->getUniforms();
+
+		if (uniforms.find(name) != uniforms.end())
+		{
+			glUniform4f(m_data->getUniforms()[name].location, v.x, v.y, v.z, v.w);
+		}
 	}
 
 	void ShaderProgram::setUniformMat4(const std::string & name, const glm::mat4 & m)
 	{
-		glUniformMatrix4fv(m_data->getUniforms()[name].location, 1, GL_FALSE, &m[0][0]);
+		auto & uniforms = m_data->getUniforms();
+
+		if (uniforms.find(name) != uniforms.end())
+		{
+			glUniformMatrix4fv(uniforms[name].location, 1, GL_FALSE, &m[0][0]);
+		}
 	}
 
 	std::string ShaderProgram::getShaderInfoLog(GLuint handle) const
@@ -333,5 +363,9 @@ namespace mirage
 		return std::string(infolog_str);
 	}
 
+	ShaderData * const ShaderProgram::getData() const
+	{
+		return m_data;
+	}
 
 }
